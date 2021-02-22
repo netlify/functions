@@ -1,7 +1,3 @@
-'use strict'
+const { builderFunction } = require('./lib/builder_functions')
 
-const mainFunction = function () {
-  return true
-}
-
-module.exports = { mainFunction }
+module.exports = { builderFunction }

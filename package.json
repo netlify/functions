@@ -1,5 +1,6 @@
 {
   "name": "@netlify/netlify-functions-js",
+  "main": "./src/main.js",
   "private": true,
   "version": "1.0.0",
   "description": "JavaScript utilities for Netlify Functions",
@@ -29,7 +30,7 @@
   },
   "ava": {
     "files": [
-      "tests/*.js"
+      "test/*.js"
     ],
     "verbose": true
   },

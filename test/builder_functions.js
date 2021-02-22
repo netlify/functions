@@ -1,6 +1,7 @@
 const test = require('ava')
 
 const { builderFunction } = require('../src/lib/builder_functions')
+
 const { invokeLambda } = require('./helpers/main')
 
 const METADATA_OBJECT = { metadata: { version: 1, behavior: { name: 'builder' } } }
