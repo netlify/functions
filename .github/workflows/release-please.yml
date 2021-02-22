@@ -12,3 +12,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: node
           package-name: '@netlify/netlify-functions-js'
+          bump-minor-pre-major: true
