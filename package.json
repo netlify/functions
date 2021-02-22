@@ -1,5 +1,5 @@
 {
-  "name": "@netlify/netlify-functions-js",
+  "name": "@netlify/functions",
   "main": "./src/main.js",
   "private": true,
   "version": "1.0.0",
