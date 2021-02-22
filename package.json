@@ -41,9 +41,9 @@
   },
   "keywords": [],
   "license": "MIT",
-  "repository": "netlify/netlify-functions-js",
+  "repository": "netlify/functions-js",
   "bugs": {
-    "url": "https://github.com/netlify/netlify-functions-js/issues"
+    "url": "https://github.com/netlify/functions-js/issues"
   },
   "author": "Netlify Inc.",
   "directories": {
