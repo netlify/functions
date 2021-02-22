@@ -21,7 +21,7 @@ const wrapHandler = (handler) => async (event, context, callback) => {
   }
 
   // eslint-disable-next-line promise/prefer-await-to-callbacks
-  const wrappedCallback = (response) => callback(augmentResponse(response))
+  const wrappedCallback = (error, response) => callback(error, augmentResponse(response))
   const response = await handler(event, context, wrappedCallback)
 
   return augmentResponse(response)
