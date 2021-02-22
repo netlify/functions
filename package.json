@@ -2,7 +2,7 @@
   "name": "@netlify/functions",
   "main": "./src/main.js",
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "JavaScript utilities for Netlify Functions",
   "files": [
     "src/**/*.js",
