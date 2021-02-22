@@ -31,7 +31,7 @@ test('Injects the metadata object into a synchronous handler', async (t) => {
     statusCode: 200,
   }
   const myHandler = (event, context, callback) => {
-    callback(originalResponse)
+    callback(null, originalResponse)
   }
   const response = await invokeLambda(builderFunction(myHandler))
 
