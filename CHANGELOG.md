@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/netlify/functions-js/compare/v0.1.0...v0.2.0) (2021-02-23)
+
+
+### Features
+
+* conform to handler function signature ([#10](https://www.github.com/netlify/functions-js/issues/10)) ([261d4d2](https://www.github.com/netlify/functions-js/commit/261d4d25b410f29c060f666d38153a822832dccd))
+
 ## 0.1.0 (2021-02-22)
 
 
