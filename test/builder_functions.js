@@ -132,3 +132,21 @@ test('Returns a 405 error for requests using the PATCH method', async (t) => {
 
   t.deepEqual(response, { body: 'Method Not Allowed', statusCode: 405 })
 })
+
+test('Preserves errors thrown inside the wrapped handler', async (t) => {
+  const error = new Error('Uh-oh!')
+
+  error.someProperty = ':thumbsdown:'
+
+  const myHandler = async () => {
+    const asyncTask = new Promise((resolve) => {
+      setTimeout(resolve, 0)
+    })
+
+    await asyncTask
+
+    throw error
+  }
+
+  await t.throwsAsync(invokeLambda(builderFunction(myHandler)), { is: error })
+})
