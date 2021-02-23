@@ -30,6 +30,8 @@ const wrapHandler = (handler) => (event, context, callback) => {
     // eslint-disable-next-line promise/prefer-await-to-then
     return execution.then(augmentResponse)
   }
+
+  return execution
 }
 
 module.exports = { builderFunction: wrapHandler }
