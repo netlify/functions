@@ -1,3 +1,5 @@
+const isPromise = require('is-promise')
+
 const { HTTP_STATUS_METHOD_NOT_ALLOWED, HTTP_STATUS_OK } = require('./consts')
 
 const augmentResponse = (response) => {
@@ -24,7 +26,7 @@ const wrapHandler = (handler) => (event, context, callback) => {
   const wrappedCallback = (error, response) => callback(error, augmentResponse(response))
   const execution = handler(event, context, wrappedCallback)
 
-  if (execution instanceof Promise) {
+  if (isPromise(execution)) {
     // eslint-disable-next-line promise/prefer-await-to-then
     return execution.then(augmentResponse)
   }
