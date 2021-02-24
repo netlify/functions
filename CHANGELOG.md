@@ -5,7 +5,7 @@
 
 ### Features
 
-* force minor release ([#13](https://www.github.com/netlify/functions-js/issues/13)) ([2fb156a](https://www.github.com/netlify/functions-js/commit/2fb156acaf6057bf49b362146edbad2b05bc686f))
+* update metadata ([#12](https://www.github.com/netlify/functions-js/issues/12)) ([f92c4f9](https://github.com/netlify/functions-js/commit/f92c4f9cc89ba496c8b19dafe4ee0ebcc133dad7))
 
 ## [0.2.0](https://www.github.com/netlify/functions-js/compare/v0.1.0...v0.2.0) (2021-02-23)
 
