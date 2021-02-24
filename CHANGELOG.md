@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/netlify/functions-js/compare/v0.2.0...v0.3.0) (2021-02-24)
+
+
+### Features
+
+* force minor release ([#13](https://www.github.com/netlify/functions-js/issues/13)) ([2fb156a](https://www.github.com/netlify/functions-js/commit/2fb156acaf6057bf49b362146edbad2b05bc686f))
+
 ## [0.2.0](https://www.github.com/netlify/functions-js/compare/v0.1.0...v0.2.0) (2021-02-23)
 
 
