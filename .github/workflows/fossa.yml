@@ -35,4 +35,3 @@ jobs:
         run: fossa analyze --debug
         env:
           FOSSA_API_KEY: ${{ secrets.FOSSA_API_KEY }}
-
