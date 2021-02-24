@@ -4,7 +4,7 @@ const { builderFunction } = require('../src/lib/builder_functions')
 
 const { invokeLambda } = require('./helpers/main')
 
-const METADATA_OBJECT = { metadata: { version: 1, behavior: { name: 'builder' } } }
+const METADATA_OBJECT = { metadata: { version: 1, builder_function: true } }
 
 test('Injects the metadata object into an asynchronous handler', async (t) => {
   const originalResponse = {

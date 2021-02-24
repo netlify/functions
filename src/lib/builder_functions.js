@@ -1,7 +1,6 @@
 const isPromise = require('is-promise')
 
-const { HTTP_STATUS_METHOD_NOT_ALLOWED, HTTP_STATUS_OK } = require('./consts')
-const { BUILDER_FUNCTIONS_FLAG, METADATA_VERSION } = require('./consts')
+const { BUILDER_FUNCTIONS_FLAG, HTTP_STATUS_METHOD_NOT_ALLOWED, HTTP_STATUS_OK, METADATA_VERSION } = require('./consts')
 
 const augmentResponse = (response) => {
   if (!response || response.statusCode !== HTTP_STATUS_OK) {
@@ -10,7 +9,7 @@ const augmentResponse = (response) => {
 
   return {
     ...response,
-    metadata: { version: METADATA_VERSION, builder_function: BUILDER_FUNCTIONS_FLAG},
+    metadata: { version: METADATA_VERSION, builder_function: BUILDER_FUNCTIONS_FLAG },
   }
 }
 
