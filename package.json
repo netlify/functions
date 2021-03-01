@@ -50,7 +50,7 @@
     "test": "test"
   },
   "dependencies": {
-    "is-promise": "^2.2.2"
+    "is-promise": "^4.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
