@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.1](https://www.github.com/netlify/functions-js/compare/v0.3.0...v0.3.1) (2021-03-01)
+
+
+### Bug Fixes
+
+* **deps:** update dependency is-promise to v4 ([#18](https://www.github.com/netlify/functions-js/issues/18)) ([6a92e72](https://www.github.com/netlify/functions-js/commit/6a92e72a68b69d99131abd1d19fa6c9e8ab14bf3))
+
 ## [0.3.0](https://www.github.com/netlify/functions-js/compare/v0.2.0...v0.3.0) (2021-02-24)
 
 
