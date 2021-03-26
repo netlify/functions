@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.1](https://www.github.com/netlify/functions-js/compare/v0.4.0...v0.4.1) (2021-03-26)
+
+
+### Bug Fixes
+
+* add TS files to npm package ([#28](https://www.github.com/netlify/functions-js/issues/28)) ([88a73c6](https://www.github.com/netlify/functions-js/commit/88a73c670fac3ef2449f9bed5604d394e1ecec07))
+
 ## [0.4.0](https://www.github.com/netlify/functions-js/compare/v0.3.1...v0.4.0) (2021-03-26)
 
 
