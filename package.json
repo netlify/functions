@@ -6,6 +6,7 @@
   "description": "JavaScript utilities for Netlify Functions",
   "files": [
     "src/**/*.js",
+    "src/**/*.ts",
     "!src/**/*.test.js"
   ],
   "scripts": {
