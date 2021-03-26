@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/netlify/functions-js/compare/v0.3.1...v0.4.0) (2021-03-26)
+
+
+### Features
+
+* add TypeScript declarations ([#26](https://www.github.com/netlify/functions-js/issues/26)) ([6180687](https://www.github.com/netlify/functions-js/commit/618068784662782257d9d814c18cd3332e1b5fe7))
+
 ### [0.3.1](https://www.github.com/netlify/functions-js/compare/v0.3.0...v0.3.1) (2021-03-01)
 
 
