@@ -22,9 +22,16 @@ const wrapHandler = (handler) => (event, context, callback) => {
     })
   }
 
+  // Removing query string parameters from the builder function.
+  const modifiedEvent = {
+    ...event,
+    multiValueQueryStringParameters: {},
+    queryStringParameters: {},
+  }
+
   // eslint-disable-next-line promise/prefer-await-to-callbacks
   const wrappedCallback = (error, response) => callback(error, augmentResponse(response))
-  const execution = handler(event, context, wrappedCallback)
+  const execution = handler(modifiedEvent, context, wrappedCallback)
 
   if (isPromise(execution)) {
     // eslint-disable-next-line promise/prefer-await-to-then

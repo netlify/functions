@@ -1,5 +1,6 @@
-const invokeLambda = (handler, { method = 'GET' } = {}) => {
+const invokeLambda = (handler, { method = 'GET', ...options } = {}) => {
   const event = {
+    ...options,
     httpMethod: method,
   }
 
