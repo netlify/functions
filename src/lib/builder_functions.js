@@ -22,9 +22,12 @@ const wrapHandler = (handler) => (event, context, callback) => {
     })
   }
 
+  // eslint-disable-next-line no-unused-vars
+  const { multiValueQueryStringParameters, queryStringParameters, ...eventParameters } = event
+
   // eslint-disable-next-line promise/prefer-await-to-callbacks
   const wrappedCallback = (error, response) => callback(error, augmentResponse(response))
-  const execution = handler(event, context, wrappedCallback)
+  const execution = handler(eventParameters, context, wrappedCallback)
 
   if (isPromise(execution)) {
     // eslint-disable-next-line promise/prefer-await-to-then

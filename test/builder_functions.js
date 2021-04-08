@@ -150,3 +150,25 @@ test('Preserves errors thrown inside the wrapped handler', async (t) => {
 
   await t.throwsAsync(invokeLambda(builderFunction(myHandler)), { is: error })
 })
+
+test('Does not pass query parameters to the wrapped handler', async (t) => {
+  const originalResponse = {
+    body: ':thumbsup:',
+    statusCode: 200,
+  }
+  // eslint-disable-next-line require-await
+  const myHandler = async (event) => {
+    t.is(event.multiValueQueryStringParameters, undefined)
+    t.is(event.queryStringParameters, undefined)
+
+    return originalResponse
+  }
+  const multiValueQueryStringParameters = { foo: ['bar'], bar: ['baz'] }
+  const queryStringParameters = { foo: 'bar', bar: 'baz' }
+  const response = await invokeLambda(builderFunction(myHandler), {
+    multiValueQueryStringParameters,
+    queryStringParameters,
+  })
+
+  t.deepEqual(response, { ...originalResponse, ...METADATA_OBJECT })
+})
