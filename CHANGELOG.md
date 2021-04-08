@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://www.github.com/netlify/functions-js/compare/v0.4.1...v0.5.0) (2021-04-08)
+
+
+### Features
+
+* omit query string parameters from builder functions ([#40](https://www.github.com/netlify/functions-js/issues/40)) ([1219049](https://www.github.com/netlify/functions-js/commit/1219049a003acb693c5e93591a5d78ad678974a1))
+
 ### [0.4.1](https://www.github.com/netlify/functions-js/compare/v0.4.0...v0.4.1) (2021-03-26)
 
 

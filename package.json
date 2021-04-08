@@ -2,7 +2,7 @@
   "name": "@netlify/functions",
   "main": "./src/main.js",
   "types": "./src/main.d.ts",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "JavaScript utilities for Netlify Functions",
   "files": [
     "src/**/*.js",
