@@ -158,8 +158,8 @@ test('Does not pass query parameters to the wrapped handler', async (t) => {
   }
   // eslint-disable-next-line require-await
   const myHandler = async (event) => {
-    t.is(event.multiValueQueryStringParameters, undefined)
-    t.is(event.queryStringParameters, undefined)
+    t.deepEqual(event.multiValueQueryStringParameters, {})
+    t.deepEqual(event.queryStringParameters, {})
 
     return originalResponse
   }
