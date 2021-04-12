@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://www.github.com/netlify/functions-js/compare/v0.5.0...v0.6.0) (2021-04-12)
+
+
+### Features
+
+* rename builder function wrapper ([#44](https://www.github.com/netlify/functions-js/issues/44)) ([3738d98](https://www.github.com/netlify/functions-js/commit/3738d98a17a538728b07758e6b8c795ac6ceb528))
+
 ## [0.5.0](https://www.github.com/netlify/functions-js/compare/v0.4.1...v0.5.0) (2021-04-08)
 
 
