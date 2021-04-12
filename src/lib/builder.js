@@ -41,4 +41,4 @@ const wrapHandler = (handler) => (event, context, callback) => {
   return execution
 }
 
-module.exports = { builderFunction: wrapHandler }
+module.exports = { builder: wrapHandler }

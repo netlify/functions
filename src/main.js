@@ -1,3 +1,3 @@
-const { builderFunction } = require('./lib/builder_functions')
+const { builder } = require('./lib/builder')
 
-module.exports = { builderFunction }
+module.exports = { builder }

@@ -1,6 +1,6 @@
 const test = require('ava')
 
-const { builderFunction } = require('../src/lib/builder_functions')
+const { builder } = require('../src/lib/builder')
 
 const { invokeLambda } = require('./helpers/main')
 
@@ -20,7 +20,7 @@ test('Injects the metadata object into an asynchronous handler', async (t) => {
 
     return originalResponse
   }
-  const response = await invokeLambda(builderFunction(myHandler))
+  const response = await invokeLambda(builder(myHandler))
 
   t.deepEqual(response, { ...originalResponse, ...METADATA_OBJECT })
 })
@@ -33,7 +33,7 @@ test('Injects the metadata object into a synchronous handler', async (t) => {
   const myHandler = (event, context, callback) => {
     callback(null, originalResponse)
   }
-  const response = await invokeLambda(builderFunction(myHandler))
+  const response = await invokeLambda(builder(myHandler))
 
   t.deepEqual(response, { ...originalResponse, ...METADATA_OBJECT })
 })
@@ -52,7 +52,7 @@ test('Does not inject the metadata object for non-200 responses', async (t) => {
 
     return originalResponse
   }
-  const response = await invokeLambda(builderFunction(myHandler))
+  const response = await invokeLambda(builder(myHandler))
 
   t.deepEqual(response, originalResponse)
 })
@@ -71,7 +71,7 @@ test('Returns a 405 error for requests using the POST method', async (t) => {
 
     return originalResponse
   }
-  const response = await invokeLambda(builderFunction(myHandler), { method: 'POST' })
+  const response = await invokeLambda(builder(myHandler), { method: 'POST' })
 
   t.deepEqual(response, { body: 'Method Not Allowed', statusCode: 405 })
 })
@@ -90,7 +90,7 @@ test('Returns a 405 error for requests using the PUT method', async (t) => {
 
     return originalResponse
   }
-  const response = await invokeLambda(builderFunction(myHandler), { method: 'PUT' })
+  const response = await invokeLambda(builder(myHandler), { method: 'PUT' })
 
   t.deepEqual(response, { body: 'Method Not Allowed', statusCode: 405 })
 })
@@ -109,7 +109,7 @@ test('Returns a 405 error for requests using the DELETE method', async (t) => {
 
     return originalResponse
   }
-  const response = await invokeLambda(builderFunction(myHandler), { method: 'DELETE' })
+  const response = await invokeLambda(builder(myHandler), { method: 'DELETE' })
 
   t.deepEqual(response, { body: 'Method Not Allowed', statusCode: 405 })
 })
@@ -128,7 +128,7 @@ test('Returns a 405 error for requests using the PATCH method', async (t) => {
 
     return originalResponse
   }
-  const response = await invokeLambda(builderFunction(myHandler), { method: 'PATCH' })
+  const response = await invokeLambda(builder(myHandler), { method: 'PATCH' })
 
   t.deepEqual(response, { body: 'Method Not Allowed', statusCode: 405 })
 })
@@ -148,7 +148,7 @@ test('Preserves errors thrown inside the wrapped handler', async (t) => {
     throw error
   }
 
-  await t.throwsAsync(invokeLambda(builderFunction(myHandler)), { is: error })
+  await t.throwsAsync(invokeLambda(builder(myHandler)), { is: error })
 })
 
 test('Does not pass query parameters to the wrapped handler', async (t) => {
@@ -165,7 +165,7 @@ test('Does not pass query parameters to the wrapped handler', async (t) => {
   }
   const multiValueQueryStringParameters = { foo: ['bar'], bar: ['baz'] }
   const queryStringParameters = { foo: 'bar', bar: 'baz' }
-  const response = await invokeLambda(builderFunction(myHandler), {
+  const response = await invokeLambda(builder(myHandler), {
     multiValueQueryStringParameters,
     queryStringParameters,
   })
