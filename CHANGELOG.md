@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://www.github.com/netlify/functions-js/compare/v0.6.0...v0.7.0) (2021-04-14)
+
+
+### Features
+
+* add type to builder wrapper ([#48](https://www.github.com/netlify/functions-js/issues/48)) ([0af5b04](https://www.github.com/netlify/functions-js/commit/0af5b04c2b1241f64a56394317371a08781e881d))
+
 ## [0.6.0](https://www.github.com/netlify/functions-js/compare/v0.5.0...v0.6.0) (2021-04-12)
 
 
