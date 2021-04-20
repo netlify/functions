@@ -4,7 +4,7 @@
 [![Coverage Status](https://codecov.io/gh/netlify/functions-js/branch/main/graph/badge.svg)](https://codecov.io/gh/netlify/functions-js)
 [![Node](https://img.shields.io/node/v/@netlify/functions.svg?logo=node.js)](https://www.npmjs.com/package/@netlify/functions)
 
-Development utilities for Netlify Functions.
+JavaScript/TypeScript utilities for Netlify Functions.
 
 ## Installation
 
@@ -18,6 +18,8 @@ npm install @netlify/functions
 
 To use On-demand Builders, wrap your function handler with the `builder` function.
 
+_With JavaScript:_
+
 ```js
 const { builder } = require('@netlify/functions')
 
@@ -29,6 +31,22 @@ const handler = async (event, context) => {
 }
 
 exports.handler = builder(handler)
+```
+
+_With TypeScript:_
+```ts
+import { builder, Handler } from '@netlify/functions'
+
+const myHandler: Handler = async (event, context) => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: "Hello World" }),
+  }
+}
+
+const handler = builder(myHandler)
+
+export { handler }
 ```
 
 ### TypeScript typings
