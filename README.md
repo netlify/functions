@@ -1,4 +1,4 @@
-# @netlify/functions
+# ![functions](functions.png)
 
 [![Build](https://github.com/netlify/functions-js/workflows/Build/badge.svg)](https://github.com/netlify/functions-js/actions)
 [![Coverage Status](https://codecov.io/gh/netlify/functions-js/branch/main/graph/badge.svg)](https://codecov.io/gh/netlify/functions-js)
