@@ -1,10 +1,9 @@
 # ![functions](functions.png)
 
-[![Build](https://github.com/netlify/functions-js/workflows/Build/badge.svg)](https://github.com/netlify/functions-js/actions)
-[![Coverage Status](https://codecov.io/gh/netlify/functions-js/branch/main/graph/badge.svg)](https://codecov.io/gh/netlify/functions-js)
+[![Build](https://github.com/netlify/functions/workflows/Build/badge.svg)](https://github.com/netlify/functions/actions)
 [![Node](https://img.shields.io/node/v/@netlify/functions.svg?logo=node.js)](https://www.npmjs.com/package/@netlify/functions)
 
-JavaScript/TypeScript utilities for Netlify Functions.
+JavaScript and TypeScript utilities for Netlify Functions.
 
 ## Installation
 
@@ -20,35 +19,35 @@ To use On-demand Builders, wrap your function handler with the `builder` functio
 
 - With JavaScript:
 
-    ```js
-    const { builder } = require('@netlify/functions')
+  ```js
+  const { builder } = require('@netlify/functions')
 
-    const handler = async (event, context) => {
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ message: 'Hello World' }),
-      }
+  const handler = async (event, context) => {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: 'Hello World' }),
     }
+  }
 
-    exports.handler = builder(handler)
-    ```
+  exports.handler = builder(handler)
+  ```
 
 - With TypeScript:
 
-    ```ts
-    import { builder, Handler } from '@netlify/functions'
+  ```ts
+  import { builder, Handler } from '@netlify/functions'
 
-    const myHandler: Handler = async (event, context) => {
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ message: "Hello World" }),
-      }
+  const myHandler: Handler = async (event, context) => {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: 'Hello World' }),
     }
+  }
 
-    const handler = builder(myHandler)
+  const handler = builder(myHandler)
 
-    export { handler }
-    ```
+  export { handler }
+  ```
 
 ### TypeScript typings
 
@@ -60,7 +59,7 @@ import { Handler } from '@netlify/functions'
 const handler: Handler = async (event, context) => {
   return {
     statusCode: 200,
-    body: JSON.stringify({ message: "Hello World" })
+    body: JSON.stringify({ message: 'Hello World' }),
   }
 }
 
