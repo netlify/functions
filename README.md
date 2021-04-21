@@ -3,7 +3,7 @@
 [![Build](https://github.com/netlify/functions/workflows/Build/badge.svg)](https://github.com/netlify/functions/actions)
 [![Node](https://img.shields.io/node/v/@netlify/functions.svg?logo=node.js)](https://www.npmjs.com/package/@netlify/functions)
 
-JavaScript and TypeScript utilities for Netlify Functions.
+JavaScript and TypeScript utilities for [Netlify Functions](https://docs.netlify.com/functions/overview/).
 
 ## Installation
 
