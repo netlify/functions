@@ -4,7 +4,7 @@ export interface Response {
     [header: string]: boolean | number | string
   }
   multiValueHeaders?: {
-    [header: string]: Array<boolean | number | string>
+    [header: string]: ReadonlyArray<boolean | number | string>
   }
   body: string
   isBase64Encoded?: boolean
