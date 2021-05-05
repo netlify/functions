@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.7.1](https://www.github.com/netlify/functions/compare/v0.7.0...v0.7.1) (2021-05-05)
+
+
+### Bug Fixes
+
+* Convert typings to .d.ts files ([#61](https://www.github.com/netlify/functions/issues/61)) ([f47e83a](https://www.github.com/netlify/functions/commit/f47e83a282ef4a8217941e14d23646c5ed938a76))
+
 ## [0.7.0](https://www.github.com/netlify/functions/compare/v0.6.0...v0.7.0) (2021-04-14)
 
 ### Features
