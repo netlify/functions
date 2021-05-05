@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.7.2](https://www.github.com/netlify/functions/compare/v0.7.1...v0.7.2) (2021-05-05)
+
+
+### Bug Fixes
+
+* make `Response.body` optional ([#63](https://www.github.com/netlify/functions/issues/63)) ([9932e07](https://www.github.com/netlify/functions/commit/9932e07b613e562af5aea2f93db8a5fa1526c57a))
+
 ### [0.7.1](https://www.github.com/netlify/functions/compare/v0.7.0...v0.7.1) (2021-05-05)
 
 
