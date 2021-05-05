@@ -6,6 +6,6 @@ export interface Response {
   multiValueHeaders?: {
     [header: string]: ReadonlyArray<boolean | number | string>
   }
-  body: string
+  body?: string
   isBase64Encoded?: boolean
 }
