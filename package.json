@@ -1,16 +1,17 @@
 {
   "name": "@netlify/functions",
-  "main": "./src/main.js",
+  "main": "./dist/main.js",
   "types": "./src/main.d.ts",
   "version": "0.7.2",
   "description": "JavaScript utilities for Netlify Functions",
   "files": [
-    "src/**/*.js",
+    "dist/**/*.js",
     "src/**/*.ts",
-    "!src/**/*.test.js"
+    "!src/**/*.test.ts"
   ],
   "scripts": {
-    "prepublishOnly": "npm ci && npm test",
+    "build": "tsc",
+    "prepublishOnly": "npm ci && npm run build && npm test",
     "test": "run-s format test:dev",
     "format": "run-s format:check-fix:*",
     "format:ci": "run-s format:check:*",
@@ -23,7 +24,8 @@
     "test:dev": "run-s test:dev:*",
     "test:ci": "run-s test:ci:*",
     "test:dev:ava": "ava",
-    "test:ci:ava": "nyc -r lcovonly -r text -r json ava"
+    "test:ci:ava": "nyc -r lcovonly -r text -r json ava",
+    "watch": "tsc --watch"
   },
   "config": {
     "eslint": "--ignore-pattern README.md --ignore-path .gitignore --cache --format=codeframe --max-warnings=0 \"{src,scripts,.github}/**/*.{js,md,html}\" \"*.{js,md,html}\" \".*.{js,md,html}\"",
@@ -58,9 +60,13 @@
     "@commitlint/cli": "^12.0.0",
     "@commitlint/config-conventional": "^12.0.0",
     "@netlify/eslint-config-node": "^3.0.1",
+    "@types/node": "^15.6.1",
+    "@typescript-eslint/eslint-plugin": "^4.25.0",
+    "@typescript-eslint/parser": "^4.25.0",
     "ava": "^2.4.0",
     "husky": "^4.3.8",
-    "nyc": "^15.0.0"
+    "nyc": "^15.0.0",
+    "typescript": "^4.2.4"
   },
   "engines": {
     "node": ">=8.3.0"
