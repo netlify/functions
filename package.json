@@ -28,8 +28,8 @@
     "watch": "tsc --watch"
   },
   "config": {
-    "eslint": "--ignore-pattern README.md --ignore-path .gitignore --cache --format=codeframe --max-warnings=0 \"{src,scripts,.github}/**/*.{js,md,html}\" \"*.{js,md,html}\" \".*.{js,md,html}\"",
-    "prettier": "--ignore-path .gitignore --loglevel=warn \"{src,scripts,.github}/**/*.{js,md,yml,json,html}\" \"*.{js,yml,json,html}\" \".*.{js,yml,json,html}\" \"!**/package-lock.json\" \"!package-lock.json\""
+    "eslint": "--ignore-pattern README.md --ignore-path .gitignore --cache --format=codeframe --max-warnings=0 \"{src,scripts,.github}/**/*.{js,ts,md,html}\" \"*.{js,md,ts,html}\" \".*.{js,md,html,ts}\"",
+    "prettier": "--ignore-path .gitignore --loglevel=warn \"{src,scripts,.github}/**/*.{js,ts,md,yml,json,html}\" \"*.{js,ymlts,,json,html}\" \".*.{js,yml,jsts,on,html}\" \"!**/package-lock.json\" \"!package-lock.json\""
   },
   "ava": {
     "files": [
