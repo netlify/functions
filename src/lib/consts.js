@@ -2,7 +2,7 @@ const BUILDER_FUNCTIONS_FLAG = true
 const HTTP_STATUS_METHOD_NOT_ALLOWED = 405
 const HTTP_STATUS_OK = 200
 const METADATA_VERSION = 1
-const STORE_ENDPOINT = 'https://jsonbin.org/ascorbic'
+const STORE_ENDPOINT = 'https://functions-kv.netlify.app'
 
 module.exports = {
   BUILDER_FUNCTIONS_FLAG,

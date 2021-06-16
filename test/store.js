@@ -8,13 +8,10 @@ const { STORE_ENDPOINT } = require('../src/lib/consts')
 //  Throw on invalid domain
 nock.disableNetConnect()
 
-// eslint-disable-next-line node/no-unsupported-features/node-builtins
-const url = new URL(STORE_ENDPOINT)
-const HOST = `${url.protocol}//${url.host}`
-const ROOT = url.pathname
+const HOST = STORE_ENDPOINT
 
 const context = {
-  clientContext: { store: { token: 'atoken' } },
+  clientContext: { blobstore: { token: 'atoken' } },
 }
 const store = getStore(context)
 
@@ -27,24 +24,24 @@ test.afterEach(() => {
 })
 
 test('gets a value', async (t) => {
-  nock(HOST).get(`${ROOT}/item/${KEY}`).reply(200, response)
+  nock(HOST).get(`/item/${KEY}`).reply(200, response)
   const value = await store.get(KEY)
   t.deepEqual(value, { hello: 'world' })
 })
 
 test('returns undefined for missing value', async (t) => {
-  nock(HOST).get(`${ROOT}/item/invalid`).reply(404)
+  nock(HOST).get(`/item/invalid`).reply(404)
   const value = await store.get('invalid')
   t.is(value, undefined)
 })
 
 test('throws on network error', async (t) => {
-  nock(HOST).get(`${ROOT}/item/network`).replyWithError('oh no')
+  nock(HOST).get(`/item/network`).replyWithError('oh no')
   await t.throwsAsync(() => store.get('network'))
 })
 
 test('sets a value', async (t) => {
-  nock(HOST).put(`${ROOT}/item/${KEY}`).reply(200)
+  nock(HOST).put(`/item/${KEY}`).reply(200)
   const value = await store.set(KEY, { hello: 1 })
   t.truthy(value)
 })
@@ -52,13 +49,13 @@ test('sets a value', async (t) => {
 test('sends the correct value', async (t) => {
   const data = { hello: 1 }
 
-  nock(HOST).put(`${ROOT}/item/${KEY}`, data).reply(200)
+  nock(HOST).put(`/item/${KEY}`, data).reply(200)
   const value = await store.set(KEY, data)
   t.truthy(value)
 })
 
 test('throws on invalid object', async (t) => {
-  nock(HOST).put(`${ROOT}/item/${KEY}`).reply(200)
+  nock(HOST).put(`/item/${KEY}`).reply(200)
 
   const circular = {
     foo: {},
@@ -73,13 +70,13 @@ test('throws on invalid object', async (t) => {
 })
 
 test('deletes a value', async (t) => {
-  nock(HOST).delete(`${ROOT}/item/${KEY}`).reply(200)
+  nock(HOST).delete(`/item/${KEY}`).reply(200)
   const value = await store.delete(KEY)
   t.truthy(value)
 })
 
 test('returns false when deleting non-existent key', async (t) => {
-  nock(HOST).delete(`${ROOT}/item/invalid`).reply(404)
+  nock(HOST).delete(`/item/invalid`).reply(404)
   const value = await store.delete('invalid')
   t.falsy(value)
 })
@@ -101,7 +98,7 @@ test('throws when deleting an invalid key', async (t) => {
 
 test('sends credentials', async (t) => {
   nock(HOST, { reqheaders: { authorization: `Bearer atoken` } })
-    .get(`${ROOT}/item/creds`)
+    .get(`/item/creds`)
     .reply(200, {})
   const value = await store.get('creds')
   t.truthy(value)

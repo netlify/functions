@@ -13,7 +13,7 @@ const isValidKey = (key) => key && typeof key === 'string'
  * @returns Promise<Store>
  */
 module.exports.getStore = function getStore(context) {
-  const headers = { authorization: `Bearer ${context.clientContext.store.token}` }
+  const headers = { authorization: `Bearer ${context.clientContext.blobstore.token}` }
   return {
     async get(key) {
       if (!isValidKey(key)) {
@@ -77,7 +77,7 @@ module.exports.getStore = function getStore(context) {
       }
       const response = await fetch(`${STORE_ENDPOINT}/list/${encodeURIComponent(prefix)}`, { headers })
       if (response.status === 404) {
-        return []
+        return { count: 0, objects: [] }
       }
       if (!response.ok) {
         throw new Error(`There was an error loading the value for prefix ${prefix}: ${response.statusText}`)
