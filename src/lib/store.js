@@ -1,5 +1,7 @@
 // @ts-check
 
+const process = require('process')
+
 const { default: fetch } = require('node-fetch')
 
 const { STORE_ENDPOINT } = require('./consts')
@@ -14,12 +16,13 @@ const isValidKey = (key) => key && typeof key === 'string'
  */
 module.exports.getStore = function getStore(context) {
   const headers = { authorization: `Bearer ${context.clientContext.blobstore.token}` }
+  const endpoint = process.env.STORE_ENDPOINT || STORE_ENDPOINT
   return {
     async get(key) {
       if (!isValidKey(key)) {
         throw new Error('Invalid key')
       }
-      const response = await fetch(`${STORE_ENDPOINT}/item/${encodeURIComponent(key)}`, { headers })
+      const response = await fetch(`${endpoint}/item/${encodeURIComponent(key)}`, { headers })
       if (response.status === 404) {
         return
       }
@@ -43,7 +46,7 @@ module.exports.getStore = function getStore(context) {
       } catch (error) {
         throw new Error(`Could not serialize value for key ${key}. Item must be JSON-serializable`)
       }
-      const response = await fetch(`${STORE_ENDPOINT}/item/${encodeURIComponent(key)}`, {
+      const response = await fetch(`${endpoint}/item/${encodeURIComponent(key)}`, {
         method: 'PUT',
         headers,
         body,
@@ -59,7 +62,7 @@ module.exports.getStore = function getStore(context) {
         throw new Error('Invalid key')
       }
 
-      const response = await fetch(`${STORE_ENDPOINT}/item/${encodeURIComponent(key)}`, { method: 'DELETE', headers })
+      const response = await fetch(`${endpoint}/item/${encodeURIComponent(key)}`, { method: 'DELETE', headers })
 
       if (response.status === 404) {
         return false
@@ -75,7 +78,7 @@ module.exports.getStore = function getStore(context) {
       if (!isValidKey(prefix)) {
         throw new Error('Invalid key')
       }
-      const response = await fetch(`${STORE_ENDPOINT}/list/${encodeURIComponent(prefix)}`, { headers })
+      const response = await fetch(`${endpoint}/list/${encodeURIComponent(prefix)}`, { headers })
       if (response.status === 404) {
         return { count: 0, objects: [] }
       }

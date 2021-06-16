@@ -14,4 +14,4 @@ export interface Store {
   patch<T extends Record<string, any>>(key: string, value: Partial<T>): Promise<T>
 }
 
-export function getStore(context: Context): Store
+export function getStore(context: HandlerContext): Store
