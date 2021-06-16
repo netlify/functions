@@ -52,7 +52,8 @@
     "test": "test"
   },
   "dependencies": {
-    "is-promise": "^4.0.0"
+    "is-promise": "^4.0.0",
+    "node-fetch": "^2.6.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.0.0",
