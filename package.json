@@ -61,6 +61,7 @@
     "@netlify/eslint-config-node": "^3.1.4",
     "ava": "^2.4.0",
     "husky": "^4.3.8",
+    "nock": "^13.1.0",
     "nyc": "^15.0.0"
   },
   "engines": {
