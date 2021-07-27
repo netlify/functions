@@ -6,6 +6,6 @@ export interface HandlerCallback {
   (error: any, response: Response): void
 }
 
-export interface Handler {
-  (event: Event, context: Context, callback: HandlerCallback): void | Response | Promise<Response>
+export interface Handler<C extends Context> {
+  (event: Event, context: C, callback: HandlerCallback): void | Response | Promise<Response>
 }

@@ -1,0 +1,17 @@
+{
+  "github": {
+    "tokens": {
+      "token": "ONEGRAPH_GITHUB_TOKEN"
+    }
+  },
+  "spotify": {
+    "tokens": {
+      "token": "ONEGRAPH_SPOTIFY_TOKEN"
+    }
+  },
+  "salesforce": {
+    "tokens": {
+      "token": "ONEGRAPH_SALESFORCE_TOKEN"
+    }
+  }
+}
