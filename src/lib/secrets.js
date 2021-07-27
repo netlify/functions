@@ -1,6 +1,5 @@
 const process = require('process')
 
-// eslint-disable-next-line node/no-unpublished-require
 const services = require('./services.json')
 
 const getSecrets = () =>
