@@ -89,10 +89,13 @@ const getSecrets = async () => {
   const secretToken = process.env.ONEGRAPH_AUTHLIFY_TOKEN
 
   if (!secretToken) {
+    console.warn(
+      'withSecrets is not set up. Visit Netlify Labs to enable it or trigger a new deploy if it has been enabled.',
+    )
     return {}
   }
 
-  // We select for more than we typeically need here
+  // We select for more than we typically need here
   // in order to allow for some metaprogramming for
   // consumers downstream. Also, the data is typically
   // static and shouldn't add any measurable overhead.
