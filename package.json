@@ -1,8 +1,8 @@
 {
-  "name": "@netlify/functions",
+  "name": "@sgrove/netlify-functions",
   "main": "./src/main.js",
   "types": "./src/main.d.ts",
-  "version": "0.7.3-handle-secrets.1",
+  "version": "0.7.3-handle-secrets.3",
   "description": "JavaScript utilities for Netlify Functions",
   "files": [
     "src/**/*.js",

@@ -1,4 +1,4 @@
-const Buffer = require('buffer')
+const { Buffer } = require('buffer')
 const https = require('https')
 const process = require('process')
 
@@ -83,8 +83,6 @@ const formatSecrets = (result) => {
   return {}
 }
 
-const secretsCache = {}
-
 // Note: We may want to have configurable "sets" of secrets,
 // e.g. "dev" and "prod"
 const getSecrets = async () => {
@@ -94,11 +92,10 @@ const getSecrets = async () => {
     return {}
   }
 
-  // Cache in memory for the life of the serverless process
-  if (secretsCache[secretToken]) {
-    return secretsCache[secretToken]
-  }
-
+  // We select for more than we typeically need here
+  // in order to allow for some metaprogramming for
+  // consumers downstream. Also, the data is typically
+  // static and shouldn't add any measurable overhead.
   const doc = `query FindLoggedInServicesQuery {
     me {
       serviceMetadata {
@@ -107,6 +104,18 @@ const getSecrets = async () => {
           service
           isLoggedIn
           bearerToken
+          grantedScopes {
+            scope
+            scopeInfo {
+              category
+              scope
+              display
+              isDefault
+              isRequired
+              description
+              title
+            }
+          }
         }
       }
     }
@@ -118,7 +127,6 @@ const getSecrets = async () => {
   const result = await oneGraphRequest(secretToken, new TextEncoder().encode(body))
 
   const newSecrets = formatSecrets(result)
-  secretsCache[secretToken] = newSecrets
 
   return newSecrets
 }
