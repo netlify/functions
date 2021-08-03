@@ -17,6 +17,8 @@ const serviceNormalizeOverrides = {
 }
 
 const oneGraphRequest = function (secretToken, requestBody) {
+  // eslint-disable-next-line node/no-unsupported-features/node-builtins
+  const requestBodyBuffer = Buffer.from(new TextEncoder().encode(requestBody))
   return new Promise((resolve, reject) => {
     const port = 443
 
@@ -29,7 +31,7 @@ const oneGraphRequest = function (secretToken, requestBody) {
         Authorization: `Bearer ${secretToken}`,
         'Content-Type': 'application/json',
         Accept: 'application/json',
-        'Content-Length': requestBody ? Buffer.byteLength(requestBody) : 0,
+        'Content-Length': Buffer.byteLength(requestBodyBuffer),
       },
     }
 
@@ -59,7 +61,7 @@ const oneGraphRequest = function (secretToken, requestBody) {
       reject(error.message)
     })
 
-    req.write(requestBody)
+    req.write(requestBodyBuffer)
 
     req.end()
   })
@@ -90,7 +92,7 @@ const getSecrets = async () => {
 
   if (!secretToken) {
     console.warn(
-      'withSecrets is not set up. Visit Netlify Labs to enable it or trigger a new deploy if it has been enabled.',
+      'getSecrets is not set up. Visit Netlify Labs to enable it or trigger a new deploy if it has been enabled.',
     )
     return {}
   }
@@ -126,24 +128,13 @@ const getSecrets = async () => {
 
   const body = JSON.stringify({ query: doc })
 
-  // eslint-disable-next-line node/no-unsupported-features/node-builtins
-  const result = await oneGraphRequest(secretToken, new TextEncoder().encode(body))
+  const result = await oneGraphRequest(secretToken, body)
 
   const newSecrets = formatSecrets(result)
 
   return newSecrets
 }
 
-// eslint-disable-next-line promise/prefer-await-to-callbacks
-const withSecrets = (handler) => async (event, context, callback) => {
-  const secrets = await getSecrets()
-
-  return handler(event, { ...context, secrets }, callback)
-}
-
 module.exports = {
-  // Fine-grained control during the preview, less necessary with a more proactive OneGraph solution
   getSecrets,
-  // The common usage of this module
-  withSecrets,
 }
