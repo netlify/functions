@@ -1,23 +1,32 @@
-import { Context } from '../function/context'
-import { Handler } from '../function/handler'
-import * as services from './services.json'
+export type ScopeInfo = {
+  category: string | null
+  scope: string
+  display: string
+  isDefault: boolean
+  isRequired: boolean
+  description: string | null
+  title: string | null
+}
 
-export type Services = typeof services
+export type Scope = {
+  scope: string
+  scopeInfo: ScopeInfo | null
+}
 
-export type ServiceKey = keyof Services
-
-export type ServiceTokens<T extends ServiceKey> = Services[T]['tokens']
+export type Service = {
+  friendlyServiceName: string
+  service: string
+  isLoggedIn: boolean
+  bearerToken: string | null
+  grantedScopes: Array<Scope> | null
+}
 
 export type NetlifySecrets = {
-  [K in ServiceKey]?: ServiceTokens<K>
+  gitHub?: Service | null
+  spotify?: Service | null
+  salesforce?: Service | null
+  stripe?: Service | null
 }
-
-export interface ContextWithSecrets extends Context {
-  secrets: NetlifySecrets
-}
-
-export type HandlerWithSecrets = Handler<ContextWithSecrets>
 
 export declare const getSecrets: () => NetlifySecrets
 
-export declare const withSecrets: <C extends Context>(handler: HandlerWithSecrets) => Handler<C>
