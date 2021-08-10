@@ -81,7 +81,7 @@ To make building on and interacting with third-party APIs as simple and powerful
 
 ### Usage
 
-After you’ve enabled one or more services, you can access the relevant API tokens and secrets in your functions with the `getSecrets` function exported from this package:
+After you’ve enabled one or more services, you can access the relevant API tokens and secrets in your serverless functions with the `getSecrets` function exported from the `@netlify/functions` package.
 
 > `getSecrets` is fully typed, so you’ll have in-editor autocomplete to explore everything that’s available, and to be confident that you’re handling all of the edge cases
 
