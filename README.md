@@ -174,7 +174,7 @@ When running your site under `netlify dev`, the environmental variables that pow
 
 At any time you can revisit the Netlify Integration Auth Management tab for your site to see the installed auth. From there, you can select new scopes for already-installed auth and then run through the browser-based auth flow again, and the new scopes will be available to all your existing, deployed functions instantly. 
 
-You can also install new services, or remove currently-installed services you’re no longer using.
+You can also install new services or remove currently-installed services you’re no longer using.
 
 ## Contributors
 
