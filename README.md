@@ -128,7 +128,7 @@ After you’ve enabled one or more services, you can access the relevant API tok
 
 ### Checking additional metadata about auths in your functions
 
-Netlify Integration Auth Management also tracks metadata for the installed auth tokens. If you would like to verify that an auth has been installed with the correct scopes before calling into an API (say, for example, to give a better error message in the developer logs):
+Netlify Integration Auth Management also tracks metadata for installed auth tokens. You can verify that an auth has been installed with the correct scopes before calling into an API (say, for example, to give a better error message in the developer logs). Here's an example:
 
   ```js
     import { getSecrets } from "@netlify/functions";
