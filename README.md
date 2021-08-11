@@ -75,9 +75,11 @@ The following types are exported:
 - `HandlerResponse`
 
 
-## Netlify Integration Auth Management
+## {feature_name}
 
-To make building on and interacting with third-party APIs as simple and powerful as possible, Netlify provides API secret provisioning and management, powered by OneGraph. It’s enabled on a per-site basis under the [Netlify labs](https://app.netlify.com/user/labs) tab, where you can visually select which services you want to make available for your functions or site builds, and which scopes you need access to.
+**Note: This feature is currently in beta under Netlify Labs**
+
+To make building on and interacting with third-party APIs as simple and powerful as possible, Netlify provides API secret provisioning and management, powered by [OneGraph](https://www.onegraph.com). It’s enabled on a per-site basis under [Netlify labs](https://app.netlify.com/user/labs) tab, where you can use the Netlify UI to select which services you want to make available for your functions or site builds, and which scopes you need access to.
 
 ### Usage
 
@@ -126,9 +128,9 @@ After you’ve enabled one or more services, you can access the relevant API tok
     };
   ```
 
-### Checking additional metadata about auths in your functions
+### Checking additional metadata about auth token in your functions and site builds
 
-Netlify Integration Auth Management also tracks metadata for installed auth tokens. You can verify that an auth has been installed with the correct scopes before calling into an API (say, for example, to give a better error message in the developer logs). Here's an example:
+{feature_name} also tracks metadata for installed auth tokens. You can verify that an auth has been installed with the correct scopes before calling into an API (say, for example, to give a better error message in the developer logs). Here's an example:
 
   ```js
     import { getSecrets } from "@netlify/functions";
@@ -165,14 +167,13 @@ Netlify Integration Auth Management also tracks metadata for installed auth toke
     }
   ```
 
-### Accessing integration auth during development
+### Accessing integration auth tokens during development
 
 When running your site under `netlify dev`, the environmental variables that power the auth management will be synced, and you can transparently develop against the third party APIs - no additional configuration necessary!
 
+### Updating or removing auth tokens from your site
 
-### Updating or removing auth from your site
-
-At any time you can revisit the Netlify Integration Auth Management tab for your site to see the installed auth. From there, you can select new scopes for already-installed auth and then run through the browser-based auth flow again, and the new scopes will be available to all your existing, deployed functions instantly. 
+At any time you can revisit the {feature_name} tab for your site in [Netlify Labs](https://app.netlify.com/user/labs) (select your profile avatar, then Netlify Labs) to see the installed auth. From there, you can select new scopes for already-installed auth and then run through the browser-based auth flow again, and the new scopes will be available to all your existing, deployed functions and site builds _instantly_.
 
 You can also install new services or remove currently-installed services you’re no longer using.
 
