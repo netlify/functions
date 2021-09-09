@@ -88,44 +88,41 @@ After you’ve enabled one or more services, you can access the relevant API tok
 > `getSecrets` is fully typed, so you’ll have in-editor autocomplete to explore everything that’s available, and to be confident that you’re handling all of the edge cases
 
   ```js
-    import { getSecrets } from "@netlify/functions";
-    
-    export const handler = async (event) => {
-      // Handle all fetching, refreshing, rotating, etc. of tokens
-      const secrets = await getSecrets();
-    
-      // Check if the GitHub auth has been enabled for the site
-      if (!secrets.gitHub?.bearerToken) {
-        return {
-          statusCode: 412,
-          body: JSON.stringify({
-            error: "You must enable the GitHub auth in your Netlify dashboard",
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-      }
-    
-      // If so, we can make calls to the GitHub API - REST or GraphQL!
-      const MyOctokit = Octokit.plugin(restEndpointMethods);
-      const octokit = new MyOctokit({ auth: secrets.gitHub.bearerToken });
-    
-      // We'll list all open issues on the netlify/functions repository
-      const result = await octokit.rest.issues.list({
-        owner: "netlify",
-        repo: "functions",
-        state: "open",
-      });
-    
+  import { getSecrets } from '@netlify/functions';
+  import { Octokit } from '@octokit/rest';
+
+  export async function handler(event) {
+    // check for a owner/org and repo name in the query params
+    const { owner = 'netlify', repo = 'functions' } = event.queryStringParameters;
+
+    // load the secrets enabled via Netlify Auth Management
+    const secrets = await getSecrets();
+
+    // ensure that GitHub auth is enabled for this site
+    if (!secrets.gitHub?.bearerToken) {
       return {
-        statusCode: 200,
-        body: JSON.stringify(result),
-        headers: {
-          "Content-Type": "application/json",
-        },
+        statusCode: 412,
+        body: JSON.stringify({
+          error:
+            'You must enable GitHub auth in your Netlify dashboard: https://app.netlify.com/user/labs',
+        }),
       };
+    }
+
+    // use Octokit with the GitHub secret
+    const octokit = new Octokit({ auth: secrets.gitHub.bearerToken });
+
+    // get a list of all issues assigned to the current user
+    const result = await octokit.repos.get({ owner, repo });
+
+    return {
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(result.data),
     };
+  }
   ```
 
 ### Checking additional metadata about auth token in your functions and site builds
