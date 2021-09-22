@@ -58,7 +58,14 @@ const wrapHandler =
    * @returns {import("../function/response").Response | Promise<import("../function/response").Response>}
    */
   (event, context, callback) => {
-    const callbackUrl = `https://ntl-functions-streaming.herokuapp.com/.stream/${event.headers['x-nf-request-id']}`
+    const requestId = event.headers['x-nf-request-id']
+    if (!requestId) {
+      return {
+        statusCode: 422,
+        body: 'Missing request id',
+      }
+    }
+    const callbackUrl = `https://ntl-functions-streaming.herokuapp.com/.stream/${requestId}`
 
     /** @type {StreamingResponse} */
     let res
