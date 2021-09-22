@@ -39,6 +39,7 @@ class StreamingResponse extends PassThrough {
   }
 
   write(data, encoding, callback) {
+    console.log('writing', data)
     if (!this._metadataSent) {
       super.write(this._getMetadata())
       // super.write(Buffer.from([0x00]))
@@ -59,14 +60,15 @@ const wrapHandler =
    * @returns {import("../function/response").Response | Promise<import("../function/response").Response>}
    */
   (event, context, callback) => {
-    const requestId = event.headers['x-nf-request-id']
-    if (!requestId) {
+    console.log({ event })
+    const callbackUrl = event.queryStringParameters.callbackURL
+
+    if (!callbackUrl) {
       return {
         statusCode: 422,
-        body: 'Missing request id',
+        body: 'Missing callback URL',
       }
     }
-    const callbackUrl = `https://ntl-functions-streaming.herokuapp.com/.stream/${requestId}`
 
     /** @type {StreamingResponse} */
     let res
