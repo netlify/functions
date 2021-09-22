@@ -13,12 +13,17 @@ class StreamingResponse extends PassThrough {
   outgoingMessage
   METADATA_BOUNDARY = `___x_nf-metadata_boundary-${Date.now()}`
 
-  constructor(url) {
+  constructor(url, ip) {
     super()
     // eslint-disable-next-line node/no-unsupported-features/node-builtins
     const parsedUrl = new URL(url)
-    this.outgoingMessage =
-      parsedUrl.protocol === 'https:' ? https.request(url, { method: 'POST' }) : http.request(url, { method: 'POST' })
+    const options = {
+      lookup: (address, options, callback) => {
+        callback(null, ip)
+      },
+      method: 'POST',
+    }
+    this.outgoingMessage = parsedUrl.protocol === 'https:' ? https.request(url, options) : http.request(url, options)
     this.outgoingMessage.setHeader('x-nf-metadata-boundary', this.METADATA_BOUNDARY)
     this.pipe(this.outgoingMessage)
   }
@@ -62,9 +67,9 @@ const wrapHandler =
    */
   (event, context, callback) => {
     console.log({ event })
-    const callbackUrl = event.queryStringParameters.callbackURL
+    const { callback_url: callbackUrl, target_ipv4: callbackIP } = event.streaming
 
-    if (!callbackUrl) {
+    if (!callbackUrl || !callbackIP) {
       return {
         statusCode: 422,
         body: 'Missing callback URL',
@@ -75,7 +80,7 @@ const wrapHandler =
     let res
 
     try {
-      res = new StreamingResponse(callbackUrl)
+      res = new StreamingResponse(callbackUrl, callbackIP)
     } catch (error) {
       console.error(error)
       return {
