@@ -8,21 +8,24 @@ class StreamingResponse extends ClientRequest {
   /** @type {Map<string | number | readonly string[]>} */
   #clientHeaders = new Map()
   #metadataSent = false
+  METADATA_BOUNDARY = `___x_nf-metadata_boundary-${Date.now()}`
+
   setHeader(name, value) {
     this.#clientHeaders.set(name, value)
     return this
   }
 
   #getMetadata() {
-    return JSON.stringify({
+    return `${JSON.stringify({
       // eslint-disable-next-line node/no-unsupported-features/es-builtins
-      headers: Object.fromEntries(this.#clientHeaders),
+      headers: Object.fromEntries(this.#clientHeaders.entries()),
       statusCode: this.statusCode,
-    })
+    })}\r\n${this.METADATA_BOUNDARY}`
   }
 
   _send(data, encoding, callback) {
     if (!this.#metadataSent) {
+      super.setHeader('x-nf-metadata-boundary', this.METADATA_BOUNDARY)
       // @ts-ignore internal method (sorry)
       super._send(this.#getMetadata())
       this.#metadataSent = true
