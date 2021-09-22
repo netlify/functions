@@ -9,10 +9,6 @@ export interface Event {
   multiValueQueryStringParameters: EventMultiValueQueryStringParameters | null
   body: string | null
   isBase64Encoded: boolean
-  streaming: {
-    callback_url: string
-    target_ipv4: string
-  }
 }
 
 interface EventHeaders {

@@ -21,4 +21,8 @@ export interface Context {
   succeed(messageOrObject: any): void
   /** @deprecated Use handler callback or promise result */
   succeed(message: string, object: any): void
+  streaming: {
+    callback_url: string
+    target_ipv4: string
+  }
 }

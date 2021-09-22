@@ -66,8 +66,8 @@ const wrapHandler =
    * @returns {import("../function/response").Response | Promise<import("../function/response").Response>}
    */
   (event, context, callback) => {
-    console.log({ event })
-    const { callback_url: callbackUrl, target_ipv4: callbackIP } = event.streaming
+    console.log({ context })
+    const { callback_url: callbackUrl, target_ipv4: callbackIP } = context.streaming
 
     if (!callbackUrl || !callbackIP) {
       return {
