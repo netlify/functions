@@ -18,7 +18,7 @@ class StreamingResponse extends PassThrough {
     // eslint-disable-next-line node/no-unsupported-features/node-builtins
     const parsedUrl = new URL(url)
     const options = {
-      lookup: (address, options, callback) => {
+      lookup: (address, opts, callback) => {
         callback(null, ip)
       },
       method: 'POST',
