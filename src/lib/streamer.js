@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle , promise/prefer-await-to-callbacks,  */
 // @ts-check
-const { Buffer } = require('buffer')
 const http = require('http')
 const https = require('https')
 const { PassThrough } = require('stream')
