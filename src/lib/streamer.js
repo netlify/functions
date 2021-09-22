@@ -76,6 +76,14 @@ const wrapHandler =
    */
   (event, context, callback) => {
     console.log({ context })
+
+    if (!context.streaming) {
+      return {
+        statusCode: 422,
+        body: 'Streaming is not supported in this function',
+      }
+    }
+
     const { callback_url: callbackUrl, target_ipv4: callbackIP } = context.streaming
 
     if (!callbackUrl || !callbackIP) {
