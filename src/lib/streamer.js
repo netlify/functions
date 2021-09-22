@@ -17,7 +17,8 @@ class StreamingResponse extends PassThrough {
     super()
     // eslint-disable-next-line node/no-unsupported-features/node-builtins
     const parsedUrl = new URL(url)
-    this.outgoingMessage = parsedUrl.protocol === 'https:' ? https.request(url) : http.request(url)
+    this.outgoingMessage =
+      parsedUrl.protocol === 'https:' ? https.request(url, { method: 'POST' }) : http.request(url, { method: 'POST' })
     this.outgoingMessage.setHeader('x-nf-metadata-boundary', this.METADATA_BOUNDARY)
     this.pipe(this.outgoingMessage)
   }
