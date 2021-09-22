@@ -1,16 +1,31 @@
 /* eslint-disable no-underscore-dangle , promise/prefer-await-to-callbacks,  */
 // @ts-check
-const { ClientRequest } = require('http')
+const { request } = require('http')
+const { request: sRequest } = require('https')
+const { PassThrough } = require('stream')
 
-class StreamingResponse extends ClientRequest {
+class StreamingResponse extends PassThrough {
   statusCode = 200
 
   /** @type {Map<string | number | readonly string[]>} */
-  _clientHeaders = new Map()
+  _clientHeaders
   _metadataSent = false
   METADATA_BOUNDARY = `___x_nf-metadata_boundary-${Date.now()}`
+  outgoingMessage
+
+  constructor(url) {
+    super()
+    // eslint-disable-next-line node/no-unsupported-features/node-builtins
+    const parsedUrl = new URL(url)
+    this.outgoingMessage = parsedUrl.protocol === 'https:' ? sRequest(url) : request(url)
+    this.outgoingMessage.setHeader('x-nf-metadata-boundary', this.METADATA_BOUNDARY)
+    this.pipe(this.outgoingMessage)
+  }
 
   setHeader(name, value) {
+    if (!this._clientHeaders) {
+      this._clientHeaders = new Map()
+    }
     this._clientHeaders.set(name, value)
     return this
   }
@@ -23,15 +38,12 @@ class StreamingResponse extends ClientRequest {
     })}\r\n${this.METADATA_BOUNDARY}`
   }
 
-  _send(data, encoding, callback) {
+  write(data, encoding, callback) {
     if (!this._metadataSent) {
-      super.setHeader('x-nf-metadata-boundary', this.METADATA_BOUNDARY)
-      // @ts-ignore internal method (sorry)
-      super._send(this._getMetadata())
+      super.write(this._getMetadata())
       this._metadataSent = true
     }
-    // @ts-ignore internal method (sorry)
-    return super._send(data, encoding, callback)
+    return super.write(data, encoding, callback)
   }
 }
 
@@ -46,7 +58,8 @@ const wrapHandler =
    * @returns {import("../function/response").Response | Promise<import("../function/response").Response>}
    */
   (event, context, callback) => {
-    const { callbackUrl } = event.queryStringParameters
+    // const { callbackUrl } = event.queryStringParameters
+    const callbackUrl = 'https://ntl-functions-streaming.herokuapp.com/.stream/hello'
 
     /** @type {StreamingResponse} */
     let res

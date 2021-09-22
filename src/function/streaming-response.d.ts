@@ -1,7 +1,7 @@
-import { OutgoingHttpHeaders, OutgoingHttpHeader, OutgoingMessage } from 'http'
+import { OutgoingHttpHeaders, OutgoingHttpHeader, ServerResponse } from 'http'
 import { Socket } from 'net'
 
-class StreamingResponse extends OutgoingMessage {
+declare class StreamingResponse extends ServerResponse {
   statusCode: number
   statusMessage: string
   assignSocket(socket: Socket): void
