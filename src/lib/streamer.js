@@ -58,8 +58,7 @@ const wrapHandler =
    * @returns {import("../function/response").Response | Promise<import("../function/response").Response>}
    */
   (event, context, callback) => {
-    // const { callbackUrl } = event.queryStringParameters
-    const callbackUrl = 'https://ntl-functions-streaming.herokuapp.com/.stream/hello'
+    const callbackUrl = `https://ntl-functions-streaming.herokuapp.com/.stream/${event.headers['x-nf-request-id']}`
 
     /** @type {StreamingResponse} */
     let res
