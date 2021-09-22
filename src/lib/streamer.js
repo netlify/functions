@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle , promise/prefer-await-to-callbacks,  */
 // @ts-check
+const { Buffer } = require('buffer')
 const http = require('http')
 const https = require('https')
 const { PassThrough } = require('stream')
@@ -11,7 +12,6 @@ class StreamingResponse extends PassThrough {
   _clientHeaders
   _metadataSent = false
   outgoingMessage
-  METADATA_BOUNDARY = `___x_nf-metadata_boundary-${Date.now()}`
 
   constructor(url, ip) {
     super()
@@ -29,7 +29,6 @@ class StreamingResponse extends PassThrough {
       method: 'POST',
     }
     this.outgoingMessage = parsedUrl.protocol === 'https:' ? https.request(url, options) : http.request(url, options)
-    this.outgoingMessage.setHeader('x-nf-metadata-boundary', this.METADATA_BOUNDARY)
     this.pipe(this.outgoingMessage)
   }
 
@@ -42,11 +41,16 @@ class StreamingResponse extends PassThrough {
   }
 
   _getMetadata() {
-    return `${JSON.stringify({
-      // eslint-disable-next-line node/no-unsupported-features/es-builtins
-      headers: Object.fromEntries(this._clientHeaders.entries()),
-      statusCode: this.statusCode,
-    })}\r\n${this.METADATA_BOUNDARY}`
+    return Buffer.concat([
+      Buffer.from(
+        JSON.stringify({
+          // eslint-disable-next-line node/no-unsupported-features/es-builtins
+          headers: Object.fromEntries(this._clientHeaders.entries()),
+          statusCode: this.statusCode,
+        }),
+      ),
+      Uint8Array.from([0x00]),
+    ])
   }
 
   write(data, encoding, callback) {
