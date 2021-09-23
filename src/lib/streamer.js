@@ -5,16 +5,19 @@ const http = require('http')
 const https = require('https')
 const { PassThrough } = require('stream')
 
+const METADATA_HEADER_NAME = 'X-Nf-Metadata'
 class StreamingResponse extends PassThrough {
   statusCode = 200
 
   /** @type {Map<string | number | readonly string[]>} */
   _clientHeaders
   _metadataSent = false
+  _sendMetadataInHeader
   outgoingMessage
 
-  constructor(url, ip) {
+  constructor(url, ip, sendMetadataInHeader) {
     super()
+    this._sendMetadataInHeader = sendMetadataInHeader
     // eslint-disable-next-line node/no-unsupported-features/node-builtins
     const parsedUrl = new URL(url)
     const family = 4
@@ -30,6 +33,9 @@ class StreamingResponse extends PassThrough {
     }
     this.outgoingMessage = parsedUrl.protocol === 'https:' ? https.request(url, options) : http.request(url, options)
     this.pipe(this.outgoingMessage)
+    if (sendMetadataInHeader) {
+      this.outgoingMessage.setHeader(METADATA_HEADER_NAME, this._getMetadata())
+    }
   }
 
   setHeader(name, value) {
@@ -41,22 +47,21 @@ class StreamingResponse extends PassThrough {
   }
 
   _getMetadata() {
-    return Buffer.concat([
-      Buffer.from(
-        JSON.stringify({
-          // eslint-disable-next-line node/no-unsupported-features/es-builtins
-          headers: Object.fromEntries(this._clientHeaders.entries()),
-          statusCode: this.statusCode,
-        }),
-      ),
-      Uint8Array.from([0x00]),
-    ])
+    return JSON.stringify({
+      // eslint-disable-next-line node/no-unsupported-features/es-builtins
+      headers: Object.fromEntries(this._clientHeaders.entries()),
+      statusCode: this.statusCode,
+    })
+  }
+
+  _getMetadataBuffer() {
+    return Buffer.concat([Buffer.from(this._getMetadata()), Uint8Array.from([0x00])])
   }
 
   write(data, encoding, callback) {
     console.log('writing', data)
-    if (!this._metadataSent) {
-      super.write(this._getMetadata())
+    if (!this._metadataSent && !this._sendMetadataInHeader) {
+      super.write(this._getMetadataBuffer())
       // super.write(Buffer.from([0x00]))
       this._metadataSent = true
     }
@@ -76,6 +81,8 @@ const wrapHandler =
    */
   (event, context, callback) => {
     console.log({ context })
+
+    const sendMetadataInHeader = Boolean(event.queryStringParameters.sendMetadataInHeader)
 
     if (!context.streaming) {
       return {
@@ -97,7 +104,7 @@ const wrapHandler =
     let res
 
     try {
-      res = new StreamingResponse(callbackUrl, callbackIP)
+      res = new StreamingResponse(callbackUrl, callbackIP, sendMetadataInHeader)
     } catch (error) {
       console.error(error)
       return {
