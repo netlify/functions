@@ -1,8 +1,11 @@
-const isPromise = require('is-promise')
+import isPromise from "is-promise"
 
-const { BUILDER_FUNCTIONS_FLAG, HTTP_STATUS_METHOD_NOT_ALLOWED, HTTP_STATUS_OK, METADATA_VERSION } = require('./consts')
+import { Handler } from "../function/handler"
+import { Response } from "../function/response"
 
-const augmentResponse = (response) => {
+import { BUILDER_FUNCTIONS_FLAG, HTTP_STATUS_METHOD_NOT_ALLOWED, HTTP_STATUS_OK, METADATA_VERSION } from "./consts"
+
+const augmentResponse = (response: Response) => {
   if (!response || response.statusCode !== HTTP_STATUS_OK) {
     return response
   }
@@ -14,7 +17,7 @@ const augmentResponse = (response) => {
 }
 
 // eslint-disable-next-line promise/prefer-await-to-callbacks
-const wrapHandler = (handler) => (event, context, callback) => {
+const wrapHandler = (handler: Handler): Handler => (event, context, callback) => {
   if (event.httpMethod !== 'GET' && event.httpMethod !== 'HEAD') {
     return Promise.resolve({
       body: 'Method Not Allowed',
@@ -30,7 +33,7 @@ const wrapHandler = (handler) => (event, context, callback) => {
   }
 
   // eslint-disable-next-line promise/prefer-await-to-callbacks
-  const wrappedCallback = (error, response) => callback(error, augmentResponse(response))
+  const wrappedCallback = (error: unknown, response: Response) => callback(error, augmentResponse(response))
   const execution = handler(modifiedEvent, context, wrappedCallback)
 
   if (isPromise(execution)) {
@@ -41,4 +44,4 @@ const wrapHandler = (handler) => (event, context, callback) => {
   return execution
 }
 
-module.exports = { builder: wrapHandler }
+export { wrapHandler as builder }
