@@ -1,15 +1,16 @@
 {
   "name": "@netlify/functions",
-  "main": "./src/main.js",
-  "types": "./src/main.d.ts",
+  "main": "./dist/main.js",
+  "types": "./dist/main.d.ts",
   "version": "0.7.2",
   "description": "JavaScript utilities for Netlify Functions",
   "files": [
-    "src/**/*.js",
-    "src/**/*.ts",
-    "!src/**/*.test.js"
+    "dist/**/*.js",
+    "dist/**/*.ts"
   ],
   "scripts": {
+    "build": "tsc",
+    "prepack": "npm run build",
     "prepublishOnly": "npm ci && npm test",
     "test": "run-s format test:dev",
     "format": "run-s format:check-fix:*",
@@ -60,7 +61,8 @@
     "@netlify/eslint-config-node": "^3.3.4",
     "ava": "^2.4.0",
     "husky": "^4.3.8",
-    "nyc": "^15.0.0"
+    "nyc": "^15.0.0",
+    "typescript": "^4.4.4"
   },
   "engines": {
     "node": ">=8.3.0"
