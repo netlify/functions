@@ -6,10 +6,6 @@ interface EventMultiValueHeaders {
   [name: string]: string[] | undefined
 }
 
-interface EventPathParameters {
-  [name: string]: string | undefined
-}
-
 interface EventQueryStringParameters {
   [name: string]: string | undefined
 }
