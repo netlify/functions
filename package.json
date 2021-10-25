@@ -21,8 +21,8 @@
     "format:check-fix:prettier": "run-e format:check:prettier format:fix:prettier",
     "format:check:prettier": "cross-env-shell prettier --check $npm_package_config_prettier",
     "format:fix:prettier": "cross-env-shell prettier --write $npm_package_config_prettier",
-    "test:dev": "run-s test:dev:*",
-    "test:ci": "run-s test:ci:*",
+    "test:dev": "run-s build test:dev:*",
+    "test:ci": "run-s build test:ci:*",
     "test:dev:ava": "ava",
     "test:ci:ava": "nyc -r lcovonly -r text -r json ava"
   },
