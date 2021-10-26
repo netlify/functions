@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://www.github.com/netlify/functions/compare/v0.7.2...v0.8.0) (2021-10-26)
+
+
+### Features
+
+* migrate to TypeScript ([#150](https://www.github.com/netlify/functions/issues/150)) ([d79ed42](https://www.github.com/netlify/functions/commit/d79ed4273aa1d347bb147d0e9e4173f694b680c4))
+
 ### [0.7.2](https://www.github.com/netlify/functions/compare/v0.7.1...v0.7.2) (2021-05-05)
 
 
