@@ -1,6 +1,6 @@
 const test = require('ava')
 
-const { builder } = require('../src/lib/builder')
+const { builder } = require('../dist/lib/builder')
 
 const { invokeLambda } = require('./helpers/main')
 
