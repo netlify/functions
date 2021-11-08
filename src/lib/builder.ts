@@ -5,6 +5,11 @@ import { Response } from '../function/response'
 
 import { BUILDER_FUNCTIONS_FLAG, HTTP_STATUS_METHOD_NOT_ALLOWED, HTTP_STATUS_OK, METADATA_VERSION } from './consts'
 
+type Config = {
+  /** @default 0 */
+  ttl: number
+}
+
 const augmentResponse = (response: Response, ttl: number) => {
   if (!response || response.statusCode !== HTTP_STATUS_OK) {
     return response
@@ -17,7 +22,7 @@ const augmentResponse = (response: Response, ttl: number) => {
 }
 
 const wrapHandler =
-  (handler: Handler, ttl: number): Handler =>
+  (handler: Handler, config?: Config): Handler =>
   // eslint-disable-next-line promise/prefer-await-to-callbacks
   (event, context, callback) => {
     if (event.httpMethod !== 'GET' && event.httpMethod !== 'HEAD') {
@@ -34,13 +39,16 @@ const wrapHandler =
       queryStringParameters: {},
     }
 
+    // Get needed config values.
+    const ttl = config === undefined ? 0 : config.ttl
+
     // eslint-disable-next-line promise/prefer-await-to-callbacks
     const wrappedCallback = (error: unknown, response: Response) => callback(error, augmentResponse(response, ttl))
     const execution = handler(modifiedEvent, context, wrappedCallback)
 
     if (isPromise(execution)) {
       // eslint-disable-next-line promise/prefer-await-to-then
-      return execution.then(augmentResponse)
+      return execution.then((response) => augmentResponse(response, ttl))
     }
 
     return execution

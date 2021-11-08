@@ -4,7 +4,7 @@ const { builder } = require('../dist/lib/builder')
 
 const { invokeLambda } = require('./helpers/main')
 
-const METADATA_OBJECT = { metadata: { version: 1, builder_function: true } }
+const METADATA_OBJECT = { metadata: { version: 1, builder_function: true, ttl: 0 } }
 
 test('Injects the metadata object into an asynchronous handler', async (t) => {
   const originalResponse = {
@@ -20,9 +20,10 @@ test('Injects the metadata object into an asynchronous handler', async (t) => {
 
     return originalResponse
   }
-  const response = await invokeLambda(builder(myHandler))
+  const config = { ttl: 3600 }
+  const response = await invokeLambda(builder(myHandler, config))
 
-  t.deepEqual(response, { ...originalResponse, ...METADATA_OBJECT })
+  t.deepEqual(response, { ...originalResponse, metadata: { version: 1, builder_function: true, ttl: 3600 } })
 })
 
 test('Injects the metadata object into a synchronous handler', async (t) => {
