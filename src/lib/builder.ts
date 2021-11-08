@@ -5,19 +5,19 @@ import { Response } from '../function/response'
 
 import { BUILDER_FUNCTIONS_FLAG, HTTP_STATUS_METHOD_NOT_ALLOWED, HTTP_STATUS_OK, METADATA_VERSION } from './consts'
 
-const augmentResponse = (response: Response) => {
+const augmentResponse = (response: Response, ttl: number) => {
   if (!response || response.statusCode !== HTTP_STATUS_OK) {
     return response
   }
 
   return {
     ...response,
-    metadata: { version: METADATA_VERSION, builder_function: BUILDER_FUNCTIONS_FLAG },
+    metadata: { version: METADATA_VERSION, builder_function: BUILDER_FUNCTIONS_FLAG, ttl },
   }
 }
 
 const wrapHandler =
-  (handler: Handler): Handler =>
+  (handler: Handler, ttl: number): Handler =>
   // eslint-disable-next-line promise/prefer-await-to-callbacks
   (event, context, callback) => {
     if (event.httpMethod !== 'GET' && event.httpMethod !== 'HEAD') {
@@ -35,7 +35,7 @@ const wrapHandler =
     }
 
     // eslint-disable-next-line promise/prefer-await-to-callbacks
-    const wrappedCallback = (error: unknown, response: Response) => callback(error, augmentResponse(response))
+    const wrappedCallback = (error: unknown, response: Response) => callback(error, augmentResponse(response, ttl))
     const execution = handler(modifiedEvent, context, wrappedCallback)
 
     if (isPromise(execution)) {
