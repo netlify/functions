@@ -20,8 +20,7 @@ test('Injects the metadata object into an asynchronous handler', async (t) => {
 
     return originalResponse
   }
-  const config = { ttl: 3600 }
-  const response = await invokeLambda(builder(myHandler, config))
+  const response = await invokeLambda(builder(myHandler))
 
   t.deepEqual(response, { ...originalResponse, metadata: { version: 1, builder_function: true, ttl: 3600 } })
 })
