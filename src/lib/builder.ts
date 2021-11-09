@@ -11,7 +11,7 @@ const augmentResponse = (response: Response) => {
   }
 
   // TODO: get ttl from response somehow
-  const ttl = 0;
+  const ttl = 0
 
   return {
     ...response,
@@ -36,7 +36,6 @@ const wrapHandler =
       multiValueQueryStringParameters: {},
       queryStringParameters: {},
     }
-
 
     // eslint-disable-next-line promise/prefer-await-to-callbacks
     const wrappedCallback = (error: unknown, response: Response) => callback(error, augmentResponse(response))
