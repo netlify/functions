@@ -9,13 +9,14 @@ const augmentResponse = (response: Response) => {
   if (!response || response.statusCode !== HTTP_STATUS_OK) {
     return response
   }
-
-  // TODO: get ttl from response somehow
-  const ttl = 0
+  const metadata = { version: METADATA_VERSION, builder_function: BUILDER_FUNCTIONS_FLAG, ttl: 0 }
+  if (response.ttl !== undefined) {
+    metadata.ttl = response.ttl
+  }
 
   return {
     ...response,
-    metadata: { version: METADATA_VERSION, builder_function: BUILDER_FUNCTIONS_FLAG, ttl },
+    metadata,
   }
 }
 

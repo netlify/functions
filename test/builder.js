@@ -10,6 +10,7 @@ test('Injects the metadata object into an asynchronous handler', async (t) => {
   const originalResponse = {
     body: ':thumbsup:',
     statusCode: 200,
+    ttl: 3600,
   }
   const myHandler = async () => {
     const asyncTask = new Promise((resolve) => {
@@ -22,7 +23,7 @@ test('Injects the metadata object into an asynchronous handler', async (t) => {
   }
   const response = await invokeLambda(builder(myHandler))
 
-  t.deepEqual(response, { ...originalResponse, metadata: { version: 1, builder_function: true, ttl: 0 } })
+  t.deepEqual(response, { ...originalResponse, metadata: { version: 1, builder_function: true, ttl: 3600 } })
 })
 
 test('Injects the metadata object into a synchronous handler', async (t) => {
