@@ -1,6 +1,6 @@
 import isPromise from 'is-promise'
 
-import { Handler } from '../function/handler'
+import { BuilderHandler } from '../function/handler'
 import { BuilderResponse } from '../function/response'
 
 import { BUILDER_FUNCTIONS_FLAG, HTTP_STATUS_METHOD_NOT_ALLOWED, HTTP_STATUS_OK, METADATA_VERSION } from './consts'
@@ -18,7 +18,7 @@ const augmentResponse = (response: BuilderResponse) => {
 }
 
 const wrapHandler =
-  (handler: Handler): Handler =>
+  (handler: BuilderHandler): BuilderHandler =>
   // eslint-disable-next-line promise/prefer-await-to-callbacks
   (event, context, callback) => {
     if (event.httpMethod !== 'GET' && event.httpMethod !== 'HEAD') {
