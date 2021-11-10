@@ -8,5 +8,8 @@ export interface Response {
   }
   body?: string
   isBase64Encoded?: boolean
+}
+
+export interface BuilderResponse extends Response {
   ttl?: number
 }

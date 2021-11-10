@@ -1,11 +1,11 @@
 import isPromise from 'is-promise'
 
 import { Handler } from '../function/handler'
-import { Response } from '../function/response'
+import { BuilderResponse } from '../function/response'
 
 import { BUILDER_FUNCTIONS_FLAG, HTTP_STATUS_METHOD_NOT_ALLOWED, HTTP_STATUS_OK, METADATA_VERSION } from './consts'
 
-const augmentResponse = (response: Response) => {
+const augmentResponse = (response: BuilderResponse) => {
   if (!response || response.statusCode !== HTTP_STATUS_OK) {
     return response
   }
@@ -36,7 +36,7 @@ const wrapHandler =
     }
 
     // eslint-disable-next-line promise/prefer-await-to-callbacks
-    const wrappedCallback = (error: unknown, response: Response) => callback(error, augmentResponse(response))
+    const wrappedCallback = (error: unknown, response: BuilderResponse) => callback(error, augmentResponse(response))
     const execution = handler(modifiedEvent, context, wrappedCallback)
 
     if (isPromise(execution)) {
