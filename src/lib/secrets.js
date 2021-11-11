@@ -2,7 +2,7 @@ const { Buffer } = require('buffer')
 const https = require('https')
 const process = require('process')
 
-const { ONEGRAPH_AUTHLIFY_APP_ID } = require('./consts')
+const siteId = process.env.SITE_ID
 
 const camelize = function (text) {
   const safe = text.replace(/[-_\s.]+(.)?/g, (_, sub) => (sub ? sub.toUpperCase() : ''))
@@ -22,7 +22,7 @@ const oneGraphRequest = function (secretToken, requestBody) {
 
     const options = {
       host: 'serve.onegraph.com',
-      path: `/graphql?app_id=${ONEGRAPH_AUTHLIFY_APP_ID}`,
+      path: `/graphql?app_id=${siteId}`,
       port,
       method: 'POST',
       headers: {
