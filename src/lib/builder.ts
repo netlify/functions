@@ -1,5 +1,6 @@
 import isPromise from 'is-promise'
 
+import { HandlerCallback, HandlerContext, HandlerEvent } from '../function'
 import { Handler } from '../function/handler'
 import { Response } from '../function/response'
 
@@ -17,9 +18,9 @@ const augmentResponse = (response: Response) => {
 }
 
 const wrapHandler =
-  (handler: Handler): Handler =>
+  (handler: Handler<HandlerContext>): Handler<HandlerContext> =>
   // eslint-disable-next-line promise/prefer-await-to-callbacks
-  (event, context, callback) => {
+  (event: HandlerEvent, context: HandlerContext, callback: HandlerCallback) => {
     if (event.httpMethod !== 'GET' && event.httpMethod !== 'HEAD') {
       return Promise.resolve({
         body: 'Method Not Allowed',
