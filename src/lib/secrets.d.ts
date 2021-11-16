@@ -1,6 +1,12 @@
 import { Context } from '../function/context'
 import { Handler } from '../function/handler'
-import * as services from './services.json'
+
+const services = {
+  gitHub: null,
+  spotify: null,
+  salesforce: null,
+  stripe: null,
+}
 
 export type Service = {
   friendlyServiceName: string
