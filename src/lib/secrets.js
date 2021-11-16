@@ -85,8 +85,11 @@ const formatSecrets = (result) => {
 
 // Note: We may want to have configurable "sets" of secrets,
 // e.g. "dev" and "prod"
-const getSecrets = async () => {
-  const secretToken = process.env.ONEGRAPH_AUTHLIFY_TOKEN
+const getSecrets = async (event) => {
+  // Allow us to get the token from event if present, else fallback to checking the env
+  // eslint-disable-next-line no-underscore-dangle
+  const eventToken = event && event._oneGraph && event._oneGraph.authlifyToken
+  const secretToken = eventToken || process.env.ONEGRAPH_AUTHLIFY_TOKEN
 
   if (!secretToken) {
     return {}
@@ -133,7 +136,7 @@ const getSecrets = async () => {
 
 // eslint-disable-next-line promise/prefer-await-to-callbacks
 const withSecrets = (handler) => async (event, context, callback) => {
-  const secrets = await getSecrets()
+  const secrets = await getSecrets(event)
 
   return handler(event, { ...context, secrets }, callback)
 }

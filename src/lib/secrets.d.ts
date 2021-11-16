@@ -1,3 +1,4 @@
+import { HandlerEvent } from '../function'
 import { Context } from '../function/context'
 import { Handler } from '../function/handler'
 
@@ -43,6 +44,6 @@ export interface ContextWithSecrets extends Context {
 
 export type HandlerWithSecrets = Handler<ContextWithSecrets>
 
-export declare const getSecrets: () => NetlifySecrets
+export declare const getSecrets: (event: ?HandlerEvent) => NetlifySecrets
 
 export declare const withSecrets: <C extends Context>(handler: HandlerWithSecrets) => Handler<C>
