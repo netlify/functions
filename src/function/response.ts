@@ -1,4 +1,4 @@
-export interface Response {
+export interface BaseResponse {
   statusCode: number
   headers?: {
     [header: string]: boolean | number | string
@@ -10,6 +10,12 @@ export interface Response {
   isBase64Encoded?: boolean
 }
 
-export interface BuilderResponse extends Response {
+export interface Response extends BaseResponse {
+  /**
+   * The `ttl` value is only supported in `builder` functions
+   */
+  ttl?: never
+}
+export interface BuilderResponse extends BaseResponse {
   ttl?: number
 }
