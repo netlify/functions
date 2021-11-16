@@ -1,22 +1,75 @@
-const { Buffer } = require('buffer')
-const https = require('https')
-const process = require('process')
+import { Buffer } from 'buffer'
+import { request } from 'https'
+import { env } from 'process'
 
-const siteId = process.env.SITE_ID
+import { HandlerEvent } from '../function'
 
-const camelize = function (text) {
+const services = {
+  gitHub: null,
+  spotify: null,
+  salesforce: null,
+  stripe: null,
+}
+
+export type Service = {
+  friendlyServiceName: string
+  service: string
+  isLoggedIn: boolean
+  bearerToken: string | null
+  grantedScopes: Array<{
+    scope: string
+    scopeInfo: {
+      category: string | null
+      scope: string
+      display: string
+      isDefault: boolean
+      isRequired: boolean
+      description: string | null
+      title: string | null
+    }
+  }> | null
+}
+
+export type Services = typeof services
+
+export type ServiceKey = keyof Services
+
+export type ServiceTokens = Service
+
+export type NetlifySecrets = {
+  [K in ServiceKey]?: Service
+} & { [key: string]: Service }
+
+type OneGraphSecretsResponse = {
+  data?: {
+    me?: {
+      serviceMetadata?: {
+        loggedInServices: [Service]
+      }
+    }
+  }
+}
+
+const siteId = env.SITE_ID
+
+const camelize = function (text: string) {
   const safe = text.replace(/[-_\s.]+(.)?/g, (_, sub) => (sub ? sub.toUpperCase() : ''))
   return safe.slice(0, 1).toLowerCase() + safe.slice(1)
 }
 
+type ServiceNormalizeOverrides = {
+  GITHUB: string
+  [key: string]: string
+}
+
 // The services will be camelized versions of the OneGraph service enums
 // unless overridden by the serviceNormalizeOverrides object
-const serviceNormalizeOverrides = {
+const serviceNormalizeOverrides: ServiceNormalizeOverrides = {
   // Keys are the OneGraph service enums, values are the desired `secret.<service>` names
   GITHUB: 'gitHub',
 }
 
-const oneGraphRequest = function (secretToken, requestBody) {
+const oneGraphRequest = function (secretToken: string, requestBody: Uint8Array): Promise<OneGraphSecretsResponse> {
   return new Promise((resolve, reject) => {
     const port = 443
 
@@ -33,12 +86,12 @@ const oneGraphRequest = function (secretToken, requestBody) {
       },
     }
 
-    const req = https.request(options, (res) => {
+    const req = request(options, (res) => {
       if (res.statusCode !== 200) {
-        return reject(new Error(res.statusCode))
+        return reject(new Error(String(res.statusCode)))
       }
 
-      let body = []
+      const body: Array<Uint8Array> = []
 
       res.on('data', (chunk) => {
         body.push(chunk)
@@ -47,11 +100,11 @@ const oneGraphRequest = function (secretToken, requestBody) {
       res.on('end', () => {
         const data = Buffer.concat(body).toString()
         try {
-          body = JSON.parse(data)
+          const result: OneGraphSecretsResponse = JSON.parse(data)
+          resolve(result)
         } catch (error) {
           reject(error)
         }
-        resolve(body)
       })
     })
 
@@ -65,16 +118,13 @@ const oneGraphRequest = function (secretToken, requestBody) {
   })
 }
 
-const formatSecrets = (result) => {
-  const services =
-    result.data && result.data.me && result.data.me.serviceMetadata && result.data.me.serviceMetadata.loggedInServices
+const formatSecrets = (result: OneGraphSecretsResponse | undefined) => {
+  const responseServices = result?.data?.me?.serviceMetadata?.loggedInServices
 
-  if (services) {
-    const newSecrets = services.reduce((acc, service) => {
+  if (responseServices) {
+    const newSecrets = responseServices.reduce((acc: NetlifySecrets, service) => {
       const normalized = serviceNormalizeOverrides[service.service] || camelize(service.friendlyServiceName)
-      // eslint-disable-next-line no-param-reassign
-      acc[normalized] = service
-      return acc
+      return { ...acc, [normalized]: service }
     }, {})
 
     return newSecrets
@@ -83,13 +133,17 @@ const formatSecrets = (result) => {
   return {}
 }
 
+type OneGraphPayload = { authlifyToken: string | undefined }
+
+export type HandlerEventWithOneGraph = HandlerEvent & { _oneGraph: OneGraphPayload }
+
 // Note: We may want to have configurable "sets" of secrets,
 // e.g. "dev" and "prod"
-const getSecrets = async (event) => {
+export const getSecrets = async (event: HandlerEventWithOneGraph | undefined): Promise<NetlifySecrets> => {
   // Allow us to get the token from event if present, else fallback to checking the env
   // eslint-disable-next-line no-underscore-dangle
-  const eventToken = event && event._oneGraph && event._oneGraph.authlifyToken
-  const secretToken = eventToken || process.env.ONEGRAPH_AUTHLIFY_TOKEN
+  const eventToken = event?._oneGraph?.authlifyToken
+  const secretToken = eventToken || env.ONEGRAPH_AUTHLIFY_TOKEN
 
   if (!secretToken) {
     return {}
@@ -132,18 +186,4 @@ const getSecrets = async (event) => {
   const newSecrets = formatSecrets(result)
 
   return newSecrets
-}
-
-// eslint-disable-next-line promise/prefer-await-to-callbacks
-const withSecrets = (handler) => async (event, context, callback) => {
-  const secrets = await getSecrets(event)
-
-  return handler(event, { ...context, secrets }, callback)
-}
-
-module.exports = {
-  // Fine-grained control during the preview, less necessary with a more proactive OneGraph solution
-  getSecrets,
-  // The common usage of this module
-  withSecrets,
 }
