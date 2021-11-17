@@ -1,4 +1,4 @@
-import { HandlerEvent } from '../function'
+import { Event as HandlerEvent } from '../function/event'
 import { Context as HandlerContext, Context } from '../function/context'
 import { Handler, HandlerCallback } from '../function/handler'
 
