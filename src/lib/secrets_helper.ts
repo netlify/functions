@@ -121,16 +121,16 @@ const oneGraphRequest = function (secretToken: string, requestBody: Uint8Array):
 const formatSecrets = (result: OneGraphSecretsResponse | undefined) => {
   const responseServices = result?.data?.me?.serviceMetadata?.loggedInServices
 
-  if (responseServices) {
-    const newSecrets = responseServices.reduce((acc: NetlifySecrets, service) => {
-      const normalized = serviceNormalizeOverrides[service.service] || camelize(service.friendlyServiceName)
-      return { ...acc, [normalized]: service }
-    }, {})
-
-    return newSecrets
+  if (!responseServices) {
+    return {}
   }
 
-  return {}
+  const newSecrets = responseServices.reduce((acc: NetlifySecrets, service) => {
+    const normalized = serviceNormalizeOverrides[service.service] || camelize(service.friendlyServiceName)
+    return { ...acc, [normalized]: service }
+  }, {})
+
+  return newSecrets
 }
 
 type OneGraphPayload = { authlifyToken: string | undefined }

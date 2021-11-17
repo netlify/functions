@@ -17,10 +17,7 @@ export const withSecrets =
   (handler: Handler<ContextWithSecrets>) =>
   // eslint-disable-next-line promise/prefer-await-to-callbacks
   async (event: HandlerEventWithOneGraph | HandlerEvent, context: HandlerContext, callback: HandlerCallback) => {
-    // eslint-disable-next-line no-underscore-dangle
-    const secrets = await ((event as HandlerEventWithOneGraph)._oneGraph
-      ? getSecrets(event as HandlerEventWithOneGraph)
-      : getSecrets())
+    const secrets = await getSecrets(event as HandlerEventWithOneGraph)
 
     return handler(event, { ...context, secrets }, callback)
   }
