@@ -1,5 +1,5 @@
-import { Event as HandlerEvent } from '../function/event'
 import { Context as HandlerContext, Context } from '../function/context'
+import { Event as HandlerEvent } from '../function/event'
 import { Handler, HandlerCallback } from '../function/handler'
 
 import { getSecrets, HandlerEventWithOneGraph, NetlifySecrets } from './secrets_helper'
