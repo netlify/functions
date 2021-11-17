@@ -1,7 +1,10 @@
-import { Handler, HandlerCallback, HandlerContext } from '../function'
-import { Context } from '../function/context'
+import { HandlerEvent } from '../function'
+import { Context as HandlerContext, Context } from '../function/context'
+import { Handler, HandlerCallback } from '../function/handler'
 
 import { getSecrets, HandlerEventWithOneGraph, NetlifySecrets } from './secrets_helper'
+// Fine-grained control during the preview, less necessary with a more proactive OneGraph solution
+export { getSecrets } from './secrets_helper'
 
 export interface ContextWithSecrets extends Context {
   secrets: NetlifySecrets
@@ -9,18 +12,15 @@ export interface ContextWithSecrets extends Context {
 
 export type HandlerWithSecrets = Handler<ContextWithSecrets>
 
-const withSecrets: unknown =
-  (handler: HandlerWithSecrets) =>
+// The common usage of this module
+export const withSecrets =
+  (handler: Handler<ContextWithSecrets>) =>
   // eslint-disable-next-line promise/prefer-await-to-callbacks
-  async (event: HandlerEventWithOneGraph, context: HandlerContext, callback: HandlerCallback) => {
-    const secrets = await getSecrets(event)
+  async (event: HandlerEventWithOneGraph | HandlerEvent, context: HandlerContext, callback: HandlerCallback) => {
+    // eslint-disable-next-line no-underscore-dangle
+    const secrets = await ((event as HandlerEventWithOneGraph)._oneGraph
+      ? getSecrets(event as HandlerEventWithOneGraph)
+      : getSecrets())
 
     return handler(event, { ...context, secrets }, callback)
   }
-
-module.exports = {
-  // Fine-grained control during the preview, less necessary with a more proactive OneGraph solution
-  getSecrets,
-  // The common usage of this module
-  withSecrets,
-}
