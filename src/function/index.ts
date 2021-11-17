@@ -1,6 +1,6 @@
-import type { Context } from './context'
-import type { Event } from './event'
-import type { Handler, HandlerCallback } from './handler'
-import { Response } from './response'
-
-export type { Context as HandlerContext, Event as HandlerEvent, Handler, HandlerCallback, Response as HandlerResponse }
+export { Context as HandlerContext } from './context'
+export { Event as HandlerEvent } from './event'
+export { Handler, HandlerCallback } from './handler'
+export { Response as HandlerResponse } from './response'
+export { getSecrets, withSecrets } from '../lib/secrets'
+export { NetlifySecrets } from '../lib/secrets_helper'
