@@ -2,7 +2,7 @@ import type { Context } from './context'
 import type { Event } from './event'
 import type { Response, BuilderResponse } from './response'
 
-export interface HandlerCallback<ResponseType> {
+export interface HandlerCallback<ResponseType extends Response = Response> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (error: any, response: ResponseType): void
 }
