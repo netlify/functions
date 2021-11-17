@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://www.github.com/netlify/functions/compare/v0.8.0...v0.9.0) (2021-11-17)
+
+
+### Features
+
+* add API authentication support ([#217](https://www.github.com/netlify/functions/issues/217)) ([57ff1da](https://www.github.com/netlify/functions/commit/57ff1daaa7ece4a32489851c648447004f31bc56))
+
 ## [0.8.0](https://www.github.com/netlify/functions/compare/v0.7.2...v0.8.0) (2021-10-26)
 
 
