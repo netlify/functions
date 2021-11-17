@@ -1,6 +1,7 @@
 import { Context as HandlerContext, Context } from '../function/context'
 import { Event as HandlerEvent } from '../function/event'
-import { Handler, HandlerCallback } from '../function/handler'
+import { BaseHandler, HandlerCallback } from '../function/handler'
+import { Response } from '../function/response'
 
 import { getSecrets, HandlerEventWithOneGraph, NetlifySecrets } from './secrets_helper'
 // Fine-grained control during the preview, less necessary with a more proactive OneGraph solution
@@ -10,11 +11,11 @@ export interface ContextWithSecrets extends Context {
   secrets: NetlifySecrets
 }
 
-export type HandlerWithSecrets = Handler<Response, ContextWithSecrets>
+export type HandlerWithSecrets = BaseHandler<Response, ContextWithSecrets>
 
 // The common usage of this module
 export const withSecrets =
-  (handler: Handler<Response, ContextWithSecrets>) =>
+  (handler: BaseHandler<Response, ContextWithSecrets>) =>
   async (
     event: HandlerEventWithOneGraph | HandlerEvent,
     context: HandlerContext,

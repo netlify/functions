@@ -19,7 +19,7 @@ const augmentResponse = (response: BuilderResponse) => {
 }
 
 const wrapHandler =
-  (handler: BuilderHandler): Handler<Response, HandlerContext> =>
+  (handler: BuilderHandler): Handler =>
   // eslint-disable-next-line promise/prefer-await-to-callbacks
   (event: HandlerEvent, context: HandlerContext, callback: HandlerCallback<Response>) => {
     if (event.httpMethod !== 'GET' && event.httpMethod !== 'HEAD') {
