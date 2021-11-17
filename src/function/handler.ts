@@ -1,15 +1,14 @@
 import type { Context } from './context'
 import type { Event } from './event'
-import type { Response, BuilderResponse } from './response
+import type { BuilderResponse } from './response'
 
-export interface HandlerCallback<TResponse> {
+export interface HandlerCallback<ResponseType> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (error: any, response: TResponse): void
+  (error: any, response: ResponseType): void
 }
 
-interface BaseHandler<C extends Context = Context, TResponse> {
-  (event: Event, context: C, callback: HandlerCallback<TResponse>): void | TResponse | Promise<TResponse>
+export interface Handler<ResponseType, C extends Context = Context> {
+  (event: Event, context: C, callback: HandlerCallback<ResponseType>): void | ResponseType | Promise<ResponseType>
 }
 
-export type Handler = BaseHandler<HandlerContext, Response>
-export type BuilderHandler = BaseHandler<HandlerContext, BuilderResponse>
+export type BuilderHandler = Handler<BuilderResponse, Context>

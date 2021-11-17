@@ -10,13 +10,17 @@ export interface ContextWithSecrets extends Context {
   secrets: NetlifySecrets
 }
 
-export type HandlerWithSecrets = Handler<ContextWithSecrets>
+export type HandlerWithSecrets = Handler<Response, ContextWithSecrets>
 
 // The common usage of this module
 export const withSecrets =
-  (handler: Handler<ContextWithSecrets>) =>
-  // eslint-disable-next-line promise/prefer-await-to-callbacks
-  async (event: HandlerEventWithOneGraph | HandlerEvent, context: HandlerContext, callback: HandlerCallback) => {
+  (handler: Handler<Response, ContextWithSecrets>) =>
+  async (
+    event: HandlerEventWithOneGraph | HandlerEvent,
+    context: HandlerContext,
+    // eslint-disable-next-line promise/prefer-await-to-callbacks
+    callback: HandlerCallback<Response>,
+  ) => {
     const secrets = await getSecrets(event as HandlerEventWithOneGraph)
 
     return handler(event, { ...context, secrets }, callback)
