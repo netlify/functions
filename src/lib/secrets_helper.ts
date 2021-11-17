@@ -109,7 +109,7 @@ const oneGraphRequest = function (secretToken: string, requestBody: Uint8Array):
     })
 
     req.on('error', (error) => {
-      reject(error.message)
+      reject(error)
     })
 
     req.write(requestBody)
