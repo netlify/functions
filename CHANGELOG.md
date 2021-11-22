@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0](https://www.github.com/netlify/functions/compare/v0.9.0...v0.10.0) (2021-11-22)
+
+
+### Features
+
+* use builder plugin metadata to set ODB TTL ([#213](https://www.github.com/netlify/functions/issues/213)) ([c93c0a6](https://www.github.com/netlify/functions/commit/c93c0a6acf6e0ad3b6380f1a14efbbe22a14ef87))
+
 ## [0.9.0](https://www.github.com/netlify/functions/compare/v0.8.0...v0.9.0) (2021-11-17)
 
 
