@@ -1,6 +1,4 @@
-import type { Handler, HandlerContext, HandlerEvent } from '../function'
-
-type HandlerWithoutResponse = (event: HandlerEvent, context: HandlerContext) => Promise<void>
+import type { Handler } from '../function'
 
 /**
  * Declares a function to run on a cron schedule.
@@ -18,20 +16,6 @@ type HandlerWithoutResponse = (event: HandlerEvent, context: HandlerContext) => 
  * @see https://docs.netlify.com/functions/<schedule>
  * @tutorial https://announcement-blogpost
  */
-const schedule =
-  (cron: string, handler: HandlerWithoutResponse): Handler =>
-  async (event, context) => {
-    try {
-      await handler(event, context)
-      return {
-        statusCode: 200,
-      }
-    } catch (error) {
-      return {
-        statusCode: 500,
-        body: String(error),
-      }
-    }
-  }
+const schedule = (cron: string, handler: Handler): Handler => handler
 
 export { schedule }
