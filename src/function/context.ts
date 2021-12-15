@@ -7,7 +7,7 @@ export interface Context {
   functionName: string
   functionVersion: string
   invokedFunctionArn: string
-  memoryLimitInMB: string
+  memoryLimitInMB: number
   awsRequestId: string
   logGroupName: string
   logStreamName: string
