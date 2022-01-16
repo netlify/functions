@@ -8,7 +8,7 @@ export interface HandlerCallback<ResponseType extends Response = Response> {
 }
 
 export interface BaseHandler<ResponseType extends Response = Response, C extends Context = Context> {
-  (event: Event, context: C, callback: HandlerCallback<ResponseType>): void | ResponseType | Promise<ResponseType>
+  (event: Event, context: C, callback: HandlerCallback<ResponseType>): void | Promise<ResponseType>
 }
 
 export type Handler = BaseHandler<Response, Context>
