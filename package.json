@@ -2,7 +2,7 @@
   "name": "@netlify/functions",
   "main": "./dist/main.js",
   "types": "./dist/main.d.ts",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "JavaScript utilities for Netlify Functions",
   "files": [
     "dist/**/*.js",

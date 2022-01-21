@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.10.1](https://www.github.com/netlify/functions/compare/v0.10.0...v0.10.1) (2022-01-21)
+
+
+### Bug Fixes
+
+* husky binary not found ([#306](https://www.github.com/netlify/functions/issues/306)) ([0ac50d3](https://www.github.com/netlify/functions/commit/0ac50d3bc43964d116f388ffa682e96d9b085570))
+
 ## [0.10.0](https://www.github.com/netlify/functions/compare/v0.9.0...v0.10.0) (2021-11-22)
 
 
