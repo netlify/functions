@@ -49,6 +49,30 @@ To use On-demand Builders, wrap your function handler with the `builder` functio
   export { handler }
   ```
 
+### Scheduled Functions (currently in beta)
+
+To use Scheduled Functions, wrap your function handler with the `schedule` function.
+
+- With JavaScript:
+
+  ```js
+  const { schedule } = require('@netlify/functions')
+
+  exports.handler = schedule('5 4 * * *', async () => {
+    console.log("It's 04:05 AM!")
+  })
+  ```
+
+- With TypeScript:
+
+  ```ts
+  import { schedule } from '@netlify/functions'
+
+  export const handler = schedule("5 4 * * *", async () => {
+    console.log("It's 04:05 AM!")
+  })
+  ```
+
 ### TypeScript typings
 
 This module exports typings for authoring Netlify Functions in TypeScript.
