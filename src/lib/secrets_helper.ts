@@ -143,7 +143,6 @@ export const getSecrets = async (
   event?: HandlerEventWithOneGraph | HandlerEvent | undefined,
 ): Promise<NetlifySecrets> => {
   // Allow us to get the token from event if present, else fallback to checking the env
-  // eslint-disable-next-line no-underscore-dangle
   const eventToken = (event as HandlerEventWithOneGraph)?.authlifyToken
   const secretToken = eventToken || env.ONEGRAPH_AUTHLIFY_TOKEN
 
