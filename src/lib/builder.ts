@@ -21,7 +21,7 @@ const augmentResponse = (response: BuilderResponse) => {
 const wrapHandler =
   (handler: BuilderHandler): Handler =>
   // eslint-disable-next-line promise/prefer-await-to-callbacks
-  (event: HandlerEvent, context: HandlerContext, callback: HandlerCallback<Response>) => {
+  (event: HandlerEvent, context: HandlerContext, callback?: HandlerCallback<Response>) => {
     if (event.httpMethod !== 'GET' && event.httpMethod !== 'HEAD') {
       return Promise.resolve({
         body: 'Method Not Allowed',
@@ -37,7 +37,7 @@ const wrapHandler =
     }
 
     // eslint-disable-next-line promise/prefer-await-to-callbacks
-    const wrappedCallback = (error: unknown, response: BuilderResponse) => callback(error, augmentResponse(response))
+    const wrappedCallback = (error: unknown, response: BuilderResponse) => callback?.(error, augmentResponse(response))
     const execution = handler(modifiedEvent, context, wrappedCallback)
 
     if (isPromise(execution)) {
