@@ -11,10 +11,9 @@ import type { Handler } from '../function'
  * })
  * ```
  *
- * @param schedule expressed as cron string. see https://crontab.guru for help.
+ * @param schedule expressed as cron string.
  * @param handler
- * @see https://docs.netlify.com/functions/<schedule>
- * @tutorial https://announcement-blogpost
+ * @see https://ntl.fyi/sched-func
  */
 const schedule = (cron: string, handler: Handler): Handler => handler
 
