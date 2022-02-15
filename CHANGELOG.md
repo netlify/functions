@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.11.1](https://www.github.com/netlify/functions/compare/v0.11.0...v0.11.1) (2022-02-15)
+
+
+### Bug Fixes
+
+* **handler type:** make callback parameter optional ([#222](https://www.github.com/netlify/functions/issues/222)) ([2c9edc6](https://www.github.com/netlify/functions/commit/2c9edc63e4bb0e339a39b5fe77ec4f5320363974))
+* narrow type of BaseHandler ([#308](https://www.github.com/netlify/functions/issues/308)) ([d5bb602](https://www.github.com/netlify/functions/commit/d5bb602c79062ed34ed6f7fdaa628317e0ff4340))
+
 ## [0.11.0](https://www.github.com/netlify/functions/compare/v0.10.0...v0.11.0) (2022-01-21)
 
 
