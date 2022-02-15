@@ -135,7 +135,7 @@ const formatSecrets = (result: OneGraphSecretsResponse | undefined) => {
 
 type OneGraphPayload = { authlifyToken: string | undefined }
 
-export type HandlerEventWithOneGraph = HandlerEvent & { _oneGraph: OneGraphPayload }
+export type HandlerEventWithOneGraph = HandlerEvent & OneGraphPayload
 
 // Note: We may want to have configurable "sets" of secrets,
 // e.g. "dev" and "prod"
@@ -143,8 +143,7 @@ export const getSecrets = async (
   event?: HandlerEventWithOneGraph | HandlerEvent | undefined,
 ): Promise<NetlifySecrets> => {
   // Allow us to get the token from event if present, else fallback to checking the env
-  // eslint-disable-next-line no-underscore-dangle
-  const eventToken = (event as HandlerEventWithOneGraph)?._oneGraph?.authlifyToken
+  const eventToken = (event as HandlerEventWithOneGraph)?.authlifyToken
   const secretToken = eventToken || env.ONEGRAPH_AUTHLIFY_TOKEN
 
   if (!secretToken) {
