@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.0](https://github.com/netlify/functions/compare/v0.11.1...v1.0.0) (2022-02-15)
+
+
+### Features
+
+* update jsdocs for schedule helper ([#318](https://github.com/netlify/functions/issues/318)) ([4f4e34f](https://github.com/netlify/functions/commit/4f4e34fd4f9052d8b97a0745ef7ba79ddfe6fc12))
+
+
+### Miscellaneous Chores
+
+* release 1.0.0 ([#324](https://github.com/netlify/functions/issues/324)) ([2c81e04](https://github.com/netlify/functions/commit/2c81e04c4134c6c3e680daf5b9db5d7d442ea806))
+
 ### [0.11.1](https://www.github.com/netlify/functions/compare/v0.11.0...v0.11.1) (2022-02-15)
 
 
