@@ -4,7 +4,7 @@ import { env } from 'process'
 
 const siteId = env.SITE_ID
 
-export const oneGraphRequest = function (secretToken: string, requestBody: Uint8Array): Promise<any> {
+export const oneGraphRequest = function (secretToken: string, requestBody: Uint8Array): Promise<string> {
   return new Promise((resolve, reject) => {
     const port = 443
 
@@ -35,8 +35,7 @@ export const oneGraphRequest = function (secretToken: string, requestBody: Uint8
       res.on('end', () => {
         const data = Buffer.concat(body).toString()
         try {
-          const result = JSON.parse(data)
-          resolve(result)
+          resolve(data)
         } catch (error) {
           reject(error)
         }
