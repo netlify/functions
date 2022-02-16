@@ -98,7 +98,14 @@ const hasRequestStyleHeaders = function (headers: RequestHeaders | IncomingMessa
   return (headers as RequestHeaders).get !== undefined && typeof headers.get === 'function'
 }
 
-const graphTokenFromHeaders = function (headers: RequestHeaders | IncomingMessageHeaders): string | null {
+// This function accepts null for backwards compatibility with version < 0.11.1,
+// where getSecrets did not require an event
+const graphTokenFromEvent = function (event: HasHeaders | null): string | null {
+  if (!event) {
+    return null
+  }
+
+  const { headers } = event
   // Check if object first in case there is a header with key `get`
   if (TOKEN_HEADER in headers) {
     return headers[TOKEN_HEADER]
@@ -112,7 +119,7 @@ const graphTokenFromHeaders = function (headers: RequestHeaders | IncomingMessag
 // Note: We may want to have configurable "sets" of secrets,
 // e.g. "dev" and "prod"
 export const getSecrets = async (event: HandlerEvent): Promise<NetlifySecrets> => {
-  const graphToken = graphTokenFromHeaders((event as HasHeaders).headers)
+  const graphToken = graphTokenFromEvent(event as HasHeaders)
 
   if (!graphToken) {
     return {}
