@@ -1,8 +1,5 @@
-import { Buffer } from 'buffer'
-import { request } from 'https'
-import { env } from 'process'
-
 import { Event as HandlerEvent } from '../function/event'
+import { oneGraphRequest } from './onegraph_request'
 
 const services = {
   gitHub: null,
@@ -50,8 +47,6 @@ type OneGraphSecretsResponse = {
   }
 }
 
-const siteId = env.SITE_ID
-
 const camelize = function (text: string) {
   const safe = text.replace(/[-_\s.]+(.)?/g, (_, sub) => (sub ? sub.toUpperCase() : ''))
   return safe.slice(0, 1).toLowerCase() + safe.slice(1)
@@ -69,55 +64,6 @@ const serviceNormalizeOverrides: ServiceNormalizeOverrides = {
   GITHUB: 'gitHub',
 }
 
-const oneGraphRequest = function (secretToken: string, requestBody: Uint8Array): Promise<OneGraphSecretsResponse> {
-  return new Promise((resolve, reject) => {
-    const port = 443
-
-    const options = {
-      host: 'serve.onegraph.com',
-      path: `/graphql?app_id=${siteId}`,
-      port,
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${secretToken}`,
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'Content-Length': requestBody ? Buffer.byteLength(requestBody) : 0,
-      },
-    }
-
-    const req = request(options, (res) => {
-      if (res.statusCode !== 200) {
-        return reject(new Error(String(res.statusCode)))
-      }
-
-      const body: Array<Uint8Array> = []
-
-      res.on('data', (chunk) => {
-        body.push(chunk)
-      })
-
-      res.on('end', () => {
-        const data = Buffer.concat(body).toString()
-        try {
-          const result: OneGraphSecretsResponse = JSON.parse(data)
-          resolve(result)
-        } catch (error) {
-          reject(error)
-        }
-      })
-    })
-
-    req.on('error', (error) => {
-      reject(error)
-    })
-
-    req.write(requestBody)
-
-    req.end()
-  })
-}
-
 const formatSecrets = (result: OneGraphSecretsResponse | undefined) => {
   const responseServices = result?.data?.me?.serviceMetadata?.loggedInServices
 
@@ -133,20 +79,39 @@ const formatSecrets = (result: OneGraphSecretsResponse | undefined) => {
   return newSecrets
 }
 
-type OneGraphPayload = { authlifyToken: string | undefined }
+interface RequestishHeaders {
+  get(name: string): string | null
+}
 
-export type HandlerEventWithOneGraph = HandlerEvent & OneGraphPayload
+interface IncomingMessageishHeaders {
+  [key: string]: string
+}
+
+interface HasHeaders {
+  headers: RequestishHeaders | IncomingMessageishHeaders
+}
+
+const isRequestish = function (headers: RequestishHeaders | IncomingMessageishHeaders): headers is RequestishHeaders {
+  return (headers as RequestishHeaders).get !== undefined
+}
+
+const graphTokenOfHeaders = function (headers: RequestishHeaders | IncomingMessageishHeaders): string | null {
+  // Check if object first in case there is a header with key `get`
+  if ('x-nf-graph-token' in headers) {
+    return headers['x-nf-graph-token']
+  }
+  if (isRequestish(headers)) {
+    return headers.get('x-nf-graph-token')
+  }
+  return null
+}
 
 // Note: We may want to have configurable "sets" of secrets,
 // e.g. "dev" and "prod"
-export const getSecrets = async (
-  event?: HandlerEventWithOneGraph | HandlerEvent | undefined,
-): Promise<NetlifySecrets> => {
-  // Allow us to get the token from event if present, else fallback to checking the env
-  const eventToken = (event as HandlerEventWithOneGraph)?.authlifyToken
-  const secretToken = eventToken || env.ONEGRAPH_AUTHLIFY_TOKEN
+export const getSecrets = async (event: HandlerEvent): Promise<NetlifySecrets> => {
+  const graphToken = graphTokenOfHeaders((event as HasHeaders).headers)
 
-  if (!secretToken) {
+  if (!graphToken) {
     return {}
   }
 
@@ -182,7 +147,7 @@ export const getSecrets = async (
   const body = JSON.stringify({ query: doc })
 
   // eslint-disable-next-line node/no-unsupported-features/node-builtins
-  const result = await oneGraphRequest(secretToken, new TextEncoder().encode(body))
+  const result = await oneGraphRequest(graphToken, new TextEncoder().encode(body))
 
   const newSecrets = formatSecrets(result)
 
