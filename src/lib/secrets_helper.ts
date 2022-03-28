@@ -9,10 +9,13 @@ const services = {
   spotify: null,
   salesforce: null,
   stripe: null,
+  sanity: null,
+  contentful: null,
 }
 
 export type Service = {
   friendlyServiceName: string
+  fieldName: string
   service: string
   isLoggedIn: boolean
   bearerToken: string | null
@@ -51,23 +54,6 @@ type OneGraphSecretsResponse = {
 }
 
 const siteId = env.SITE_ID
-
-const camelize = function (text: string) {
-  const safe = text.replace(/[-_\s.]+(.)?/g, (_, sub) => (sub ? sub.toUpperCase() : ''))
-  return safe.slice(0, 1).toLowerCase() + safe.slice(1)
-}
-
-type ServiceNormalizeOverrides = {
-  GITHUB: string
-  [key: string]: string
-}
-
-// The services will be camelized versions of the OneGraph service enums
-// unless overridden by the serviceNormalizeOverrides object
-const serviceNormalizeOverrides: ServiceNormalizeOverrides = {
-  // Keys are the OneGraph service enums, values are the desired `secret.<service>` names
-  GITHUB: 'gitHub',
-}
 
 const oneGraphRequest = function (secretToken: string, requestBody: Uint8Array): Promise<OneGraphSecretsResponse> {
   return new Promise((resolve, reject) => {
@@ -125,12 +111,13 @@ const formatSecrets = (result: OneGraphSecretsResponse | undefined) => {
     return {}
   }
 
-  const newSecrets = responseServices.reduce((acc: NetlifySecrets, service) => {
-    const normalized = serviceNormalizeOverrides[service.service] || camelize(service.friendlyServiceName)
-    return { ...acc, [normalized]: service }
-  }, {})
+  const netlifySecrets: NetlifySecrets = {}
 
-  return newSecrets
+  for (const service of responseServices) {
+    netlifySecrets[service.fieldName] = service
+  }
+
+  return netlifySecrets
 }
 
 type OneGraphPayload = { authlifyToken: string | undefined }
@@ -159,6 +146,7 @@ export const getSecrets = async (
       serviceMetadata {
         loggedInServices {
           friendlyServiceName
+          fieldName
           service
           isLoggedIn
           bearerToken
