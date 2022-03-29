@@ -1,5 +1,3 @@
-import { Event as HandlerEvent } from '../function/event'
-
 import { graphRequest } from './graph_request'
 import { getNetlifyGraphToken, GraphTokenResponseError, HasHeaders } from './graph_token'
 
@@ -106,8 +104,8 @@ const logErrors = function (errors: GraphTokenResponseError[]) {
 
 // Note: We may want to have configurable "sets" of secrets,
 // e.g. "dev" and "prod"
-export const getSecrets = async (event?: HandlerEvent | null | undefined): Promise<NetlifySecrets> => {
-  const graphTokenResponse = getNetlifyGraphToken(event as HasHeaders, true)
+export const getSecrets = async (event?: HasHeaders | null | undefined): Promise<NetlifySecrets> => {
+  const graphTokenResponse = getNetlifyGraphToken(event, true)
   const graphToken = graphTokenResponse.token
   if (!graphToken) {
     if (graphTokenResponse.errors) {

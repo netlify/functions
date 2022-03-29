@@ -12,6 +12,7 @@ export type GraphTokenResponse = {
 
 const TOKEN_HEADER = 'X-Nf-Graph-Token'
 
+// Matches Web API Headers type (https://developer.mozilla.org/en-US/docs/Web/API/Headers)
 interface RequestHeaders {
   get(name: string): string | null
 }
