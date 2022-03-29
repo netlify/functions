@@ -48,8 +48,6 @@ const authlifyTokenFallback = function (event: HasHeaders): GraphTokenResponse {
   return { token }
 }
 
-// This function accepts null for backwards compatibility with version < 0.11.1,
-// where getSecrets did not require an event
 const graphTokenFromEvent = function (event: HasHeaders): GraphTokenResponse {
   const { headers } = event
   // Check if object first in case there is a header with key `get`
