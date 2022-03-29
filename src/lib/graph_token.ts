@@ -98,7 +98,7 @@ const incorrectArgumentsErrors = function (
     return [{ type: 'missing-event-in-function', message: errorMessage }]
   }
 
-  if (requiresEvent && event == null) {
+  if (!requiresEvent && event != null) {
     const errorMessage = 'You must not pass arguments to `getNetlifyGraphToken` when used in builds.'
     return [{ type: 'provided-event-in-build', message: errorMessage }]
   }
