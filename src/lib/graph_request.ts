@@ -4,12 +4,14 @@ import { env } from 'process'
 
 const siteId = env.SITE_ID
 
-export const oneGraphRequest = function (secretToken: string, requestBody: Uint8Array): Promise<string> {
+const GRAPH_HOST = 'graph.netlify.com'
+
+export const graphRequest = function (secretToken: string, requestBody: Uint8Array): Promise<string> {
   return new Promise((resolve, reject) => {
     const port = 443
 
     const options = {
-      host: 'serve.onegraph.com',
+      host: GRAPH_HOST,
       path: `/graphql?app_id=${siteId}`,
       port,
       method: 'POST',

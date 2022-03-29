@@ -6,6 +6,7 @@ import { Response } from '../function/response'
 import { getSecrets, NetlifySecrets } from './secrets_helper'
 // Fine-grained control during the preview, less necessary with a more proactive OneGraph solution
 export { getSecrets } from './secrets_helper'
+export { getNetlifyGraphToken, GraphTokenResponse, HasHeaders } from './graph_token'
 
 export interface ContextWithSecrets extends Context {
   secrets: NetlifySecrets

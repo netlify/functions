@@ -1,8 +1,7 @@
 import { Event as HandlerEvent } from '../function/event'
 
-import { oneGraphRequest } from './onegraph_request'
-
-const TOKEN_HEADER = 'x-nf-graph-token'
+import { graphRequest } from './graph_request'
+import { getNetlifyGraphToken, GraphTokenResponseError, HasHeaders } from './graph_token'
 
 const services = {
   gitHub: null,
@@ -40,7 +39,7 @@ export type NetlifySecrets = {
   [K in ServiceKey]?: Service
 } & { [key: string]: Service }
 
-type OneGraphSecretsResponse = {
+type GraphSecretsResponse = {
   data?: {
     me?: {
       serviceMetadata?: {
@@ -67,7 +66,7 @@ const serviceNormalizeOverrides: ServiceNormalizeOverrides = {
   GITHUB: 'gitHub',
 }
 
-const formatSecrets = (result: OneGraphSecretsResponse | undefined) => {
+const formatSecrets = (result: GraphSecretsResponse | undefined) => {
   const responseServices = result?.data?.me?.serviceMetadata?.loggedInServices
 
   if (!responseServices) {
@@ -82,46 +81,38 @@ const formatSecrets = (result: OneGraphSecretsResponse | undefined) => {
   return newSecrets
 }
 
-interface RequestHeaders {
-  get(name: string): string | null
-}
-
-interface IncomingMessageHeaders {
-  [key: string]: string
-}
-
-interface HasHeaders {
-  headers: RequestHeaders | IncomingMessageHeaders
-}
-
-const hasRequestStyleHeaders = function (headers: RequestHeaders | IncomingMessageHeaders): headers is RequestHeaders {
-  return (headers as RequestHeaders).get !== undefined && typeof headers.get === 'function'
-}
-
-// This function accepts null for backwards compatibility with version < 0.11.1,
-// where getSecrets did not require an event
-const graphTokenFromEvent = function (event: HasHeaders | null): string | null {
-  if (!event) {
-    return null
+const logErrors = function (errors: GraphTokenResponseError[]) {
+  for (const error of errors) {
+    let errorMessage
+    switch (error.type) {
+      case 'missing-event-in-function':
+        errorMessage =
+          'You must provide an event or request to `getSecrets` when used in functions and on-demand builders.'
+        break
+      case 'provided-event-in-build':
+        errorMessage = 'You must not pass arguments to `getSecrets` when used in builds.'
+        break
+      default: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const exhaustiveCheck: never = error.type
+        errorMessage = error.type
+        break
+      }
+    }
+    const message: string = errorMessage
+    console.error(message)
   }
-
-  const { headers } = event
-  // Check if object first in case there is a header with key `get`
-  if (TOKEN_HEADER in headers) {
-    return headers[TOKEN_HEADER]
-  }
-  if (hasRequestStyleHeaders(headers)) {
-    return headers.get(TOKEN_HEADER)
-  }
-  return null
 }
 
 // Note: We may want to have configurable "sets" of secrets,
 // e.g. "dev" and "prod"
-export const getSecrets = async (event: HandlerEvent): Promise<NetlifySecrets> => {
-  const graphToken = graphTokenFromEvent(event as HasHeaders)
-
+export const getSecrets = async (event?: HandlerEvent | null | undefined): Promise<NetlifySecrets> => {
+  const graphTokenResponse = getNetlifyGraphToken(event as HasHeaders, true)
+  const graphToken = graphTokenResponse.token
   if (!graphToken) {
+    if (graphTokenResponse.errors) {
+      logErrors(graphTokenResponse.errors)
+    }
     return {}
   }
 
@@ -157,8 +148,8 @@ export const getSecrets = async (event: HandlerEvent): Promise<NetlifySecrets> =
   const body = JSON.stringify({ query: doc })
 
   // eslint-disable-next-line node/no-unsupported-features/node-builtins
-  const resultBody = await oneGraphRequest(graphToken, new TextEncoder().encode(body))
-  const result: OneGraphSecretsResponse = JSON.parse(resultBody)
+  const resultBody = await graphRequest(graphToken, new TextEncoder().encode(body))
+  const result: GraphSecretsResponse = JSON.parse(resultBody)
 
   const newSecrets = formatSecrets(result)
 
