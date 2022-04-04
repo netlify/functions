@@ -1,8 +1,5 @@
-import { Buffer } from 'buffer'
-import { request } from 'https'
-import { env } from 'process'
-
-import { Event as HandlerEvent } from '../function/event'
+import { graphRequest } from './graph_request'
+import { getNetlifyGraphToken, GraphTokenResponseError, HasHeaders } from './graph_token'
 
 const services = {
   gitHub: null,
@@ -40,7 +37,7 @@ export type NetlifySecrets = {
   [K in ServiceKey]?: Service
 } & { [key: string]: Service }
 
-type OneGraphSecretsResponse = {
+type GraphSecretsResponse = {
   data?: {
     me?: {
       serviceMetadata?: {
@@ -49,8 +46,6 @@ type OneGraphSecretsResponse = {
     }
   }
 }
-
-const siteId = env.SITE_ID
 
 const camelize = function (text: string) {
   const safe = text.replace(/[-_\s.]+(.)?/g, (_, sub) => (sub ? sub.toUpperCase() : ''))
@@ -69,56 +64,7 @@ const serviceNormalizeOverrides: ServiceNormalizeOverrides = {
   GITHUB: 'gitHub',
 }
 
-const oneGraphRequest = function (secretToken: string, requestBody: Uint8Array): Promise<OneGraphSecretsResponse> {
-  return new Promise((resolve, reject) => {
-    const port = 443
-
-    const options = {
-      host: 'serve.onegraph.com',
-      path: `/graphql?app_id=${siteId}`,
-      port,
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${secretToken}`,
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'Content-Length': requestBody ? Buffer.byteLength(requestBody) : 0,
-      },
-    }
-
-    const req = request(options, (res) => {
-      if (res.statusCode !== 200) {
-        return reject(new Error(String(res.statusCode)))
-      }
-
-      const body: Array<Uint8Array> = []
-
-      res.on('data', (chunk) => {
-        body.push(chunk)
-      })
-
-      res.on('end', () => {
-        const data = Buffer.concat(body).toString()
-        try {
-          const result: OneGraphSecretsResponse = JSON.parse(data)
-          resolve(result)
-        } catch (error) {
-          reject(error)
-        }
-      })
-    })
-
-    req.on('error', (error) => {
-      reject(error)
-    })
-
-    req.write(requestBody)
-
-    req.end()
-  })
-}
-
-const formatSecrets = (result: OneGraphSecretsResponse | undefined) => {
+const formatSecrets = (result: GraphSecretsResponse | undefined) => {
   const responseServices = result?.data?.me?.serviceMetadata?.loggedInServices
 
   if (!responseServices) {
@@ -133,20 +79,38 @@ const formatSecrets = (result: OneGraphSecretsResponse | undefined) => {
   return newSecrets
 }
 
-type OneGraphPayload = { authlifyToken: string | undefined }
-
-export type HandlerEventWithOneGraph = HandlerEvent & OneGraphPayload
+const logErrors = function (errors: GraphTokenResponseError[]) {
+  for (const error of errors) {
+    let errorMessage
+    switch (error.type) {
+      case 'missing-event-in-function':
+        errorMessage =
+          'You must provide an event or request to `getSecrets` when used in functions and on-demand builders.'
+        break
+      case 'provided-event-in-build':
+        errorMessage = 'You must not pass arguments to `getSecrets` when used in builds.'
+        break
+      default: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const exhaustiveCheck: never = error.type
+        errorMessage = error.type
+        break
+      }
+    }
+    const message: string = errorMessage
+    console.error(message)
+  }
+}
 
 // Note: We may want to have configurable "sets" of secrets,
 // e.g. "dev" and "prod"
-export const getSecrets = async (
-  event?: HandlerEventWithOneGraph | HandlerEvent | undefined,
-): Promise<NetlifySecrets> => {
-  // Allow us to get the token from event if present, else fallback to checking the env
-  const eventToken = (event as HandlerEventWithOneGraph)?.authlifyToken
-  const secretToken = eventToken || env.ONEGRAPH_AUTHLIFY_TOKEN
-
-  if (!secretToken) {
+export const getSecrets = async (event?: HasHeaders | null | undefined): Promise<NetlifySecrets> => {
+  const graphTokenResponse = getNetlifyGraphToken(event, true)
+  const graphToken = graphTokenResponse.token
+  if (!graphToken) {
+    if (graphTokenResponse.errors) {
+      logErrors(graphTokenResponse.errors)
+    }
     return {}
   }
 
@@ -182,7 +146,8 @@ export const getSecrets = async (
   const body = JSON.stringify({ query: doc })
 
   // eslint-disable-next-line node/no-unsupported-features/node-builtins
-  const result = await oneGraphRequest(secretToken, new TextEncoder().encode(body))
+  const resultBody = await graphRequest(graphToken, new TextEncoder().encode(body))
+  const result: GraphSecretsResponse = JSON.parse(resultBody)
 
   const newSecrets = formatSecrets(result)
 
