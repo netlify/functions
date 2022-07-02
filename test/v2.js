@@ -95,3 +95,31 @@ test.serial('Exposes information about the site in `context.site`', async (t) =>
   })
   t.is(response.statusCode, 200)
 })
+
+test('Exposes geolocation data in `context.geo`', async (t) => {
+  const geoLocation = {
+    city: 'Netlify Avenue',
+    country: {
+      code: 'JS',
+      name: 'Jamstackistan',
+    },
+    subdivision: {
+      code: 'NF',
+      name: 'New Function',
+    },
+  }
+  const v2Func = {
+    default: async (_, context) => context.json({ geo: context.geo }),
+  }
+  const v1Func = getHandler(v2Func)
+  const response = await invokeLambda(v1Func, {
+    headers: {
+      'x-nf-geo': JSON.stringify(geoLocation),
+    },
+  })
+
+  t.deepEqual(JSON.parse(response.body), {
+    geo: geoLocation,
+  })
+  t.is(response.statusCode, 200)
+})

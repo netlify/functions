@@ -1,9 +1,3 @@
-import { Headers } from 'undici'
+const getIP = (ipHeader: string | null) => ipHeader ?? ''
 
-const parseIP = (headers: Headers) => {
-  const ip = headers.get('x-nf-client-connection-ip')
-
-  return ip ?? ''
-}
-
-export { parseIP }
+export { getIP }

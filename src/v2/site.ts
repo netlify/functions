@@ -13,6 +13,10 @@ const getSiteObject = (): Site => {
     url: env.URL,
   }
 
+  delete env.SITE_ID
+  delete env.SITE_NAME
+  delete env.UR
+
   return site
 }
 
