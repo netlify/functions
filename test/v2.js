@@ -1,3 +1,5 @@
+const { env } = require('process')
+
 const test = require('ava')
 
 const { getHandler, Response } = require('../dist/main')
@@ -70,5 +72,26 @@ test('Exposes the client IP in `context.ip`', async (t) => {
   })
 
   t.deepEqual(JSON.parse(response.body), { ip: '123.45.67.89' })
+  t.is(response.statusCode, 200)
+})
+
+test.serial('Exposes information about the site in `context.site`', async (t) => {
+  env.SITE_ID = '12345'
+  env.SITE_NAME = 'my-site-123'
+  env.URL = 'https://my-site-123.netlify.app'
+
+  const v2Func = {
+    default: async (_, context) => context.json({ site: context.site }),
+  }
+  const v1Func = getHandler(v2Func)
+  const response = await invokeLambda(v1Func)
+
+  delete env.SITE_ID
+  delete env.SITE_NAME
+  delete env.URL
+
+  t.deepEqual(JSON.parse(response.body), {
+    site: { id: '12345', name: 'my-site-123', url: 'https://my-site-123.netlify.app' },
+  })
   t.is(response.statusCode, 200)
 })
