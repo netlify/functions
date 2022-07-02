@@ -1,6 +1,7 @@
 const invokeLambda = (handler, { method = 'GET', ...options } = {}) => {
   const event = {
     ...options,
+    body: options.body ?? '',
     headers: {
       ...options.headers,
     },

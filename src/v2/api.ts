@@ -10,8 +10,9 @@ export type V2Function = { default: (req: Request, context: Context) => Promise<
 
 export const getV2Handler = async (func: V2Function, event: HandlerEvent) => {
   const headers = fromEventHeaders(event.headers)
+  const body = event.body === '' ? undefined : event.body
   const req = new Request(event.rawUrl, {
-    body: event.body,
+    body,
     headers,
     method: event.httpMethod,
   })
@@ -22,10 +23,10 @@ export const getV2Handler = async (func: V2Function, event: HandlerEvent) => {
   cookies.apply(res)
 
   const responseHeaders = headersToObject(res.headers)
-  const body = await res.text()
+  const responseBody = await res.text()
 
   return {
-    body,
+    body: responseBody,
     headers: responseHeaders,
     statusCode: res.status,
   }
