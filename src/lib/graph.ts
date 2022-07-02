@@ -1,7 +1,7 @@
-import { Context as HandlerContext, Context } from '../function/context'
-import { Event as HandlerEvent } from '../function/event'
-import { BaseHandler, HandlerCallback } from '../function/handler'
-import { Response } from '../function/response'
+import { Context as HandlerContext, Context } from '../v1/context'
+import { Event as HandlerEvent } from '../v1/event'
+import { BaseHandler, HandlerCallback } from '../v1/handler'
+import { Response } from '../v1/response'
 
 import { getSecrets, NetlifySecrets } from './secrets_helper'
 // Fine-grained control during the preview, less necessary with a more proactive OneGraph solution

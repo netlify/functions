@@ -48,7 +48,9 @@
     "test": "test"
   },
   "dependencies": {
-    "is-promise": "^4.0.0"
+    "cookie": "^0.5.0",
+    "is-promise": "^4.0.0",
+    "undici": "^5.6.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.0.0",

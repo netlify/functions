@@ -1,7 +1,11 @@
 const invokeLambda = (handler, { method = 'GET', ...options } = {}) => {
   const event = {
     ...options,
+    headers: {
+      ...options.headers,
+    },
     httpMethod: method,
+    rawUrl: options.url || 'https://example.netlify',
   }
 
   return new Promise((resolve, reject) => {

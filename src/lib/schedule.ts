@@ -1,4 +1,4 @@
-import type { Handler } from '../function'
+import type { Handler } from '../v1'
 
 /**
  * Declares a function to run on a cron schedule.
