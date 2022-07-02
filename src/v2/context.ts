@@ -1,4 +1,4 @@
-import { Headers, Response } from 'undici'
+import { Headers, Request, Response, fetch } from 'undici'
 
 import type { CookieStore } from './cookie_store'
 import { parseGeoHeader } from './geo'
@@ -16,17 +16,47 @@ const json = (input: unknown) => {
   })
 }
 
-const getContext = ({ cookies, headers }: { cookies: CookieStore; headers: Headers }) => {
+const getContext = (req: Request, cookies: CookieStore) => {
   const context = {
     cookies: cookies.getPublicInterface(),
-    geo: parseGeoHeader(headers.get(NFGeo)),
-    ip: getIP(headers.get(NFClientConnectionIP)),
+    geo: parseGeoHeader(req.headers.get(NFGeo)),
+    ip: getIP(req.headers.get(NFClientConnectionIP)),
     json,
     log: console.log,
+    next: () => {
+      throw new Error('`context.next` is not implemented for serverless functions')
+    },
+    rewrite: (input: string | URL) => {
+      const url = makeURL(input, req.url)
+
+      return rewrite(url)
+    },
     site: getSiteObject(),
   }
 
   return context
+}
+
+const makeURL = (input: string | URL, baseURL: string) => {
+  if (input instanceof URL) {
+    return input
+  }
+
+  if (input.startsWith('/')) {
+    const url = new URL(baseURL)
+
+    url.pathname = input
+
+    return url
+  }
+
+  return new URL(input)
+}
+
+const rewrite = async (url: string | URL) => {
+  const res = await fetch(url)
+
+  return res
 }
 
 type Context = ReturnType<typeof getContext>

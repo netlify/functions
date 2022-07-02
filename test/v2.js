@@ -1,3 +1,4 @@
+const http = require('http')
 const { env } = require('process')
 
 const test = require('ava')
@@ -121,5 +122,26 @@ test('Exposes geolocation data in `context.geo`', async (t) => {
   t.deepEqual(JSON.parse(response.body), {
     geo: geoLocation,
   })
+  t.is(response.statusCode, 200)
+})
+
+test('Rewrites to a URL using `context.rewrite`', async (t) => {
+  const mockHTML = '<h1>Hello world</h1>'
+  const server = http.createServer((req, res) => {
+    res.setHeader('content-type', 'text/html')
+    res.writeHead(200)
+    res.end(mockHTML)
+  })
+
+  await server.listen(0)
+
+  const v2Func = {
+    default: async (_, context) => context.rewrite(`http://localhost:${server.address().port}`),
+  }
+  const v1Func = getHandler(v2Func)
+  const response = await invokeLambda(v1Func)
+
+  t.is(response.body, mockHTML)
+  t.is(response.headers['content-type'], 'text/html')
   t.is(response.statusCode, 200)
 })

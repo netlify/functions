@@ -17,7 +17,7 @@ export const getV2Handler = async (func: V2Function, event: HandlerEvent) => {
     method: event.httpMethod,
   })
   const cookies = new CookieStore(req)
-  const context = getContext({ cookies, headers })
+  const context = getContext(req, cookies)
   const res = await func.default(req, context)
 
   cookies.apply(res)
