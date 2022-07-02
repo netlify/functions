@@ -1,5 +1,6 @@
-import type { HandlerEvent } from '../v1'
 import { Request, Response } from 'undici'
+
+import type { HandlerEvent } from '../v1'
 
 import { Context, getContext } from './context'
 import { CookieStore } from './cookie_store'

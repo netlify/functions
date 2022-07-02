@@ -1,5 +1,6 @@
-import type { HandlerEvent } from '../v1'
 import { Headers } from 'undici'
+
+import type { HandlerEvent } from '../v1'
 
 const fromEventHeaders = (eventHeaders: HandlerEvent['headers']) => {
   const headers = new Headers()

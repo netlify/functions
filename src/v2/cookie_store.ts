@@ -1,6 +1,7 @@
 /* eslint-disable no-use-before-define */
-import type { Request, Response } from './base'
 import { Cookie, deleteCookie, getCookies, setCookie } from '../vendor/std/http/cookie'
+
+import type { Request, Response } from './base'
 
 interface Cookies {
   delete: CookieStore['delete']

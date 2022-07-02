@@ -28,7 +28,7 @@
     "test:ci:ava": "nyc -r lcovonly -r text -r json ava"
   },
   "config": {
-    "eslint": "--ignore-pattern README.md --ignore-path .gitignore --cache --format=codeframe --max-warnings=0 \"{src,scripts,.github}/**/*.{ts,js,md,html}\" \"*.{ts,js,md,html}\" \".*.{ts,js,md,html}\"",
+    "eslint": "--ignore-pattern \"src/vendor/**/*.ts\" --ignore-pattern README.md --ignore-path .gitignore --cache --format=codeframe --max-warnings=0 \"{src,scripts,.github}/**/*.{ts,js,md,html}\" \"*.{ts,js,md,html}\" \".*.{ts,js,md,html}\"",
     "prettier": "--ignore-path .gitignore --loglevel=warn \"{src,scripts,.github}/**/*.{ts,js,md,yml,json,html}\" \"*.{ts,js,yml,json,html}\" \".*.{ts,js,yml,json,html}\" \"!**/package-lock.json\" \"!package-lock.json\""
   },
   "ava": {

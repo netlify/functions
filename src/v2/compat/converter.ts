@@ -1,5 +1,4 @@
 import type { Handler as V1Handler } from '../../v1'
-
 import { getV2Handler, V2Function } from '../api'
 
 type V1Function = { handler: V1Handler }
