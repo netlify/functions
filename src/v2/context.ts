@@ -1,6 +1,7 @@
-import { Response } from 'undici'
+import { Headers, Response } from 'undici'
 
 import type { CookieStore } from './cookie_store'
+import { parseIP } from './ip'
 
 const json = (input: unknown) => {
   const data = JSON.stringify(input)
@@ -12,10 +13,13 @@ const json = (input: unknown) => {
   })
 }
 
-const getContext = ({ cookies }: { cookies: CookieStore }) => {
+const getContext = ({ cookies, headers }: { cookies: CookieStore; headers: Headers }) => {
+  const ip = parseIP(headers)
   const context = {
     cookies: cookies.getPublicInterface(),
+    ip,
     json,
+    log: console.log,
   }
 
   return context

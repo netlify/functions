@@ -57,3 +57,18 @@ test('`context.cookies.set` adds a cookie to the response', async (t) => {
   t.is(response.headers['set-cookie'], 'new-cookie=super-flavour')
   t.is(response.statusCode, 200)
 })
+
+test('Exposes the client IP in `context.ip`', async (t) => {
+  const v2Func = {
+    default: async (_, context) => context.json({ ip: context.ip }),
+  }
+  const v1Func = getHandler(v2Func)
+  const response = await invokeLambda(v1Func, {
+    headers: {
+      'X-Nf-Client-Connection-Ip': '123.45.67.89',
+    },
+  })
+
+  t.deepEqual(JSON.parse(response.body), { ip: '123.45.67.89' })
+  t.is(response.statusCode, 200)
+})

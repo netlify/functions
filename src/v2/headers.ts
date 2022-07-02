@@ -7,7 +7,7 @@ const fromEventHeaders = (eventHeaders: HandlerEvent['headers']) => {
 
   Object.entries(eventHeaders).forEach(([name, value]) => {
     if (value !== undefined) {
-      headers.set(name, value)
+      headers.set(name.toLowerCase(), value)
     }
   })
 
