@@ -1,1 +1,1 @@
-export { Headers, Request, Response } from '../vendor/std/_dnt.shims'
+export { Headers, Request, Response, fetch } from '../vendor/std/_dnt.shims'
