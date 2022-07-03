@@ -10,7 +10,7 @@ export interface Geo {
   }
 }
 
-export function parseGeoHeader(geoHeader: string | null) {
+export const parseGeoHeader = (geoHeader: string | null): Geo => {
   if (geoHeader === null) {
     return {}
   }

@@ -1,4 +1,4 @@
-import { Headers, Request, Response, fetch } from 'undici'
+import { Request, Response, fetch } from 'undici'
 
 import type { CookieStore } from './cookie_store'
 import { parseGeoHeader } from './geo'
