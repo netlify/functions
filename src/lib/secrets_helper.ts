@@ -145,7 +145,6 @@ export const getSecrets = async (event?: HasHeaders | null | undefined): Promise
 
   const body = JSON.stringify({ query: doc })
 
-  // eslint-disable-next-line node/no-unsupported-features/node-builtins
   const resultBody = await graphRequest(graphToken, new TextEncoder().encode(body))
   const result: GraphSecretsResponse = JSON.parse(resultBody)
 
