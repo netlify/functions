@@ -1,8 +1,8 @@
 import isPromise from 'is-promise'
 
-import { HandlerContext, HandlerEvent } from '../function'
-import { BuilderHandler, Handler, HandlerCallback } from '../function/handler'
-import { Response, BuilderResponse } from '../function/response'
+import { HandlerContext, HandlerEvent } from '../v1'
+import { BuilderHandler, Handler, HandlerCallback } from '../v1/handler'
+import { Response, BuilderResponse } from '../v1/response'
 
 import { BUILDER_FUNCTIONS_FLAG, HTTP_STATUS_METHOD_NOT_ALLOWED, HTTP_STATUS_OK, METADATA_VERSION } from './consts'
 

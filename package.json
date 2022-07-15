@@ -28,8 +28,8 @@
     "test:ci:ava": "nyc -r lcovonly -r text -r json ava"
   },
   "config": {
-    "eslint": "--ignore-pattern README.md --ignore-path .gitignore --cache --format=codeframe --max-warnings=0 \"{src,scripts,.github}/**/*.{ts,js,md,html}\" \"*.{ts,js,md,html}\" \".*.{ts,js,md,html}\"",
-    "prettier": "--ignore-path .gitignore --loglevel=warn \"{src,scripts,.github}/**/*.{ts,js,md,yml,json,html}\" \"*.{ts,js,yml,json,html}\" \".*.{ts,js,yml,json,html}\" \"!**/package-lock.json\" \"!package-lock.json\""
+    "eslint": "--ignore-pattern \"src/vendor/**/*.ts\" --ignore-pattern README.md --ignore-path .gitignore --cache --format=codeframe --max-warnings=0 \"{src,scripts,.github}/**/*.{ts,js,md,html}\" \"*.{ts,js,md,html}\" \".*.{ts,js,md,html}\"",
+    "prettier": "--ignore-path .gitignore --loglevel=warn \"{src,scripts,.github}/**/*.{ts,js,md,yml,json,html}\" \"*.{ts,js,yml,json,html}\" \".*.{ts,js,yml,json,html}\" \"!**/package-lock.json\" \"!package-lock.json\" \"!src/vendor/**/*\""
   },
   "ava": {
     "files": [
@@ -48,7 +48,9 @@
     "test": "test"
   },
   "dependencies": {
-    "is-promise": "^4.0.0"
+    "cookie": "^0.5.0",
+    "is-promise": "^4.0.0",
+    "undici": "^5.6.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.0.0",
@@ -61,6 +63,6 @@
     "typescript": "^4.4.4"
   },
   "engines": {
-    "node": ">=8.3.0"
+    "node": ">=16.0.0"
   }
 }
