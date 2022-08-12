@@ -25,4 +25,5 @@ export interface Event {
   multiValueQueryStringParameters: EventMultiValueQueryStringParameters | null
   body: string | null
   isBase64Encoded: boolean
+  netlifyGraphToken: string | undefined
 }

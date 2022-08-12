@@ -102,7 +102,7 @@ const logErrors = function (errors: GraphTokenResponseError[]) {
   }
 }
 
-// We select for more than we typeically need here
+// We select for more than we typically need here
 // in order to allow for some metaprogramming for
 // consumers downstream. Also, the data is typically
 // static and shouldn't add any measurable overhead.
