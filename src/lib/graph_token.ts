@@ -11,6 +11,7 @@ export type GraphTokenResponse = {
 }
 
 const TOKEN_HEADER = 'X-Nf-Graph-Token'
+const TOKEN_HEADER_NORMALIZED = 'x-nf-graph-token'
 
 // Matches Web API Headers type (https://developer.mozilla.org/en-US/docs/Web/API/Headers)
 interface RequestHeaders {
@@ -33,19 +34,35 @@ const hasRequestStyleHeaders = function (headers: RequestHeaders | IncomingHttpH
 const graphTokenFromIncomingHttpStyleHeaders = function (
   headers: RequestHeaders | IncomingHttpHeaders,
 ): string | null | undefined {
-  if (TOKEN_HEADER in headers) {
-    const header = headers[TOKEN_HEADER]
-    if (header == null || typeof header === 'string') {
-      return header
+  if (TOKEN_HEADER in headers || TOKEN_HEADER_NORMALIZED in headers) {
+    const header = headers[TOKEN_HEADER] || headers[TOKEN_HEADER_NORMALIZED]
+    if (Array.isArray(header)) {
+      return header[0]
     }
-    return header[0]
+    return header
   }
 }
 
-// Backwards compatibility with older version of cli that doesn't inject header
-const authlifyTokenFallback = function (event: HasHeaders): GraphTokenResponse {
-  const token = (event as { authlifyToken?: string | null })?.authlifyToken
+const graphTokenFromEnv = function (): GraphTokenResponse {
+  // _NETLIFY_GRAPH_TOKEN injected by next plugin
+  // eslint-disable-next-line no-underscore-dangle
+  const token = env._NETLIFY_GRAPH_TOKEN || env.NETLIFY_GRAPH_TOKEN
   return { token }
+}
+
+const tokenFallback = function (event: HasHeaders): GraphTokenResponse {
+  // Backwards compatibility with older version of cli that doesn't inject header
+  const token = (event as { authlifyToken?: string | null })?.authlifyToken
+  if (token) {
+    return { token }
+  }
+
+  // If we're in dev-mode with next.js, the plugin won't be there to inject
+  // secrets, so we need to get the token from the environment
+  if (env.NETLIFY_DEV === 'true') {
+    return graphTokenFromEnv()
+  }
+  return { token: null }
 }
 
 const graphTokenFromEvent = function (event: HasHeaders): GraphTokenResponse {
@@ -60,14 +77,7 @@ const graphTokenFromEvent = function (event: HasHeaders): GraphTokenResponse {
     return { token: headers.get(TOKEN_HEADER) }
   }
 
-  return authlifyTokenFallback(event)
-}
-
-const graphTokenFromEnv = function (): GraphTokenResponse {
-  // _NETLIFY_GRAPH_TOKEN injected by next plugin
-  // eslint-disable-next-line no-underscore-dangle
-  const token = env._NETLIFY_GRAPH_TOKEN || env.NETLIFY_GRAPH_TOKEN
-  return { token }
+  return tokenFallback(event)
 }
 
 const isEventRequired = function (): boolean {
@@ -124,4 +134,8 @@ export const getNetlifyGraphToken = function (
   }
 
   return event ? graphTokenFromEvent(event) : graphTokenFromEnv()
+}
+
+export const getNetlifyGraphTokenForBuild = function (): GraphTokenResponse {
+  return graphTokenFromEnv()
 }
