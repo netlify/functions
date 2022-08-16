@@ -39,7 +39,7 @@ test('Injects the metadata object into a synchronous handler', async (t) => {
   t.deepEqual(response, { ...originalResponse, ...METADATA_OBJECT })
 })
 
-test('Does not inject the metadata object for non-200 responses', async (t) => {
+test('Injects the metadata object for non-200 responses', async (t) => {
   const originalResponse = {
     body: ':thumbsdown:',
     statusCode: 404,
@@ -55,7 +55,7 @@ test('Does not inject the metadata object for non-200 responses', async (t) => {
   }
   const response = await invokeLambda(builder(myHandler))
 
-  t.deepEqual(response, originalResponse)
+  t.deepEqual(response, { ...originalResponse, ...METADATA_OBJECT })
 })
 
 test('Returns a 405 error for requests using the POST method', async (t) => {
