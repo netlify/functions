@@ -1,3 +1,3 @@
-export { builder } from './lib/builder'
-export { schedule } from './lib/schedule'
-export * from './function'
+export { builder } from './lib/builder.js'
+export { schedule } from './lib/schedule.js'
+export * from './function/index.js'

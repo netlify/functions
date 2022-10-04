@@ -50,11 +50,10 @@ const graphTokenFromEnv = function (): GraphTokenResponse {
   return { token }
 }
 
-const tokenFallback = function (event: HasHeaders): GraphTokenResponse {
+const tokenFallback = function (event: HasHeaders & { authlifyToken?: string | null }): GraphTokenResponse {
   // Backwards compatibility with older version of cli that doesn't inject header
-  const token = (event as { authlifyToken?: string | null })?.authlifyToken
-  if (token) {
-    return { token }
+  if (event && event.authlifyToken) {
+    return { token: event.authlifyToken }
   }
 
   // If we're in dev-mode with next.js, the plugin won't be there to inject

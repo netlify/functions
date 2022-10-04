@@ -8,7 +8,7 @@ module.exports = {
   overrides: [
     ...overrides,
     {
-      files: 'test/*.js',
+      files: 'test/**/*.+(t|j)s',
       rules: {
         'no-magic-numbers': 'off',
         'promise/prefer-await-to-callbacks': 'off',
