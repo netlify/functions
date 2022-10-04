@@ -12,6 +12,7 @@ module.exports = {
       rules: {
         'no-magic-numbers': 'off',
         'promise/prefer-await-to-callbacks': 'off',
+        'unicorn/filename-case': 'off',
       },
     },
   ],
