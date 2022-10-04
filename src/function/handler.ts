@@ -1,6 +1,6 @@
-import type { Context } from './context'
-import type { Event } from './event'
-import type { Response, BuilderResponse } from './response'
+import type { Context } from './context.js'
+import type { Event } from './event.js'
+import type { Response, BuilderResponse } from './response.js'
 
 export interface HandlerCallback<ResponseType extends Response = Response> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

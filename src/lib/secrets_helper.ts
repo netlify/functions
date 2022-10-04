@@ -1,5 +1,10 @@
-import { graphRequest } from './graph_request'
-import { getNetlifyGraphToken, getNetlifyGraphTokenForBuild, GraphTokenResponseError, HasHeaders } from './graph_token'
+import { graphRequest } from './graph_request.js'
+import {
+  getNetlifyGraphToken,
+  getNetlifyGraphTokenForBuild,
+  GraphTokenResponseError,
+  HasHeaders,
+} from './graph_token.js'
 
 const services = {
   gitHub: null,
@@ -65,11 +70,18 @@ const serviceNormalizeOverrides: ServiceNormalizeOverrides = {
 }
 
 const formatSecrets = (result: GraphSecretsResponse | undefined) => {
-  const responseServices = result?.data?.me?.serviceMetadata?.loggedInServices
-
-  if (!responseServices) {
+  if (
+    !result ||
+    !result.data ||
+    !result.data.me ||
+    !result.data.me.serviceMetadata ||
+    !result.data.me.serviceMetadata.loggedInServices
+  ) {
     return {}
   }
+
+  // TODO use optional chaining once we drop node 12 or lower
+  const responseServices = result.data.me.serviceMetadata.loggedInServices
 
   const newSecrets = responseServices.reduce((acc: NetlifySecrets, service) => {
     const normalized = serviceNormalizeOverrides[service.service] || camelize(service.friendlyServiceName)
@@ -134,7 +146,7 @@ const findLoggedInServicesQuery = `query FindLoggedInServicesQuery {
 const getSecretsForToken = async (token: string): Promise<NetlifySecrets> => {
   const body = JSON.stringify({ query: findLoggedInServicesQuery })
 
-  // eslint-disable-next-line node/no-unsupported-features/node-builtins
+  // eslint-disable-next-line n/no-unsupported-features/node-builtins
   const resultBody = await graphRequest(token, new TextEncoder().encode(body))
   const result: GraphSecretsResponse = JSON.parse(resultBody)
 
