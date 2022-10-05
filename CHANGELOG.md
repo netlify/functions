@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/netlify/functions/compare/v1.2.0...v1.3.0) (2022-10-05)
+
+
+### Features
+
+* add new BackgroundHandler type ([#364](https://github.com/netlify/functions/issues/364)) ([b2d112b](https://github.com/netlify/functions/commit/b2d112be4ab356fcb25fa2e2a05d2feb84c93016))
+
 ## [1.2.0](https://github.com/netlify/functions/compare/v1.1.0...v1.2.0) (2022-08-16)
 
 
