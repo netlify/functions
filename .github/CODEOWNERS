@@ -1,1 +1,1 @@
-.github/CODEOWNERS                 @netlify/compute @netlify/runtime-pod-compute 
+* @netlify/runtime-pod-compute 
