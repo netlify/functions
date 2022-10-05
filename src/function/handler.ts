@@ -1,6 +1,6 @@
-import type { Context } from './context'
-import type { Event } from './event'
-import type { Response, BuilderResponse } from './response'
+import type { Context } from './context.js'
+import type { Event } from './event.js'
+import type { Response, BuilderResponse } from './response.js'
 
 export interface HandlerCallback<ResponseType extends Response = Response> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -9,6 +9,10 @@ export interface HandlerCallback<ResponseType extends Response = Response> {
 
 export interface BaseHandler<ResponseType extends Response = Response, C extends Context = Context> {
   (event: Event, context: C, callback?: HandlerCallback<ResponseType>): void | Promise<ResponseType>
+}
+
+export interface BackgroundHandler<C extends Context = Context> {
+  (event: Event, context: C): void | Promise<void>
 }
 
 export type Handler = BaseHandler<Response, Context>

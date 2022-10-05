@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.2.0](https://github.com/netlify/functions/compare/v1.1.0...v1.2.0) (2022-08-16)
+
+
+### Features
+
+* Allow any status code in builder functions ([#357](https://github.com/netlify/functions/issues/357)) ([0264c17](https://github.com/netlify/functions/commit/0264c171346ddb5247d2e2900589e4ea207db429))
+
+## [1.1.0](https://github.com/netlify/functions/compare/v1.0.0...v1.1.0) (2022-08-12)
+
+
+### Features
+
+* **graph:** update graph helpers to work better with next.js ([#354](https://github.com/netlify/functions/issues/354)) ([b854652](https://github.com/netlify/functions/commit/b854652a8549c23bda3b060ab5bc756144caa7c2))
+
 ## [1.0.0](https://github.com/netlify/functions/compare/v0.11.1...v1.0.0) (2022-02-15)
 
 

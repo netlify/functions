@@ -19,7 +19,7 @@ jobs:
           release-type: node
           package-name: '@netlify/functions'
           bump-minor-pre-major: true
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         if: ${{ steps.release.outputs.release_created }}
       - uses: actions/setup-node@v2
         with:

@@ -1,16 +1,16 @@
 import isPromise from 'is-promise'
 
-import { HandlerContext, HandlerEvent } from '../function'
-import { BuilderHandler, Handler, HandlerCallback } from '../function/handler'
-import { Response, BuilderResponse } from '../function/response'
+import { BuilderHandler, Handler, HandlerCallback } from '../function/handler.js'
+import { HandlerContext, HandlerEvent } from '../function/index.js'
+import { Response, BuilderResponse } from '../function/response.js'
 
-import { BUILDER_FUNCTIONS_FLAG, HTTP_STATUS_METHOD_NOT_ALLOWED, HTTP_STATUS_OK, METADATA_VERSION } from './consts'
+import { BUILDER_FUNCTIONS_FLAG, HTTP_STATUS_METHOD_NOT_ALLOWED, METADATA_VERSION } from './consts.js'
 
 const augmentResponse = (response: BuilderResponse) => {
-  if (!response || response.statusCode !== HTTP_STATUS_OK) {
+  if (!response) {
     return response
   }
-  const metadata = { version: METADATA_VERSION, builder_function: BUILDER_FUNCTIONS_FLAG, ttl: response.ttl ?? 0 }
+  const metadata = { version: METADATA_VERSION, builder_function: BUILDER_FUNCTIONS_FLAG, ttl: response.ttl || 0 }
 
   return {
     ...response,
@@ -36,8 +36,9 @@ const wrapHandler =
       queryStringParameters: {},
     }
 
-    // eslint-disable-next-line promise/prefer-await-to-callbacks
-    const wrappedCallback = (error: unknown, response: BuilderResponse) => callback?.(error, augmentResponse(response))
+    const wrappedCallback = (error: unknown, response: BuilderResponse) =>
+      // eslint-disable-next-line promise/prefer-await-to-callbacks
+      callback ? callback(error, augmentResponse(response)) : null
     const execution = handler(modifiedEvent, context, wrappedCallback)
 
     if (isPromise(execution)) {

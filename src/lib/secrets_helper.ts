@@ -1,5 +1,10 @@
-import { graphRequest } from './graph_request'
-import { getNetlifyGraphToken, GraphTokenResponseError, HasHeaders } from './graph_token'
+import { graphRequest } from './graph_request.js'
+import {
+  getNetlifyGraphToken,
+  getNetlifyGraphTokenForBuild,
+  GraphTokenResponseError,
+  HasHeaders,
+} from './graph_token.js'
 
 const services = {
   gitHub: null,
@@ -65,11 +70,18 @@ const serviceNormalizeOverrides: ServiceNormalizeOverrides = {
 }
 
 const formatSecrets = (result: GraphSecretsResponse | undefined) => {
-  const responseServices = result?.data?.me?.serviceMetadata?.loggedInServices
-
-  if (!responseServices) {
+  if (
+    !result ||
+    !result.data ||
+    !result.data.me ||
+    !result.data.me.serviceMetadata ||
+    !result.data.me.serviceMetadata.loggedInServices
+  ) {
     return {}
   }
+
+  // TODO use optional chaining once we drop node 12 or lower
+  const responseServices = result.data.me.serviceMetadata.loggedInServices
 
   const newSecrets = responseServices.reduce((acc: NetlifySecrets, service) => {
     const normalized = serviceNormalizeOverrides[service.service] || camelize(service.friendlyServiceName)
@@ -102,23 +114,11 @@ const logErrors = function (errors: GraphTokenResponseError[]) {
   }
 }
 
-// Note: We may want to have configurable "sets" of secrets,
-// e.g. "dev" and "prod"
-export const getSecrets = async (event?: HasHeaders | null | undefined): Promise<NetlifySecrets> => {
-  const graphTokenResponse = getNetlifyGraphToken(event, true)
-  const graphToken = graphTokenResponse.token
-  if (!graphToken) {
-    if (graphTokenResponse.errors) {
-      logErrors(graphTokenResponse.errors)
-    }
-    return {}
-  }
-
-  // We select for more than we typeically need here
-  // in order to allow for some metaprogramming for
-  // consumers downstream. Also, the data is typically
-  // static and shouldn't add any measurable overhead.
-  const doc = `query FindLoggedInServicesQuery {
+// We select for more than we typically need here
+// in order to allow for some metaprogramming for
+// consumers downstream. Also, the data is typically
+// static and shouldn't add any measurable overhead.
+const findLoggedInServicesQuery = `query FindLoggedInServicesQuery {
     me {
       serviceMetadata {
         loggedInServices {
@@ -143,13 +143,40 @@ export const getSecrets = async (event?: HasHeaders | null | undefined): Promise
     }
   }`
 
-  const body = JSON.stringify({ query: doc })
+const getSecretsForToken = async (token: string): Promise<NetlifySecrets> => {
+  const body = JSON.stringify({ query: findLoggedInServicesQuery })
 
-  // eslint-disable-next-line node/no-unsupported-features/node-builtins
-  const resultBody = await graphRequest(graphToken, new TextEncoder().encode(body))
+  // eslint-disable-next-line n/no-unsupported-features/node-builtins
+  const resultBody = await graphRequest(token, new TextEncoder().encode(body))
   const result: GraphSecretsResponse = JSON.parse(resultBody)
 
   const newSecrets = formatSecrets(result)
 
   return newSecrets
+}
+
+export const getSecrets = async (event?: HasHeaders | null | undefined): Promise<NetlifySecrets> => {
+  const graphTokenResponse = getNetlifyGraphToken(event, true)
+  const graphToken = graphTokenResponse.token
+  if (!graphToken) {
+    if (graphTokenResponse.errors) {
+      logErrors(graphTokenResponse.errors)
+    }
+    return {}
+  }
+
+  return await getSecretsForToken(graphToken)
+}
+
+export const getSecretsForBuild = async (): Promise<NetlifySecrets> => {
+  const graphTokenResponse = getNetlifyGraphTokenForBuild()
+  const graphToken = graphTokenResponse.token
+  if (!graphToken) {
+    if (graphTokenResponse.errors) {
+      logErrors(graphTokenResponse.errors)
+    }
+    return {}
+  }
+
+  return await getSecretsForToken(graphToken)
 }

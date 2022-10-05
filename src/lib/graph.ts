@@ -1,12 +1,12 @@
-import { Context as HandlerContext, Context } from '../function/context'
-import { Event as HandlerEvent } from '../function/event'
-import { BaseHandler, HandlerCallback } from '../function/handler'
-import { Response } from '../function/response'
+import { Context as HandlerContext, Context } from '../function/context.js'
+import { Event as HandlerEvent } from '../function/event.js'
+import { BaseHandler, HandlerCallback } from '../function/handler.js'
+import { Response } from '../function/response.js'
 
-import { getSecrets, NetlifySecrets } from './secrets_helper'
+import { getSecrets, NetlifySecrets } from './secrets_helper.js'
 // Fine-grained control during the preview, less necessary with a more proactive OneGraph solution
-export { getSecrets } from './secrets_helper'
-export { getNetlifyGraphToken, GraphTokenResponse, HasHeaders } from './graph_token'
+export { getSecrets, getSecretsForBuild } from './secrets_helper.js'
+export { getNetlifyGraphToken, getNetlifyGraphTokenForBuild, GraphTokenResponse, HasHeaders } from './graph_token.js'
 
 export interface ContextWithSecrets extends Context {
   secrets: NetlifySecrets
