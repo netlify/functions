@@ -1,7 +1,7 @@
 export { Context as HandlerContext } from './context.js'
 export { Event as HandlerEvent } from './event.js'
-export { Handler, BackgroundHandler, HandlerCallback } from './handler.js'
-export { Response as HandlerResponse } from './response.js'
+export { BuilderHandler, Handler, BackgroundHandler, HandlerCallback } from './handler.js'
+export { BuilderResponse, Response as HandlerResponse } from './response.js'
 export {
   getSecrets,
   getSecretsForBuild,
