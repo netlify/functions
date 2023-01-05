@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/netlify/functions/compare/v1.3.0...v1.4.0) (2023-01-05)
+
+
+### Features
+
+* export builder types correctly ([#371](https://github.com/netlify/functions/issues/371)) ([24fc838](https://github.com/netlify/functions/commit/24fc838df0633feef42142e9150569d85b9c798a))
+
 ## [1.3.0](https://github.com/netlify/functions/compare/v1.2.0...v1.3.0) (2022-10-05)
 
 
