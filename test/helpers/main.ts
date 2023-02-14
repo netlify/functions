@@ -1,11 +1,13 @@
-const invokeLambda = (handler, { method = 'GET', ...options } = {}) => {
+import { Event } from '../../src/function/event.js'
+
+export const invokeLambda = (handler, { method = 'GET', ...options }: Partial<Event> & { method?: string } = {}) => {
   const event = {
     ...options,
     httpMethod: method,
   }
 
   return new Promise((resolve, reject) => {
-    const callback = (error, response) => {
+    const callback = (error: Error, response: unknown) => {
       if (error) {
         reject(error)
       } else {
@@ -16,5 +18,3 @@ const invokeLambda = (handler, { method = 'GET', ...options } = {}) => {
     resolve(handler(event, {}, callback))
   })
 }
-
-module.exports = { invokeLambda }
