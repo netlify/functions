@@ -10,6 +10,7 @@ module.exports = {
     {
       files: 'test/**/*.+(t|j)s',
       rules: {
+        'max-lines-per-function': 'off',
         'no-magic-numbers': 'off',
         'promise/prefer-await-to-callbacks': 'off',
         'unicorn/filename-case': 'off',

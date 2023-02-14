@@ -146,7 +146,6 @@ const findLoggedInServicesQuery = `query FindLoggedInServicesQuery {
 const getSecretsForToken = async (token: string): Promise<NetlifySecrets> => {
   const body = JSON.stringify({ query: findLoggedInServicesQuery })
 
-  // eslint-disable-next-line n/no-unsupported-features/node-builtins
   const resultBody = await graphRequest(token, new TextEncoder().encode(body))
   const result: GraphSecretsResponse = JSON.parse(resultBody)
 
