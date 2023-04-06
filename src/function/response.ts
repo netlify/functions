@@ -12,3 +12,7 @@ export interface Response {
 export interface BuilderResponse extends Response {
   ttl?: number
 }
+
+export interface StreamingResponse extends Omit<Response, 'body'> {
+  body?: string | NodeJS.ReadableStream
+}
