@@ -1,6 +1,10 @@
-import { pipeline } from 'node:stream/promises'
+import { pipeline as pipelineSync } from 'node:stream'
+import { promisify } from 'node:util'
 
 import type { Handler, HandlerEvent, HandlerContext, StreamingHandler, StreamingResponse } from '../function/index.js'
+
+// Node v14 doesn't have node:stream/promises
+const pipeline = promisify(pipelineSync)
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
