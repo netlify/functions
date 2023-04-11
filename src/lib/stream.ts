@@ -1,17 +1,18 @@
 import { pipeline } from 'node:stream'
 
-import type { Handler, HandlerEvent, HandlerContext, HandlerResponse, StreamingHandler } from '../function/index.js'
+import type { Handler, HandlerEvent, HandlerContext, StreamingHandler, StreamingResponse } from '../function/index.js'
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace awslambda {
     function streamifyResponse(
-      handler: (
-        event: HandlerEvent,
-        responseStream: NodeJS.WritableStream,
-        context: HandlerContext,
-      ) => Promise<HandlerResponse>,
+      handler: (event: HandlerEvent, responseStream: NodeJS.WritableStream, context: HandlerContext) => Promise<void>,
     ): Handler
+
+    // eslint-disable-next-line @typescript-eslint/no-namespace
+    namespace HttpResponseStream {
+      function from(stream: NodeJS.WritableStream, metadata: Omit<StreamingResponse, 'body'>): NodeJS.WritableStream
+    }
   }
 }
 
@@ -48,19 +49,17 @@ declare global {
  */
 const stream = (handler: StreamingHandler): Handler =>
   awslambda.streamifyResponse(async (event, responseStream, context) => {
-    const { body, ...rest } = await handler(event, context)
+    const { body, ...httpResponseMetadata } = await handler(event, context)
 
-    if (typeof body === 'undefined' || typeof body === 'string') {
-      return {
-        body,
-        ...rest,
-      }
-    }
+    const responseBody = awslambda.HttpResponseStream.from(responseStream, httpResponseMetadata)
 
-    pipeline(body, responseStream)
-
-    return {
-      ...rest,
+    if (typeof body === 'undefined') {
+      responseBody.end()
+    } else if (typeof body === 'string') {
+      responseBody.write(body)
+      responseBody.end()
+    } else {
+      pipeline(body, responseBody)
     }
   })
 
