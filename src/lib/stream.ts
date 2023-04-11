@@ -21,7 +21,7 @@ declare global {
 }
 
 /**
- * Enables streaming responses. `body` accepts a `Readable` stream or Web stream.
+ * Enables streaming responses. `body` accepts a Node.js `Readable` stream or a WHATWG `ReadableStream`.
  *
  * @example
  * ```
