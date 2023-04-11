@@ -1,4 +1,4 @@
-import { pipeline } from 'stream'
+import { pipeline } from 'node:stream'
 
 import type { Handler, HandlerEvent, HandlerContext, HandlerResponse, StreamingHandler } from '../function/index.js'
 

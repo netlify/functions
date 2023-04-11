@@ -1,3 +1,5 @@
+import type { PipelineSource } from 'node:stream'
+
 export interface Response {
   statusCode: number
   headers?: {
@@ -14,5 +16,5 @@ export interface BuilderResponse extends Response {
 }
 
 export interface StreamingResponse extends Omit<Response, 'body'> {
-  body?: string | NodeJS.ReadableStream
+  body?: string | PipelineSource<any>
 }
