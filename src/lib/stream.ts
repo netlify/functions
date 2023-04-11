@@ -1,4 +1,4 @@
-import { pipeline } from 'node:stream'
+import { pipeline } from 'node:stream/promises'
 
 import type { Handler, HandlerEvent, HandlerContext, StreamingHandler, StreamingResponse } from '../function/index.js'
 
@@ -59,7 +59,7 @@ const stream = (handler: StreamingHandler): Handler =>
       responseBody.write(body)
       responseBody.end()
     } else {
-      pipeline(body, responseBody)
+      await pipeline(body, responseBody)
     }
   })
 
