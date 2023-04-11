@@ -16,7 +16,7 @@ declare global {
 }
 
 /**
- * Enables streaming responses.
+ * Enables streaming responses. `body` now accepts a `Readable` stream or Web stream.
  *
  * @example
  * ```
@@ -27,6 +27,18 @@ declare global {
  *   return {
  *     statusCode: 200,
  *     body: stream,
+ *   }
+ * })
+ * ```
+ *
+ * @example
+ * ```
+ * export const handler = stream(async (event, context) => {
+ *   const response = await fetch('https://api.openai.com/', { ... })
+ *   // ...
+ *   return {
+ *     statusCode: 200,
+ *     body: response.body, // Web stream
  *   }
  * })
  * ```
