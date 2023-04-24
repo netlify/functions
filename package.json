@@ -43,7 +43,7 @@
   },
   "keywords": [],
   "license": "MIT",
-  "repository": "netlify/functions",
+  "repository": "https://github.com/netlify/functions",
   "bugs": {
     "url": "https://github.com/netlify/functions/issues"
   },
