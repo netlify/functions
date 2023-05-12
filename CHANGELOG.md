@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.0](https://github.com/netlify/functions/compare/v1.4.0...v1.5.0) (2023-05-09)
+
+
+### Features
+
+* add npm provenance ([#398](https://github.com/netlify/functions/issues/398)) ([ba70428](https://github.com/netlify/functions/commit/ba7042822dce1f94d1419bb6e1a39c91e2b9cb8a))
+* remove netlify graph code ([#400](https://github.com/netlify/functions/issues/400)) ([49f893e](https://github.com/netlify/functions/commit/49f893e7e5050013c1d87ac8744edb48016f1719))
+
 ## [1.4.0](https://github.com/netlify/functions/compare/v1.3.0...v1.4.0) (2023-01-05)
 
 
