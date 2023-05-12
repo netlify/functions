@@ -1,3 +1,5 @@
+import type { PipelineSource } from 'node:stream'
+
 export interface Response {
   statusCode: number
   headers?: {
@@ -11,4 +13,9 @@ export interface Response {
 }
 export interface BuilderResponse extends Response {
   ttl?: number
+}
+
+export interface StreamingResponse extends Omit<Response, 'body'> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  body?: string | PipelineSource<any>
 }
