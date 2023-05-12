@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/netlify/functions/compare/v1.5.0...v1.6.0) (2023-05-12)
+
+
+### Features
+
+* add `stream` helper ([#395](https://github.com/netlify/functions/issues/395)) ([7b305cf](https://github.com/netlify/functions/commit/7b305cfb529d4fe3cdfa25b3eb176c5038f28b6e))
+
 ## [1.5.0](https://github.com/netlify/functions/compare/v1.4.0...v1.5.0) (2023-05-09)
 
 
