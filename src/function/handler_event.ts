@@ -14,7 +14,7 @@ interface EventMultiValueQueryStringParameters {
   [name: string]: string[] | undefined
 }
 
-export interface Event {
+export interface HandlerEvent {
   rawUrl: string
   rawQuery: string
   path: string

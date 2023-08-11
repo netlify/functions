@@ -1,8 +1,8 @@
 import isPromise from 'is-promise'
 
 import { BuilderHandler, Handler, HandlerCallback } from '../function/handler.js'
+import { HandlerResponse, BuilderResponse } from '../function/handler_response.js'
 import { HandlerContext, HandlerEvent } from '../function/index.js'
-import { Response, BuilderResponse } from '../function/response.js'
 
 import { BUILDER_FUNCTIONS_FLAG, HTTP_STATUS_METHOD_NOT_ALLOWED, METADATA_VERSION } from './consts.js'
 
@@ -21,7 +21,7 @@ const augmentResponse = (response: BuilderResponse) => {
 const wrapHandler =
   (handler: BuilderHandler): Handler =>
   // eslint-disable-next-line promise/prefer-await-to-callbacks
-  (event: HandlerEvent, context: HandlerContext, callback?: HandlerCallback<Response>) => {
+  (event: HandlerEvent, context: HandlerContext, callback?: HandlerCallback<HandlerResponse>) => {
     if (event.httpMethod !== 'GET' && event.httpMethod !== 'HEAD') {
       return Promise.resolve({
         body: 'Method Not Allowed',

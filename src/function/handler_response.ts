@@ -1,6 +1,6 @@
 import type { PipelineSource } from 'node:stream'
 
-export interface Response {
+export interface HandlerResponse {
   statusCode: number
   headers?: {
     [header: string]: boolean | number | string
@@ -11,11 +11,11 @@ export interface Response {
   body?: string
   isBase64Encoded?: boolean
 }
-export interface BuilderResponse extends Response {
+export interface BuilderResponse extends HandlerResponse {
   ttl?: number
 }
 
-export interface StreamingResponse extends Omit<Response, 'body'> {
+export interface StreamingResponse extends Omit<HandlerResponse, 'body'> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   body?: string | PipelineSource<any>
 }
