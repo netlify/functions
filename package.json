@@ -52,6 +52,7 @@
     "test": "test"
   },
   "dependencies": {
+    "@netlify/serverless-functions-api": "1.6.0",
     "is-promise": "^4.0.0"
   },
   "devDependencies": {

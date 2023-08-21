@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // From https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-context.html.
-export interface Context {
+export interface HandlerContext {
   callbackWaitsForEmptyEventLoop: boolean
   functionName: string
   functionVersion: string
