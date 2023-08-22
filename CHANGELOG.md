@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/netlify/functions/compare/v2.0.0...v2.0.1) (2023-08-22)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @netlify/serverless-functions-api to v1.7.1 ([#416](https://github.com/netlify/functions/issues/416)) ([86b82d2](https://github.com/netlify/functions/commit/86b82d29e9e344b0b0cb7dfea2683e3da17df350))
+
 ## [2.0.0](https://github.com/netlify/functions/compare/v1.6.0...v2.0.0) (2023-08-22)
 
 
