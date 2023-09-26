@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/netlify/functions/compare/v2.0.2...v2.1.0) (2023-09-22)
+
+
+### Features
+
+* publish `Config` type ([#423](https://github.com/netlify/functions/issues/423)) ([392f177](https://github.com/netlify/functions/commit/392f177d3602883aec2d34c1906dc6896a32abfb))
+
 ## [2.0.2](https://github.com/netlify/functions/compare/v2.0.1...v2.0.2) (2023-08-23)
 
 
