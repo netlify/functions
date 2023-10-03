@@ -52,7 +52,7 @@
     "test": "test"
   },
   "dependencies": {
-    "@netlify/serverless-functions-api": "1.7.3",
+    "@netlify/serverless-functions-api": "1.8.0",
     "is-promise": "^4.0.0"
   },
   "devDependencies": {
