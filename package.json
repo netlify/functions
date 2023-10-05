@@ -6,7 +6,8 @@
   "description": "JavaScript utilities for Netlify Functions",
   "files": [
     "dist/**/*.js",
-    "dist/**/*.d.ts"
+    "dist/**/*.d.ts",
+    "types/**/*.d.ts"
   ],
   "scripts": {
     "build": "tsc",
