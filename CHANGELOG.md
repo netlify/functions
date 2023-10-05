@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.2.0](https://github.com/netlify/functions/compare/v2.1.0...v2.2.0) (2023-10-05)
+
+
+### Features
+
+* add ambient type declarations for Netlify.env ([#428](https://github.com/netlify/functions/issues/428)) ([88e3e7b](https://github.com/netlify/functions/commit/88e3e7b5c4c6fca42f5dcfd1bfa70449bc6803a9))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @netlify/serverless-functions-api to v1.8.0 ([#426](https://github.com/netlify/functions/issues/426)) ([3270f5f](https://github.com/netlify/functions/commit/3270f5f7823aef8f27e62ab39322514481b7b171))
+
 ## [2.1.0](https://github.com/netlify/functions/compare/v2.0.2...v2.1.0) (2023-09-22)
 
 
