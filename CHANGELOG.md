@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.1](https://github.com/netlify/functions/compare/v2.2.0...v2.2.1) (2023-10-06)
+
+
+### Bug Fixes
+
+* fixes the ambient declarations on import ([#429](https://github.com/netlify/functions/issues/429)) ([271a255](https://github.com/netlify/functions/commit/271a255cc69bbdf75036c9932544b2820aa865e8))
+
 ## [2.2.0](https://github.com/netlify/functions/compare/v2.1.0...v2.2.0) (2023-10-05)
 
 
