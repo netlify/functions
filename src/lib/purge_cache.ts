@@ -22,7 +22,7 @@ export const purgeCache = ({ tags, ...overrides }: PurgeCacheOptions) => {
     )
   }
 
-  const token = env.NETLIFY_PURGE_TOKEN_1 || overrides.token
+  const token = env.NETLIFY_PURGE_API_TOKEN || overrides.token
 
   if (!token) {
     throw new Error(
