@@ -30,7 +30,7 @@ interface PurgeAPIPayload {
   site_slug?: string
 }
 
-export const purgeCache = (options: PurgeCacheOptions = {}) => {
+export const purgeCache = async (options: PurgeCacheOptions = {}) => {
   if (globalThis.fetch === undefined) {
     throw new Error(
       "`fetch` is not available. Please ensure you're using Node.js version 18.0.0 or above. Refer to https://ntl.fyi/functions-runtime for more information.",
@@ -71,8 +71,7 @@ export const purgeCache = (options: PurgeCacheOptions = {}) => {
   }
 
   const apiURL = options.apiURL || 'https://api.netlify.com'
-
-  return fetch(`${apiURL}/api/v1/purge`, {
+  const response = await fetch(`${apiURL}/api/v1/purge`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json; charset=utf8',
@@ -80,4 +79,8 @@ export const purgeCache = (options: PurgeCacheOptions = {}) => {
     },
     body: JSON.stringify(payload),
   })
+
+  if (!response.ok) {
+    throw new Error(`Cache purge API call returned an unexpected status code: ${response.status}`)
+  }
 }
