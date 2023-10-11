@@ -24,7 +24,7 @@ export const purgeCache = ({ tags, ...overrides }: PurgeCacheOptions) => {
 
   const token = env.NETLIFY_PURGE_TOKEN_1 || overrides.token
 
-  if (!siteID) {
+  if (!token) {
     throw new Error(
       'The cache purge API token was not found in the execution environment. Please supply it manually using the `token` property.',
     )
