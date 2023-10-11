@@ -2,17 +2,16 @@ import { env } from 'process'
 
 interface BasePurgeCacheOptions {
   apiURL?: string
+  deployAlias?: string
   tags?: string[]
   token?: string
 }
 
 interface PurgeCacheOptionsWithSiteID extends BasePurgeCacheOptions {
-  deployAlias?: string
   siteID?: string
 }
 
 interface PurgeCacheOptionsWithSiteSlug extends BasePurgeCacheOptions {
-  deployAlias?: string
   siteSlug: string
 }
 
@@ -39,29 +38,26 @@ export const purgeCache = async (options: PurgeCacheOptions = {}) => {
 
   const payload: PurgeAPIPayload = {
     cache_tags: options.tags,
-    site_id: env.SITE_ID,
+    deploy_alias: options.deployAlias,
   }
   const token = env.NETLIFY_PURGE_API_TOKEN || options.token
 
   if ('siteSlug' in options) {
-    payload.deploy_alias = options.deployAlias
     payload.site_slug = options.siteSlug
   } else if ('domain' in options) {
     payload.domain = options.domain
   } else {
     // The `siteID` from `options` takes precedence over the one from the
     // environment.
-    if (options.siteID) {
-      payload.site_id = options.siteID
+    const siteID = options.siteID || env.SITE_ID
+
+    if (!siteID) {
+      throw new Error(
+        'The Netlify site ID was not found in the execution environment. Please supply it manually using the `siteID` property.',
+      )
     }
 
-    payload.deploy_alias = options.deployAlias
-  }
-
-  if (!payload.site_id) {
-    throw new Error(
-      'The Netlify site ID was not found in the execution environment. Please supply it manually using the `siteID` property.',
-    )
+    payload.site_id = siteID
   }
 
   if (!token) {
