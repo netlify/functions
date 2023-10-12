@@ -1,12 +1,14 @@
 const process = require('process')
 
 const test = require('ava')
+const semver = require('semver')
 
 const { purgeCache } = require('../../dist/lib/purge_cache')
 const { invokeLambda } = require('../helpers/main')
 const MockFetch = require('../helpers/mock_fetch')
 
 const globalFetch = globalThis.fetch
+const hasFetchAPI = semver.gte(process.version, '18.0.0')
 
 test.beforeEach(() => {
   delete process.env.NETLIFY_PURGE_API_TOKEN
@@ -18,6 +20,12 @@ test.afterEach(() => {
 })
 
 test.serial('Calls the purge API endpoint and returns `undefined` if the operation was successful', async (t) => {
+  if (!hasFetchAPI) {
+    console.warn('Skipping test requires the fetch API')
+
+    return t.pass()
+  }
+
   const mockSiteID = '123456789'
   const mockToken = '1q2w3e4r5t6y7u8i9o0p'
 
@@ -48,6 +56,12 @@ test.serial('Calls the purge API endpoint and returns `undefined` if the operati
 })
 
 test.serial('Throws if the API response does not have a successful status code', async (t) => {
+  if (!hasFetchAPI) {
+    console.warn('Skipping test requires the fetch API')
+
+    return t.pass()
+  }
+
   const mockSiteID = '123456789'
   const mockToken = '1q2w3e4r5t6y7u8i9o0p'
 
