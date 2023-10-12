@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.3.0](https://github.com/netlify/functions/compare/v2.2.1...v2.3.0) (2023-10-12)
+
+
+### Features
+
+* add `purgeCache` helper ([#433](https://github.com/netlify/functions/issues/433)) ([f6098c0](https://github.com/netlify/functions/commit/f6098c066de33db09139a9dfe849b8e4876648c8))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @netlify/serverless-functions-api to v1.9.0 ([#431](https://github.com/netlify/functions/issues/431)) ([82f6c12](https://github.com/netlify/functions/commit/82f6c12fe19d143d86603c9558983ba87d010104))
+
 ## [2.2.1](https://github.com/netlify/functions/compare/v2.2.0...v2.2.1) (2023-10-06)
 
 
