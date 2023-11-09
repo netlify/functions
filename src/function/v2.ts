@@ -22,6 +22,8 @@ interface ConfigWithPath extends BaseConfig {
   /**
    * One or more URL paths for which the function will run. Paths must begin
    * with a forward slash.
+   *
+   * {@link} https://ntl.fyi/func-routing
    */
   path: Path | Path[]
 
