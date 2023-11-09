@@ -25,7 +25,7 @@ interface ConfigWithPath extends BaseConfig {
    *
    * {@link} https://ntl.fyi/func-routing
    */
-  path: Path | Path[]
+  path?: Path | Path[]
 
   schedule?: never
 }
