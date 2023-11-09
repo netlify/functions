@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.4.0](https://github.com/netlify/functions/compare/v2.3.0...v2.4.0) (2023-11-09)
+
+
+### Features
+
+* add `preferStatic` type to config ([#443](https://github.com/netlify/functions/issues/443)) ([9abc987](https://github.com/netlify/functions/commit/9abc9877d91257cfb7c5c51cdffd68864dcafd21))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @netlify/serverless-functions-api to v1.10.0 ([#437](https://github.com/netlify/functions/issues/437)) ([9f0de91](https://github.com/netlify/functions/commit/9f0de918c110625cb9f8c2286ae5d12bc934c962))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.10.1 ([#438](https://github.com/netlify/functions/issues/438)) ([c8551b9](https://github.com/netlify/functions/commit/c8551b97b14457c787581c18dcaad4bab47da0ef))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.11.0 ([#442](https://github.com/netlify/functions/issues/442)) ([d558f36](https://github.com/netlify/functions/commit/d558f3684cab4b7a2fcb84ab08bd93a4b1e91404))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.9.1 ([#434](https://github.com/netlify/functions/issues/434)) ([3f0b712](https://github.com/netlify/functions/commit/3f0b712e0576156043be1f22f4288cd99da5317e))
+
 ## [2.3.0](https://github.com/netlify/functions/compare/v2.2.1...v2.3.0) (2023-10-12)
 
 
