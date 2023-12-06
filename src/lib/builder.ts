@@ -1,10 +1,17 @@
-import isPromise from 'is-promise'
-
 import { BuilderHandler, Handler, HandlerCallback } from '../function/handler.js'
 import { HandlerResponse, BuilderResponse } from '../function/handler_response.js'
 import { HandlerContext, HandlerEvent } from '../function/index.js'
 
 import { BUILDER_FUNCTIONS_FLAG, HTTP_STATUS_METHOD_NOT_ALLOWED, METADATA_VERSION } from './consts.js'
+
+// stolen from https://github.com/then/is-promise/blob/master/index.mjs
+const isPromise = (obj: unknown): obj is Promise<unknown> =>
+  Boolean(obj) &&
+  (typeof obj === 'object' || typeof obj === 'function') &&
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  'then' in obj! &&
+  // eslint-disable-next-line promise/prefer-await-to-then
+  typeof obj.then === 'function'
 
 const augmentResponse = (response: BuilderResponse) => {
   if (!response) {

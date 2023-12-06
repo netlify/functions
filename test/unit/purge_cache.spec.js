@@ -1,29 +1,28 @@
-const process = require('process')
+import process from 'process'
 
-const test = require('ava')
-const semver = require('semver')
+import semver from 'semver'
+import { test, beforeEach, afterEach } from 'vitest'
 
-const { purgeCache } = require('../../dist/lib/purge_cache')
-const { invokeLambda } = require('../helpers/main')
-const MockFetch = require('../helpers/mock_fetch')
+import { purgeCache } from '../../src/main.ts'
+import { invokeLambda } from '../helpers/main.js'
+import MockFetch from '../helpers/mock_fetch.js'
 
 const globalFetch = globalThis.fetch
 const hasFetchAPI = semver.gte(process.version, '18.0.0')
 
-test.beforeEach(() => {
+beforeEach(() => {
   delete process.env.NETLIFY_PURGE_API_TOKEN
   delete process.env.SITE_ID
 })
 
-test.afterEach(() => {
+afterEach(() => {
   globalThis.fetch = globalFetch
 })
 
-test.serial('Calls the purge API endpoint and returns `undefined` if the operation was successful', async (t) => {
+test.sequential('Calls the purge API endpoint and returns `undefined` if the operation was successful', async (t) => {
   if (!hasFetchAPI) {
     console.warn('Skipping test requires the fetch API')
-
-    return t.pass()
+    return t.skip()
   }
 
   const mockSiteID = '123456789'
@@ -36,7 +35,7 @@ test.serial('Calls the purge API endpoint and returns `undefined` if the operati
     body: (payload) => {
       const data = JSON.parse(payload)
 
-      t.is(data.site_id, mockSiteID)
+      t.expect(data.site_id).toEqual(mockSiteID)
     },
     headers: { Authorization: `Bearer ${mockToken}` },
     method: 'post',
@@ -51,15 +50,15 @@ test.serial('Calls the purge API endpoint and returns `undefined` if the operati
 
   const response = await invokeLambda(myFunction)
 
-  t.is(response, undefined)
-  t.true(mockAPI.fulfilled)
+  t.expect(response).toBeUndefined()
+  t.expect(mockAPI.fulfilled).toBe(true)
 })
 
-test.serial('Throws if the API response does not have a successful status code', async (t) => {
+test.sequential('Throws if the API response does not have a successful status code', async (t) => {
   if (!hasFetchAPI) {
     console.warn('Skipping test requires the fetch API')
 
-    return t.pass()
+    return t.skip()
   }
 
   const mockSiteID = '123456789'
@@ -72,7 +71,7 @@ test.serial('Throws if the API response does not have a successful status code',
     body: (payload) => {
       const data = JSON.parse(payload)
 
-      t.is(data.site_id, mockSiteID)
+      t.expect(data.site_id).toEqual(mockSiteID)
     },
     headers: { Authorization: `Bearer ${mockToken}` },
     method: 'post',
@@ -85,8 +84,7 @@ test.serial('Throws if the API response does not have a successful status code',
 
   globalThis.fetch = mockAPI.fetcher
 
-  await t.throwsAsync(
-    async () => await invokeLambda(myFunction),
-    'Cache purge API call returned an unexpected status code: 500',
-  )
+  await t
+    .expect(async () => await invokeLambda(myFunction))
+    .rejects.toThrowError('Cache purge API call returned an unexpected status code: 500')
 })

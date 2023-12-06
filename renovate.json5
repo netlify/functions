@@ -3,16 +3,5 @@
   ignorePresets: [':prHourlyLimit2'],
   semanticCommits: true,
   masterIssue: true,
-  automerge: true,
-  packageRules: [
-    {
-      // Those cannot be upgraded to a major version until we drop support for Node 8
-      packageNames: [
-        'ava',
-      ],
-      major: {
-        enabled: false,
-      },
-    },
-  ],
+  automerge: true
 }
