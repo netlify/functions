@@ -1,7 +1,7 @@
-const test = require('ava')
+import { test } from 'vitest'
 
-const { builder } = require('../../dist/lib/builder')
-const { invokeLambda } = require('../helpers/main')
+import { builder } from '../../src/main.ts'
+import { invokeLambda } from '../helpers/main.js'
 
 const METADATA_OBJECT = { metadata: { version: 1, builder_function: true, ttl: 0 } }
 
@@ -22,7 +22,7 @@ test('Injects the metadata object into an asynchronous handler', async (t) => {
   }
   const response = await invokeLambda(builder(myHandler))
 
-  t.deepEqual(response, { ...originalResponse, metadata: { version: 1, builder_function: true, ttl: 3600 } })
+  t.expect(response).toEqual({ ...originalResponse, metadata: { version: 1, builder_function: true, ttl: 3600 } })
 })
 
 test('Injects the metadata object into a synchronous handler', async (t) => {
@@ -35,7 +35,7 @@ test('Injects the metadata object into a synchronous handler', async (t) => {
   }
   const response = await invokeLambda(builder(myHandler))
 
-  t.deepEqual(response, { ...originalResponse, ...METADATA_OBJECT })
+  t.expect(response).toEqual({ ...originalResponse, ...METADATA_OBJECT })
 })
 
 test('Injects the metadata object for non-200 responses', async (t) => {
@@ -54,7 +54,7 @@ test('Injects the metadata object for non-200 responses', async (t) => {
   }
   const response = await invokeLambda(builder(myHandler))
 
-  t.deepEqual(response, { ...originalResponse, ...METADATA_OBJECT })
+  t.expect(response).toEqual({ ...originalResponse, ...METADATA_OBJECT })
 })
 
 test('Returns a 405 error for requests using the POST method', async (t) => {
@@ -73,7 +73,7 @@ test('Returns a 405 error for requests using the POST method', async (t) => {
   }
   const response = await invokeLambda(builder(myHandler), { method: 'POST' })
 
-  t.deepEqual(response, { body: 'Method Not Allowed', statusCode: 405 })
+  t.expect(response).toEqual({ body: 'Method Not Allowed', statusCode: 405 })
 })
 
 test('Returns a 405 error for requests using the PUT method', async (t) => {
@@ -92,7 +92,7 @@ test('Returns a 405 error for requests using the PUT method', async (t) => {
   }
   const response = await invokeLambda(builder(myHandler), { method: 'PUT' })
 
-  t.deepEqual(response, { body: 'Method Not Allowed', statusCode: 405 })
+  t.expect(response).toEqual({ body: 'Method Not Allowed', statusCode: 405 })
 })
 
 test('Returns a 405 error for requests using the DELETE method', async (t) => {
@@ -111,7 +111,7 @@ test('Returns a 405 error for requests using the DELETE method', async (t) => {
   }
   const response = await invokeLambda(builder(myHandler), { method: 'DELETE' })
 
-  t.deepEqual(response, { body: 'Method Not Allowed', statusCode: 405 })
+  t.expect(response).toEqual({ body: 'Method Not Allowed', statusCode: 405 })
 })
 
 test('Returns a 405 error for requests using the PATCH method', async (t) => {
@@ -130,7 +130,7 @@ test('Returns a 405 error for requests using the PATCH method', async (t) => {
   }
   const response = await invokeLambda(builder(myHandler), { method: 'PATCH' })
 
-  t.deepEqual(response, { body: 'Method Not Allowed', statusCode: 405 })
+  t.expect(response).toEqual({ body: 'Method Not Allowed', statusCode: 405 })
 })
 
 test('Preserves errors thrown inside the wrapped handler', async (t) => {
@@ -148,7 +148,7 @@ test('Preserves errors thrown inside the wrapped handler', async (t) => {
     throw error
   }
 
-  await t.throwsAsync(invokeLambda(builder(myHandler)), { is: error })
+  await t.expect(() => invokeLambda(builder(myHandler))).rejects.toEqual(error)
 })
 
 test('Does not pass query parameters to the wrapped handler', async (t) => {
@@ -158,8 +158,8 @@ test('Does not pass query parameters to the wrapped handler', async (t) => {
   }
   // eslint-disable-next-line require-await
   const myHandler = async (event) => {
-    t.deepEqual(event.multiValueQueryStringParameters, {})
-    t.deepEqual(event.queryStringParameters, {})
+    t.expect(event.multiValueQueryStringParameters).toEqual({})
+    t.expect(event.queryStringParameters).toEqual({})
 
     return originalResponse
   }
@@ -170,5 +170,5 @@ test('Does not pass query parameters to the wrapped handler', async (t) => {
     queryStringParameters,
   })
 
-  t.deepEqual(response, { ...originalResponse, ...METADATA_OBJECT })
+  t.expect(response).toEqual({ ...originalResponse, ...METADATA_OBJECT })
 })
