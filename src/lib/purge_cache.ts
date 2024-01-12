@@ -4,6 +4,7 @@ interface BasePurgeCacheOptions {
   apiURL?: string
   deployAlias?: string
   tags?: string[]
+  ids?: string[]
   token?: string
 }
 
@@ -23,6 +24,7 @@ type PurgeCacheOptions = PurgeCacheOptionsWithSiteID | PurgeCacheOptionsWithSite
 
 interface PurgeAPIPayload {
   cache_tags?: string[]
+  cache_ids?: string[]
   deploy_alias?: string
   domain?: string
   site_id?: string
@@ -38,6 +40,7 @@ export const purgeCache = async (options: PurgeCacheOptions = {}) => {
 
   const payload: PurgeAPIPayload = {
     cache_tags: options.tags,
+    cache_ids: options.ids,
     deploy_alias: options.deployAlias,
   }
   const token = env.NETLIFY_PURGE_API_TOKEN || options.token
