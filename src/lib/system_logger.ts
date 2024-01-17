@@ -72,18 +72,6 @@ class SystemLogger {
 
     return this.withFields(fields)
   }
-
-  withRequest(req: Request) {
-    // proxy automatically adds the request ID to the logs,
-    // so we don't need to care about it here
-
-    const debug = req.headers.has('x-nf-debug-logging')
-    if (debug) {
-      return this.withLogLevel(LogLevel.Debug)
-    }
-
-    return this
-  }
 }
 
 export const systemLogger = new SystemLogger()
