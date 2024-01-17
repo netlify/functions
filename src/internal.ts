@@ -2,4 +2,4 @@
 // and only meant for consumption by Netlify Teams.
 // While we try to adhere to semver, this file is not considered part of the public API.
 
-export { systemLogger, LogLevel } from "./lib/system_logger.js"
+export { systemLogger, LogLevel } from './lib/system_logger.js'
