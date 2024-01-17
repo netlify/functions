@@ -1,8 +1,15 @@
+const { version } = require('process')
+
 const test = require('ava')
 
 const { systemLogger, LogLevel } = require('../../dist/internal')
 
 test('Log Level', (t) => {
+  // Request is not available in Node 14
+  if (version.startsWith('v14')) {
+    return t.pass()
+  }
+
   const originalLog = console.info
   const originalDebug = console.debug
 
@@ -17,9 +24,7 @@ test('Log Level', (t) => {
   systemLogger.withLogLevel(LogLevel.Debug).debug('hello!')
   t.is(debugLogs.length, 1)
 
-  systemLogger
-    .withRequest(new Request('https://example.com'))
-    .debug('hello!')
+  systemLogger.withRequest(new Request('https://example.com')).debug('hello!')
   t.is(debugLogs.length, 1)
 
   systemLogger
@@ -27,9 +32,7 @@ test('Log Level', (t) => {
     .debug('hello!')
   t.is(debugLogs.length, 2)
 
-  systemLogger
-    .withLogLevel(LogLevel.Info)
-    .debug('hello!')
+  systemLogger.withLogLevel(LogLevel.Info).debug('hello!')
   t.is(debugLogs.length, 2)
 
   console.info = originalLog
