@@ -10,6 +10,8 @@ const serializeError = (error: Error): Record<string, unknown> => {
   }
 }
 
+// eslint pretends there's a different enum at the same place - it's wrong!
+// eslint-disable-next-line no-shadow
 export enum LogLevel {
   Debug = 1,
   Info,
