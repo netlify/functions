@@ -24,14 +24,9 @@ class SystemLogger {
   constructor(
     private readonly fields: Record<string, unknown> = {},
     private readonly logLevel = LogLevel.Info,
-    private readonly samplingRate = 1,
   ) {}
 
   private doLog(logger: typeof console.log, message: string) {
-    if (this.samplingRate < 1 && Math.random() > this.samplingRate) {
-      return
-    }
-
     logger(systemLogTag, JSON.stringify({ msg: message, fields: this.fields }))
   }
 
@@ -75,11 +70,7 @@ class SystemLogger {
   }
 
   withLogLevel(level: LogLevel) {
-    return new SystemLogger(this.fields, level, this.samplingRate)
-  }
-
-  withSamplingRate(rate: number) {
-    return new SystemLogger(this.fields, this.logLevel, rate)
+    return new SystemLogger(this.fields, level)
   }
 
   withFields(fields: Record<string, unknown>) {
@@ -89,7 +80,6 @@ class SystemLogger {
         ...fields,
       },
       this.logLevel,
-      this.samplingRate,
     )
   }
 

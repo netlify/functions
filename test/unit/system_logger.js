@@ -54,25 +54,3 @@ test('Fields', (t) => {
 
   console.info = originalLog
 })
-
-test('Sampling', (t) => {
-  const originalLog = console.info
-  const logs = []
-  console.info = (...message) => logs.push(message)
-  let randomValue = 0.5
-  const originalRandom = Math.random
-  Math.random = () => randomValue
-
-  systemLogger.withSamplingRate(0.6).log('hello!')
-  t.is(logs.length, 1)
-
-  systemLogger.withSamplingRate(0.3).log('hello!')
-  t.is(logs.length, 1)
-
-  randomValue = 0.2
-  systemLogger.withSamplingRate(0.3).log('hello!')
-  t.is(logs.length, 2)
-
-  Math.random = originalRandom
-  console.info = originalLog
-})
