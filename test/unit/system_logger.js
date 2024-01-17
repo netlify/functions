@@ -10,12 +10,9 @@ test('Log Level', (t) => {
     return t.pass()
   }
 
-  const originalLog = console.info
   const originalDebug = console.debug
 
-  const infoLogs = []
   const debugLogs = []
-  console.info = (...message) => infoLogs.push(message)
   console.debug = (...message) => debugLogs.push(message)
 
   systemLogger.debug('hello!')
@@ -32,17 +29,16 @@ test('Log Level', (t) => {
     .debug('hello!')
   t.is(debugLogs.length, 2)
 
-  systemLogger.withLogLevel(LogLevel.Info).debug('hello!')
+  systemLogger.withLogLevel(LogLevel.Log).debug('hello!')
   t.is(debugLogs.length, 2)
 
-  console.info = originalLog
   console.debug = originalDebug
 })
 
 test('Fields', (t) => {
-  const originalLog = console.info
+  const originalLog = console.log
   const logs = []
-  console.info = (...message) => logs.push(message)
+  console.log = (...message) => logs.push(message)
   systemLogger.withError(new Error('boom')).withFields({ foo: 'bar' }).log('hello!')
   t.is(logs.length, 1)
   t.is(logs[0][0], '__nfSystemLog')
@@ -52,5 +48,5 @@ test('Fields', (t) => {
   t.is(log.fields.error, 'boom')
   t.is(log.fields.error_stack.split('\n').length > 2, true)
 
-  console.info = originalLog
+  console.log = originalLog
 })

@@ -14,8 +14,7 @@ const serializeError = (error: Error): Record<string, unknown> => {
 // eslint-disable-next-line no-shadow
 export enum LogLevel {
   Debug = 1,
-  Info,
-  Warn,
+  Log,
   Error,
 }
 
@@ -23,26 +22,19 @@ class SystemLogger {
   // eslint-disable-next-line no-useless-constructor
   constructor(
     private readonly fields: Record<string, unknown> = {},
-    private readonly logLevel = LogLevel.Info,
+    private readonly logLevel = LogLevel.Log,
   ) {}
 
   private doLog(logger: typeof console.log, message: string) {
     logger(systemLogTag, JSON.stringify({ msg: message, fields: this.fields }))
   }
 
-  /**
-   * Alias for .info
-   */
   log(message: string) {
-    this.info(message)
-  }
-
-  info(message: string) {
-    if (this.logLevel > LogLevel.Info) {
+    if (this.logLevel > LogLevel.Log) {
       return
     }
 
-    this.doLog(console.info, message)
+    this.doLog(console.log, message)
   }
 
   debug(message: string) {
@@ -51,14 +43,6 @@ class SystemLogger {
     }
 
     this.doLog(console.debug, message)
-  }
-
-  warn(message: string) {
-    if (this.logLevel > LogLevel.Warn) {
-      return
-    }
-
-    this.doLog(console.warn, message)
   }
 
   error(message: string) {
