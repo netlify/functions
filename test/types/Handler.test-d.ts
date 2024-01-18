@@ -1,4 +1,4 @@
-import { expectError } from 'tsd'
+import { expectAssignable, expectError } from 'tsd'
 
 import { Handler } from '../../src/main.js'
 
@@ -9,3 +9,9 @@ expectError(() => {
     // void
   }
 })
+
+expectAssignable<Handler>(() => Promise.resolve({ statusCode: 200 }));
+
+expectAssignable<Handler>(() => Promise.resolve(new Response("hello")));
+
+expectError<Handler>(() => Promise.resolve({ missing: "status code" }));
