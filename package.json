@@ -9,10 +9,6 @@
     "dist/**/*.d.ts",
     "types/**/*.d.ts"
   ],
-  "exports": {
-    ".": "./dist/main.js",
-    "./internal": "./dist/internal.js"
-  },
   "scripts": {
     "build": "tsc",
     "prepare": "husky install node_modules/@netlify/eslint-config-node/.husky/",
