@@ -19,8 +19,13 @@ export enum LogLevel {
 }
 
 class SystemLogger {
-  // eslint-disable-next-line no-useless-constructor
-  constructor(private readonly fields: Record<string, unknown> = {}, private readonly logLevel = LogLevel.Log) {}
+  private readonly fields: Record<string, unknown>
+  private readonly logLevel: LogLevel
+
+  constructor(fields: Record<string, unknown> = {}, logLevel = LogLevel.Log) {
+    this.fields = fields
+    this.logLevel = logLevel
+  }
 
   private doLog(logger: typeof console.log, message: string) {
     logger(systemLogTag, JSON.stringify({ msg: message, fields: this.fields }))
