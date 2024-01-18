@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.5.0](https://github.com/netlify/functions/compare/v2.4.1...v2.5.0) (2024-01-18)
+
+
+### Features
+
+* add system logger ([#457](https://github.com/netlify/functions/issues/457)) ([f09ddc4](https://github.com/netlify/functions/commit/f09ddc44933156ca7f6b67b4c93e41c15c31c3bb))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @netlify/serverless-functions-api to v1.13.0 ([#451](https://github.com/netlify/functions/issues/451)) ([d15b673](https://github.com/netlify/functions/commit/d15b6737131e3b1c67e54e8129937aea924e7c64))
+
 ## [2.4.1](https://github.com/netlify/functions/compare/v2.4.0...v2.4.1) (2023-12-12)
 
 
