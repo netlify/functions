@@ -1,29 +1,44 @@
-const process = require("process")
-
 const test = require('ava')
 
 const { systemLogger, LogLevel } = require('../../dist/internal')
 
-test('Log Level', (t) => {
-  const originalDebug = console.debug
+const consoleDebug = console.debug
+const consoleError = console.error
+const consoleLog = console.log
 
-  const debugLogs = []
-  console.debug = (...message) => debugLogs.push(message)
+test.afterEach(() => {
+  console.debug = consoleDebug
+  console.error = consoleError
+  console.log = consoleLog
+})
 
-  systemLogger.debug('hello!')
-  t.is(debugLogs.length, 0)
+test('Log levels', (t) => {
+  const logs = {
+    debug: [],
+    error: [],
+    log: [],
+  }
+  console.debug = (...message) => logs.debug.push(message)
+  console.error = (...message) => logs.error.push(message)
+  console.log = (...message) => logs.log.push(message)
 
-  systemLogger.withLogLevel(LogLevel.Debug).debug('hello!')
-  t.is(debugLogs.length, 1)
+  systemLogger.debug('debug 1')
+  t.is(logs.debug.length, 0)
 
-  systemLogger.withLogLevel(LogLevel.Log).debug('hello!')
-  t.is(debugLogs.length, 1)
+  systemLogger.log('log 1')
+  t.is(logs.log.length, 1)
 
-  console.debug = originalDebug
+  systemLogger.withLogLevel(LogLevel.Debug).debug('debug 2')
+  t.is(logs.debug.length, 1)
+
+  systemLogger.withLogLevel(LogLevel.Debug).error('error 1')
+  t.is(logs.error.length, 1)
+
+  systemLogger.withLogLevel(LogLevel.None).error('error 2')
+  t.is(logs.error.length, 1)
 })
 
 test('Fields', (t) => {
-  const originalLog = console.log
   const logs = []
   console.log = (...message) => logs.push(message)
   systemLogger.withError(new Error('boom')).withFields({ foo: 'bar' }).log('hello!')
@@ -34,26 +49,4 @@ test('Fields', (t) => {
   t.is(log.fields.foo, 'bar')
   t.is(log.fields.error, 'boom')
   t.is(log.fields.error_stack.split('\n').length > 2, true)
-
-  console.log = originalLog
-})
-
-test('Local Dev', (t) => {
-  const originalLog = console.log
-  const logs = []
-  console.log = (...message) => logs.push(message)
-  systemLogger.log('hello!')
-  t.is(logs.length, 1)
-
-  process.env.NETLIFY_DEV= "true"
-  systemLogger.log('hello!')
-  t.is(logs.length, 1)
-
-  process.env.NETLIFY_ENABLE_SYSTEM_LOGGING= "true"
-  systemLogger.log('hello!')
-  t.is(logs.length, 2)
-
-  delete process.env.NETLIFY_DEV
-  delete process.env.NETLIFY_ENABLE_SYSTEM_LOGGING
-  console.log = originalLog
 })

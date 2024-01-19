@@ -18,6 +18,7 @@ export enum LogLevel {
   Debug = 1,
   Log,
   Error,
+  Silent = Infinity,
 }
 
 class SystemLogger {
@@ -30,10 +31,6 @@ class SystemLogger {
   }
 
   private doLog(logger: typeof console.log, message: string) {
-    if (env.NETLIFY_DEV && !env.NETLIFY_ENABLE_SYSTEM_LOGGING) {
-      return
-    }
-
     logger(systemLogTag, JSON.stringify({ msg: message, fields: this.fields }))
   }
 
