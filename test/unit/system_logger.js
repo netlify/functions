@@ -1,6 +1,6 @@
 const test = require('ava')
 
-const { systemLogger, LogLevel } = require('../../dist/internal')
+const { systemLogger, LogLevel, StructuredLogger } = require('../../dist/internal')
 
 const consoleDebug = console.debug
 const consoleError = console.error
@@ -34,7 +34,7 @@ test('Log levels', (t) => {
   systemLogger.withLogLevel(LogLevel.Debug).error('error 1')
   t.is(logs.error.length, 1)
 
-  systemLogger.withLogLevel(LogLevel.None).error('error 2')
+  systemLogger.withLogLevel(LogLevel.Silent).error('error 2')
   t.is(logs.error.length, 1)
 })
 
@@ -49,4 +49,49 @@ test('Fields', (t) => {
   t.is(log.fields.foo, 'bar')
   t.is(log.fields.error, 'boom')
   t.is(log.fields.error_stack.split('\n').length > 2, true)
+  t.is(log.level, 'log')
+})
+
+test('Accepts a custom raw logger', (t) => {
+  const logs = {
+    debug: [],
+    error: [],
+    log: [],
+  }
+  console.debug = () => {
+    throw new Error('Unexpected `console.debug` call')
+  }
+  console.error = () => {
+    throw new Error('Unexpected `console.error` call')
+  }
+  console.log = () => {
+    throw new Error('Unexpected `console.log` call')
+  }
+  const rawLogger = (tag, payload) => {
+    t.is(tag, '__nfSystemLog')
+
+    const { msg, fields, level } = JSON.parse(payload)
+    const bucket = logs[level]
+
+    t.truthy(bucket)
+
+    bucket.push({ fields, msg })
+  }
+
+  const logger = new StructuredLogger(LogLevel.Log, rawLogger, {})
+
+  logger.debug('debug 1')
+  t.is(logs.debug.length, 0)
+
+  logger.log('log 1')
+  t.is(logs.log.length, 1)
+
+  logger.withLogLevel(LogLevel.Debug).debug('debug 2')
+  t.is(logs.debug.length, 1)
+
+  logger.withLogLevel(LogLevel.Debug).error('error 1')
+  t.is(logs.error.length, 1)
+
+  logger.withLogLevel(LogLevel.Silent).error('error 2')
+  t.is(logs.error.length, 1)
 })

@@ -1,5 +1,3 @@
-import { env } from 'process'
-
 const systemLogTag = '__nfSystemLog'
 
 const serializeError = (error: Error): Record<string, unknown> => {
@@ -18,20 +16,26 @@ export enum LogLevel {
   Debug = 1,
   Log,
   Error,
-  Silent = Infinity,
+  Silent = Number.POSITIVE_INFINITY,
 }
 
-class SystemLogger {
+type RawLogger = (...data: unknown[]) => void
+
+export class StructuredLogger {
   private readonly fields: Record<string, unknown>
   private readonly logLevel: LogLevel
+  private readonly rawLogger?: RawLogger
 
-  constructor(fields: Record<string, unknown> = {}, logLevel = LogLevel.Log) {
+  constructor(logLevel: LogLevel, rawLogger?: RawLogger, fields: Record<string, unknown> = {}) {
     this.fields = fields
     this.logLevel = logLevel
+    this.rawLogger = rawLogger
   }
 
-  private doLog(logger: typeof console.log, message: string) {
-    logger(systemLogTag, JSON.stringify({ msg: message, fields: this.fields }))
+  private doLog(message: string, level: string, defaultLogger: RawLogger) {
+    const logger = this.rawLogger ?? defaultLogger
+
+    logger(systemLogTag, JSON.stringify({ msg: message, fields: this.fields, level }))
   }
 
   log(message: string) {
@@ -39,7 +43,7 @@ class SystemLogger {
       return
     }
 
-    this.doLog(console.log, message)
+    this.doLog(message, 'log', console.log)
   }
 
   debug(message: string) {
@@ -47,7 +51,7 @@ class SystemLogger {
       return
     }
 
-    this.doLog(console.debug, message)
+    this.doLog(message, 'debug', console.debug)
   }
 
   error(message: string) {
@@ -55,21 +59,18 @@ class SystemLogger {
       return
     }
 
-    this.doLog(console.error, message)
+    this.doLog(message, 'error', console.error)
   }
 
   withLogLevel(level: LogLevel) {
-    return new SystemLogger(this.fields, level)
+    return new StructuredLogger(level, this.rawLogger, this.fields)
   }
 
   withFields(fields: Record<string, unknown>) {
-    return new SystemLogger(
-      {
-        ...this.fields,
-        ...fields,
-      },
-      this.logLevel,
-    )
+    return new StructuredLogger(this.logLevel, this.rawLogger, {
+      ...this.fields,
+      ...fields,
+    })
   }
 
   withError(error: unknown) {
@@ -79,4 +80,4 @@ class SystemLogger {
   }
 }
 
-export const systemLogger = new SystemLogger()
+export const systemLogger = new StructuredLogger(LogLevel.Log)
