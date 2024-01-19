@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.1](https://github.com/netlify/functions/compare/v2.5.0...v2.5.1) (2024-01-19)
+
+
+### Bug Fixes
+
+* mute system logger in local dev ([#458](https://github.com/netlify/functions/issues/458)) ([f4429db](https://github.com/netlify/functions/commit/f4429dba6ce45663a9d3898d1afe83cc9fa184fa))
+
 ## [2.5.0](https://github.com/netlify/functions/compare/v2.4.1...v2.5.0) (2024-01-18)
 
 
