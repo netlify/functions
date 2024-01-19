@@ -1,3 +1,5 @@
+const process = require("process")
+
 const test = require('ava')
 
 const { systemLogger, LogLevel } = require('../../dist/internal')
@@ -33,5 +35,25 @@ test('Fields', (t) => {
   t.is(log.fields.error, 'boom')
   t.is(log.fields.error_stack.split('\n').length > 2, true)
 
+  console.log = originalLog
+})
+
+test('Local Dev', (t) => {
+  const originalLog = console.log
+  const logs = []
+  console.log = (...message) => logs.push(message)
+  systemLogger.log('hello!')
+  t.is(logs.length, 1)
+
+  process.env.NETLIFY_DEV= "true"
+  systemLogger.log('hello!')
+  t.is(logs.length, 1)
+
+  process.env.NETLIFY_ENABLE_SYSTEM_LOGGING= "true"
+  systemLogger.log('hello!')
+  t.is(logs.length, 2)
+
+  delete process.env.NETLIFY_DEV
+  delete process.env.NETLIFY_ENABLE_SYSTEM_LOGGING
   console.log = originalLog
 })

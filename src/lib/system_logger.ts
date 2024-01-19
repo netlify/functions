@@ -1,3 +1,5 @@
+import { env } from 'process'
+
 const systemLogTag = '__nfSystemLog'
 
 const serializeError = (error: Error): Record<string, unknown> => {
@@ -28,6 +30,10 @@ class SystemLogger {
   }
 
   private doLog(logger: typeof console.log, message: string) {
+    if (env.NETLIFY_DEV && !env.NETLIFY_ENABLE_SYSTEM_LOGGING) {
+      return
+    }
+
     logger(systemLogTag, JSON.stringify({ msg: message, fields: this.fields }))
   }
 
