@@ -13,6 +13,7 @@ const hasFetchAPI = semver.gte(process.version, '18.0.0')
 test.beforeEach(() => {
   delete process.env.NETLIFY_PURGE_API_TOKEN
   delete process.env.SITE_ID
+  delete process.env.NETLIFY_LOCAL
 })
 
 test.afterEach(() => {
@@ -89,4 +90,29 @@ test.serial('Throws if the API response does not have a successful status code',
     async () => await invokeLambda(myFunction),
     'Cache purge API call returned an unexpected status code: 500',
   )
+})
+
+test.serial('Ignores purgeCache if in local dev with no token or site', async (t) => {
+  if (!hasFetchAPI) {
+    console.warn('Skipping test requires the fetch API')
+
+    return t.pass()
+  }
+
+  process.env.NETLIFY_LOCAL = '1'
+
+  const mockAPI = new MockFetch().post({
+    body: () => {
+      t.fail()
+    }
+  })
+  const myFunction = async () => {
+    await purgeCache()
+  }
+
+  globalThis.fetch = mockAPI.fetcher
+
+  const response = await invokeLambda(myFunction)
+
+  t.is(response, undefined)
 })
