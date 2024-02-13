@@ -1,5 +1,3 @@
-import isPromise from 'is-promise'
-
 import { BuilderHandler, Handler, HandlerCallback } from '../function/handler.js'
 import { HandlerResponse, BuilderResponse } from '../function/handler_response.js'
 import { HandlerContext, HandlerEvent } from '../function/index.js'
@@ -41,7 +39,8 @@ const wrapHandler =
       callback ? callback(error, augmentResponse(response)) : null
     const execution = handler(modifiedEvent, context, wrappedCallback)
 
-    if (isPromise(execution)) {
+    // eslint-disable-next-line promise/prefer-await-to-then
+    if (typeof execution === 'object' && typeof execution.then === 'function') {
       // eslint-disable-next-line promise/prefer-await-to-then
       return execution.then(augmentResponse)
     }

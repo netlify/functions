@@ -23,10 +23,10 @@ jobs:
     steps:
       - name: Git checkout
         uses: actions/checkout@v3
-      - name: Node.js ${{ matrix.node-version }}
+      - name: Node.js latest
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '*'
           cache: 'npm'
           check-latest: true
       - name: Install dependencies
@@ -34,6 +34,18 @@ jobs:
       - name: Linting
         run: npm run format:ci
         if: "${{ matrix.node-version == '*' }}"
+      - name: Build
+        run: npm run build
+      - name: Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        if: "${{ matrix.node-version != '*' }}"
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          check-latest: true
+      - name: Install dependencies ${{ matrix.node-version }}
+        run: npm ci
+        if: "${{ matrix.node-version != '*' }}"
       - name: Tests
         run: npm run test:ci
       - name: Get test coverage flags
