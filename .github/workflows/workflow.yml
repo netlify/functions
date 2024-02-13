@@ -24,7 +24,7 @@ jobs:
       - name: Git checkout
         uses: actions/checkout@v3
       - name: Node.js latest
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '*'
           cache: 'npm'
@@ -37,7 +37,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         if: "${{ matrix.node-version != '*' }}"
         with:
           node-version: ${{ matrix.node-version }}
