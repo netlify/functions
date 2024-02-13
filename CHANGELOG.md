@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.6.0](https://github.com/netlify/functions/compare/v2.5.1...v2.6.0) (2024-02-13)
+
+
+### Features
+
+* publish ESM version ([#473](https://github.com/netlify/functions/issues/473)) ([b1b7553](https://github.com/netlify/functions/commit/b1b7553d7d3c7bce3504dbb6369d9901c69ac9f6))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @netlify/serverless-functions-api to v1.13.1 ([#462](https://github.com/netlify/functions/issues/462)) ([29b33ae](https://github.com/netlify/functions/commit/29b33ae3083a2bef04ed70efea02c9ed7d62a65b))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.14.0 ([#470](https://github.com/netlify/functions/issues/470)) ([c77eb33](https://github.com/netlify/functions/commit/c77eb338a2571e2b8cb820a09acdc9489406d247))
+* skip purgeCache in local dev ([#472](https://github.com/netlify/functions/issues/472)) ([9236053](https://github.com/netlify/functions/commit/92360530e9edd9685c0416f379caa6913e413cfa))
+
 ## [2.5.1](https://github.com/netlify/functions/compare/v2.5.0...v2.5.1) (2024-01-19)
 
 

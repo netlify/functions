@@ -9,7 +9,7 @@
       "require": "./dist/main.js"
     }
   },
-  "version": "2.5.1",
+  "version": "2.6.0",
   "description": "JavaScript utilities for Netlify Functions",
   "files": [
     "dist/**/*.js",
