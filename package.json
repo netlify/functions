@@ -71,7 +71,7 @@
     "@netlify/eslint-config-node": "^7.0.1",
     "ava": "^2.4.0",
     "husky": "^7.0.4",
-    "npm-run-all2": "^5.0.0",
+    "npm-run-all2": "^6.0.0",
     "nyc": "^15.0.0",
     "publint": "^0.2.7",
     "semver": "^7.5.4",
