@@ -44,7 +44,7 @@ export const purgeCache = async (options: PurgeCacheOptions = {}) => {
   const token = env.NETLIFY_PURGE_API_TOKEN || options.token
 
   if (env.NETLIFY_LOCAL && !token) {
-    const scope = options.tags?.length ? `for tags ${options.tags?.join(', ')} ` : ''
+    const scope = options.tags?.length ? ` for tags ${options.tags?.join(', ')}` : ''
     console.log(`Skipping purgeCache${scope} in local development.`)
     return
   }
