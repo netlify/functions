@@ -29,6 +29,7 @@ interface PurgeAPIPayload {
   site_slug?: string
 }
 
+// eslint-disable-next-line complexity
 export const purgeCache = async (options: PurgeCacheOptions = {}) => {
   if (globalThis.fetch === undefined) {
     throw new Error(
@@ -41,6 +42,12 @@ export const purgeCache = async (options: PurgeCacheOptions = {}) => {
     deploy_alias: options.deployAlias,
   }
   const token = env.NETLIFY_PURGE_API_TOKEN || options.token
+
+  if (env.NETLIFY_LOCAL && !token) {
+    const scope = options.tags?.length ? ` for tags ${options.tags?.join(', ')}` : ''
+    console.log(`Skipping purgeCache${scope} in local development.`)
+    return
+  }
 
   if ('siteSlug' in options) {
     payload.site_slug = options.siteSlug
