@@ -1,4 +1,4 @@
-const process = require("process")
+const process = require('process')
 
 const test = require('ava')
 
@@ -43,15 +43,21 @@ test('Local Dev', (t) => {
   const logs = []
   console.log = (...message) => logs.push(message)
   systemLogger.log('hello!')
-  t.is(logs.length, 1)
-
-  process.env.NETLIFY_DEV= "true"
-  systemLogger.log('hello!')
-  t.is(logs.length, 1)
-
-  process.env.NETLIFY_ENABLE_SYSTEM_LOGGING= "true"
-  systemLogger.log('hello!')
+  systemLogger.logTrace({ span_id: '123' })
   t.is(logs.length, 2)
+
+  process.env.NETLIFY_DEV = 'true'
+  systemLogger.log('hello!')
+  systemLogger.logTrace({ span_id: '456' })
+  t.is(logs.length, 2)
+
+  process.env.NETLIFY_ENABLE_SYSTEM_LOGGING = 'true'
+  systemLogger.log('hello!')
+  systemLogger.logTrace({ span_id: '789' })
+  t.is(logs.length, 4)
+
+  t.deepEqual(logs[1], ['__nfOpenTelemetryLog', '{"span_id":"123"}'])
+  t.deepEqual(logs[3], ['__nfOpenTelemetryLog', '{"span_id":"789"}'])
 
   delete process.env.NETLIFY_DEV
   delete process.env.NETLIFY_ENABLE_SYSTEM_LOGGING
