@@ -1,6 +1,7 @@
 import { env } from 'process'
 
 const systemLogTag = '__nfSystemLog'
+const openTelemetryLogTag = '__nfOpenTelemetryLog'
 
 const serializeError = (error: Error): Record<string, unknown> => {
   const cause = error?.cause instanceof Error ? serializeError(error.cause) : error.cause
@@ -35,6 +36,15 @@ class SystemLogger {
     }
 
     logger(systemLogTag, JSON.stringify({ msg: message, fields: this.fields }))
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  logTrace(span: Record<string, unknown>) {
+    if (env.NETLIFY_DEV && !env.NETLIFY_ENABLE_SYSTEM_LOGGING) {
+      return
+    }
+
+    console.log(openTelemetryLogTag, JSON.stringify(span))
   }
 
   log(message: string) {
