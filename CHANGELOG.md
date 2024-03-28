@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.1](https://github.com/netlify/functions/compare/v2.6.0...v2.6.1) (2024-03-28)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @netlify/serverless-functions-api to v1.15.0 ([#482](https://github.com/netlify/functions/issues/482)) ([e342b0d](https://github.com/netlify/functions/commit/e342b0ddabca7ebbb11438814f97d8899dddcfff))
+
 ## [2.6.0](https://github.com/netlify/functions/compare/v2.5.1...v2.6.0) (2024-02-13)
 
 
