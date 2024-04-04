@@ -62,7 +62,7 @@
     "test": "test"
   },
   "dependencies": {
-    "@netlify/serverless-functions-api": "1.16.0"
+    "@netlify/serverless-functions-api": "1.16.1"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.15.0",
