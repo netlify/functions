@@ -7,6 +7,10 @@
     ".": {
       "import": "./dist/main.mjs",
       "require": "./dist/main.js"
+    },
+    "./internal": {
+      "import": "./dist/internal.mjs",
+      "require": "./dist/internal.js"
     }
   },
   "version": "2.6.0",
