@@ -13,7 +13,7 @@
       "require": "./dist/internal.js"
     }
   },
-  "version": "2.6.0",
+  "version": "2.6.1",
   "description": "JavaScript utilities for Netlify Functions",
   "files": [
     "dist/**/*.js",
