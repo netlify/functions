@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.3](https://github.com/netlify/functions/compare/v2.6.2...v2.6.3) (2024-05-03)
+
+
+### Bug Fixes
+
+* main path imports for typescript ([#495](https://github.com/netlify/functions/issues/495)) ([a72e407](https://github.com/netlify/functions/commit/a72e4075a64d5c8cda068d6f32222f8ffe45e895))
+
 ## [2.6.2](https://github.com/netlify/functions/compare/v2.6.1...v2.6.2) (2024-05-03)
 
 
