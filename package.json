@@ -24,7 +24,7 @@
       }
     }
   },
-  "version": "2.6.1",
+  "version": "2.6.2",
   "description": "JavaScript utilities for Netlify Functions",
   "files": [
     "dist/**/*.js",
