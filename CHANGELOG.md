@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.6.1](https://github.com/netlify/functions/compare/v2.6.0...v2.6.1) (2024-05-03)
+
+
+### Bug Fixes
+
+* add internal to export paths ([#492](https://github.com/netlify/functions/issues/492)) ([c82eedd](https://github.com/netlify/functions/commit/c82eedda9e472c9d1b9c07aaec47a90e2229e93b))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.15.0 ([#482](https://github.com/netlify/functions/issues/482)) ([e342b0d](https://github.com/netlify/functions/commit/e342b0ddabca7ebbb11438814f97d8899dddcfff))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.16.0 ([#485](https://github.com/netlify/functions/issues/485)) ([9806ad6](https://github.com/netlify/functions/commit/9806ad6d771fe18adc81e91d43ffd90fb602c9ce))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.16.1 ([#486](https://github.com/netlify/functions/issues/486)) ([a5552da](https://github.com/netlify/functions/commit/a5552da8d2e4d4861f8a7eaa292bbde1364ae563))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.16.2 ([#488](https://github.com/netlify/functions/issues/488)) ([53309ef](https://github.com/netlify/functions/commit/53309ef388c6781ab94d5f68ca5ea7fab3cf4ba4))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.17.0 ([#489](https://github.com/netlify/functions/issues/489)) ([ccd67cc](https://github.com/netlify/functions/commit/ccd67cc8e1a1a11fcf4b9b0fee5aaa3c271c202c))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.18.0 ([#490](https://github.com/netlify/functions/issues/490)) ([6807ea6](https://github.com/netlify/functions/commit/6807ea671aac7d7ecf3471afd7b16d247360703c))
+
 ## [2.6.0](https://github.com/netlify/functions/compare/v2.5.1...v2.6.0) (2024-02-13)
 
 
