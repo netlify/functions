@@ -3,14 +3,12 @@ export type { Context } from '@netlify/serverless-functions-api'
 type Path = `/${string}`
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS'
 type CronSchedule = string
-type RateLimitAlgorithm = 'sliding_window'
 type RateLimitAggregator = 'domain' | 'ip'
 type RateLimitAction = 'rate_limit' | 'rewrite'
 
 interface RateLimitConfig {
   action?: RateLimitAction
   aggregateBy?: RateLimitAggregator | RateLimitAggregator[]
-  algorithm?: RateLimitAlgorithm
   to?: string
   windowSize: number
 }
