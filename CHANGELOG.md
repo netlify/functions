@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.7.0](https://github.com/netlify/functions/compare/v2.6.3...v2.7.0) (2024-05-16)
+
+
+### Features
+
+* add custom rate limit types ([#500](https://github.com/netlify/functions/issues/500)) ([00e262a](https://github.com/netlify/functions/commit/00e262a65de94ebc27282f196eee750ff96cb0de))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @netlify/serverless-functions-api to v1.18.1 ([#497](https://github.com/netlify/functions/issues/497)) ([cd92ae9](https://github.com/netlify/functions/commit/cd92ae9056b6dbfd13b633a5ecf91f67ce96f88f))
+
 ## [2.6.3](https://github.com/netlify/functions/compare/v2.6.2...v2.6.3) (2024-05-03)
 
 
