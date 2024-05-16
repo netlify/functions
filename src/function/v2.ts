@@ -3,6 +3,15 @@ export type { Context } from '@netlify/serverless-functions-api'
 type Path = `/${string}`
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS'
 type CronSchedule = string
+type RateLimitAggregator = 'domain' | 'ip'
+type RateLimitAction = 'rate_limit' | 'rewrite'
+
+interface RateLimitConfig {
+  action?: RateLimitAction
+  aggregateBy?: RateLimitAggregator | RateLimitAggregator[]
+  to?: string
+  windowSize: number
+}
 
 interface BaseConfig {
   /**
@@ -16,6 +25,8 @@ interface BaseConfig {
    * function will run for all supported methods.
    */
   method?: HTTPMethod | HTTPMethod[]
+
+  rateLimit?: RateLimitConfig
 }
 
 interface ConfigWithPath extends BaseConfig {
