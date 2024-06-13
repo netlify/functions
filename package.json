@@ -79,7 +79,7 @@
     "test": "test"
   },
   "dependencies": {
-    "@netlify/serverless-functions-api": "1.18.3"
+    "@netlify/serverless-functions-api": "1.18.4"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.15.0",
