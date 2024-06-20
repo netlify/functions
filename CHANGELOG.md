@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.8.0](https://github.com/netlify/functions/compare/v2.7.0...v2.8.0) (2024-06-20)
+
+
+### Features
+
+* add `excludedPath` property ([#509](https://github.com/netlify/functions/issues/509)) ([5c390ab](https://github.com/netlify/functions/commit/5c390ab98df35e0c2e22aeb7af88e7287d3d1730))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @netlify/serverless-functions-api to v1.18.2 ([#502](https://github.com/netlify/functions/issues/502)) ([3af85f1](https://github.com/netlify/functions/commit/3af85f1f9bc5cfdfcd3b732430f00b4cc9224cd6))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.18.3 ([#504](https://github.com/netlify/functions/issues/504)) ([f5d365d](https://github.com/netlify/functions/commit/f5d365d351ef3894e00bec309902e9fa0b7b981a))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.18.4 ([#507](https://github.com/netlify/functions/issues/507)) ([3529a39](https://github.com/netlify/functions/commit/3529a3976a6f9e471a2ce93ca3813c99f6b30859))
+
 ## [2.7.0](https://github.com/netlify/functions/compare/v2.6.3...v2.7.0) (2024-05-16)
 
 
