@@ -31,6 +31,15 @@ interface BaseConfig {
 
 interface ConfigWithPath extends BaseConfig {
   /**
+   * One or more URL paths for which the function will not run, even if they
+   * match a path defined with the `path` property. Paths must begin with a
+   * forward slash.
+   *
+   * {@link} https://ntl.fyi/func-routing
+   */
+  excludedPath?: Path | Path[]
+
+  /**
    * One or more URL paths for which the function will run. Paths must begin
    * with a forward slash.
    *
@@ -38,10 +47,21 @@ interface ConfigWithPath extends BaseConfig {
    */
   path?: Path | Path[]
 
+  /**
+   * The `schedule` property cannot be used when `path` is used.
+   */
   schedule?: never
 }
 
 interface ConfigWithSchedule extends BaseConfig {
+  /**
+   * The `excludedPath` property cannot be used when `schedule` is used.
+   */
+  excludedPath?: never
+
+  /**
+   * The `path` property cannot be used when `schedule` is used.
+   */
   path?: never
 
   /**
