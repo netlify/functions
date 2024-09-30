@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.8.2](https://github.com/netlify/functions/compare/v2.8.1...v2.8.2) (2024-09-26)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @netlify/serverless-functions-api to v1.21.0 ([#515](https://github.com/netlify/functions/issues/515)) ([b8cf1e8](https://github.com/netlify/functions/commit/b8cf1e8f5c1cff41847b78f96d549bd32d8ae3ca))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.22.0 ([#519](https://github.com/netlify/functions/issues/519)) ([8b7d564](https://github.com/netlify/functions/commit/8b7d564b2c9a88437a0956f60da8b4f3633a67dc))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.23.0 ([#523](https://github.com/netlify/functions/issues/523)) ([e81d740](https://github.com/netlify/functions/commit/e81d740530e005a56c7e85ed2f4eba6a5eab264d))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.23.1 ([#526](https://github.com/netlify/functions/issues/526)) ([08fee85](https://github.com/netlify/functions/commit/08fee851914eaa5f6be2cded1c57703855de4415))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.24.0 ([#527](https://github.com/netlify/functions/issues/527)) ([50b3d97](https://github.com/netlify/functions/commit/50b3d975e989be741fedb045b5b90e2c2fb30b99))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.24.1 ([#531](https://github.com/netlify/functions/issues/531)) ([4bd6f44](https://github.com/netlify/functions/commit/4bd6f44ceb83c707612f44f91207c098377c2d14))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.25.0 ([#532](https://github.com/netlify/functions/issues/532)) ([111a69c](https://github.com/netlify/functions/commit/111a69cace9042428d96428a1236f8a3bcf7b307))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.26.0 ([#533](https://github.com/netlify/functions/issues/533)) ([e7a0bb1](https://github.com/netlify/functions/commit/e7a0bb153bc80f82929352fdb3cdf8f2f2da75ef))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.26.1 ([#534](https://github.com/netlify/functions/issues/534)) ([97f340b](https://github.com/netlify/functions/commit/97f340b08c305625038681a484bb64bf10a84de1))
+
 ## [2.8.1](https://github.com/netlify/functions/compare/v2.8.0...v2.8.1) (2024-07-04)
 
 
