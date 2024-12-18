@@ -5,6 +5,7 @@ interface BasePurgeCacheOptions {
   deployAlias?: string
   tags?: string[]
   token?: string
+  userAgent?: string
 }
 
 interface PurgeCacheOptionsWithSiteID extends BasePurgeCacheOptions {
@@ -73,13 +74,19 @@ export const purgeCache = async (options: PurgeCacheOptions = {}) => {
     )
   }
 
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json; charset=utf8',
+    Authorization: `Bearer ${token}`,
+  }
+
+  if (options.userAgent) {
+    headers['user-agent'] = options.userAgent
+  }
+
   const apiURL = options.apiURL || 'https://api.netlify.com'
   const response = await fetch(`${apiURL}/api/v1/purge`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json; charset=utf8',
-      Authorization: `Bearer ${token}`,
-    },
+    headers,
     body: JSON.stringify(payload),
   })
 

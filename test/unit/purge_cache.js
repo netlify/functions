@@ -104,7 +104,7 @@ test.serial('Ignores purgeCache if in local dev with no token or site', async (t
   const mockAPI = new MockFetch().post({
     body: () => {
       t.fail()
-    }
+    },
   })
   const myFunction = async () => {
     await purgeCache()
@@ -115,4 +115,41 @@ test.serial('Ignores purgeCache if in local dev with no token or site', async (t
   const response = await invokeLambda(myFunction)
 
   t.is(response, undefined)
+})
+
+test.serial('Accepts a custom user agent', async (t) => {
+  if (!hasFetchAPI) {
+    console.warn('Skipping test requires the fetch API')
+
+    return t.pass()
+  }
+
+  const userAgent = 'Netlify'
+  const mockSiteID = '123456789'
+  const mockToken = '1q2w3e4r5t6y7u8i9o0p'
+
+  process.env.NETLIFY_PURGE_API_TOKEN = mockToken
+  process.env.SITE_ID = mockSiteID
+
+  const mockAPI = new MockFetch().post({
+    body: (payload) => {
+      const data = JSON.parse(payload)
+
+      t.is(data.site_id, mockSiteID)
+    },
+    headers: { Authorization: `Bearer ${mockToken}`, 'user-agent': userAgent },
+    method: 'post',
+    response: new Response(null, { status: 202 }),
+    url: `https://api.netlify.com/api/v1/purge`,
+  })
+  const myFunction = async () => {
+    await purgeCache({ userAgent })
+  }
+
+  globalThis.fetch = mockAPI.fetcher
+
+  const response = await invokeLambda(myFunction)
+
+  t.is(response, undefined)
+  t.true(mockAPI.fulfilled)
 })
