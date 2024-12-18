@@ -123,3 +123,41 @@ test('Ignores purgeCache if in local dev with no token or site', async () => {
 
   expect(response).toBeUndefined()
 })
+
+test('Accepts a custom user-agent', async () => {
+  if (!hasFetchAPI) {
+    console.warn('Skipping test requires the fetch API')
+
+    return
+  }
+
+  const userAgent = 'Netlify'
+  const mockSiteID = '123456789'
+  const mockToken = '1q2w3e4r5t6y7u8i9o0p'
+
+  process.env.NETLIFY_PURGE_API_TOKEN = mockToken
+  process.env.SITE_ID = mockSiteID
+
+  const mockAPI = new MockFetch().post({
+    body: (payload: string) => {
+      const data = JSON.parse(payload)
+
+      expect(data.site_id).toBe(mockSiteID)
+    },
+    headers: { Authorization: `Bearer ${mockToken}`, 'user-agent': userAgent },
+    method: 'post',
+    response: new Response(null, { status: 202 }),
+    url: `https://api.netlify.com/api/v1/purge`,
+  })
+
+  const myFunction = async () => {
+    await purgeCache({ userAgent })
+  }
+
+  globalThis.fetch = mockAPI.fetcher
+
+  const response = await invokeLambda(myFunction)
+
+  expect(response).toBeUndefined()
+  expect(mockAPI.fulfilled).toBeTruthy()
+})
