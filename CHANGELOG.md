@@ -1,5 +1,27 @@
 # Changelog
 
+## [3.0.0](https://github.com/netlify/functions/compare/v2.8.2...v3.0.0) (2024-12-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* Requires Node.js >=18.0.0
+
+### Features
+
+* accept `userAgent` property in `purgeCache` method ([#553](https://github.com/netlify/functions/issues/553)) ([57258ef](https://github.com/netlify/functions/commit/57258effcc3a585c8fad33dd8ed0aa0a4f9b8708))
+* replace ava with vitest ([#554](https://github.com/netlify/functions/issues/554)) ([95bf657](https://github.com/netlify/functions/commit/95bf6573431c62474ebacef9ce65765659444b00))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @netlify/serverless-functions-api to v1.27.0 ([#535](https://github.com/netlify/functions/issues/535)) ([e8c1f2a](https://github.com/netlify/functions/commit/e8c1f2a02354c5a2d22127da5e3545b9f9c5924a))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.28.0 ([#537](https://github.com/netlify/functions/issues/537)) ([bdae8aa](https://github.com/netlify/functions/commit/bdae8aa9b9671d7cf8af2bb2e028dd9c46198acb))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.28.1 ([#538](https://github.com/netlify/functions/issues/538)) ([c4679d9](https://github.com/netlify/functions/commit/c4679d9fd7e6622f3d4dcc07d167f1758de0ef57))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.29.0 ([#539](https://github.com/netlify/functions/issues/539)) ([10d035d](https://github.com/netlify/functions/commit/10d035d7f23cff977911a083e0bddd8c10cbf1a8))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.29.1 ([#540](https://github.com/netlify/functions/issues/540)) ([ba477e6](https://github.com/netlify/functions/commit/ba477e67dc3d6dcc41cfcad5eafd8982ca5c130c))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.30.1 ([#541](https://github.com/netlify/functions/issues/541)) ([53b7bd0](https://github.com/netlify/functions/commit/53b7bd093957fbccb75a486497fd1b8b797411a5))
+
 ## [2.8.2](https://github.com/netlify/functions/compare/v2.8.1...v2.8.2) (2024-09-26)
 
 
