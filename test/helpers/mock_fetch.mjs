@@ -1,6 +1,6 @@
-const assert = require('assert')
+import assert from "node:assert"
 
-module.exports = class MockFetch {
+export class MockFetch {
   constructor() {
     this.requests = []
   }

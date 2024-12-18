@@ -1,57 +1,57 @@
-const process = require("process")
+import process from 'node:process'
 
-const test = require('ava')
+import { expect, test } from 'vitest'
 
-const { systemLogger, LogLevel } = require('../../dist/internal')
+import { LogLevel, systemLogger } from '../internal.js'
 
-test('Log Level', (t) => {
+test('Log Level', () => {
   const originalDebug = console.debug
 
   const debugLogs = []
   console.debug = (...message) => debugLogs.push(message)
 
   systemLogger.debug('hello!')
-  t.is(debugLogs.length, 0)
+  expect(debugLogs.length).toBe(0)
 
   systemLogger.withLogLevel(LogLevel.Debug).debug('hello!')
-  t.is(debugLogs.length, 1)
+  expect(debugLogs.length).toBe(1)
 
   systemLogger.withLogLevel(LogLevel.Log).debug('hello!')
-  t.is(debugLogs.length, 1)
+  expect(debugLogs.length).toBe(1)
 
   console.debug = originalDebug
 })
 
-test('Fields', (t) => {
+test('Fields', () => {
   const originalLog = console.log
-  const logs = []
+  const logs: string[][] = []
   console.log = (...message) => logs.push(message)
   systemLogger.withError(new Error('boom')).withFields({ foo: 'bar' }).log('hello!')
-  t.is(logs.length, 1)
-  t.is(logs[0][0], '__nfSystemLog')
+  expect(logs.length).toBe(1)
+  expect(logs[0][0]).toBe('__nfSystemLog')
   const log = JSON.parse(logs[0][1])
-  t.is(log.msg, 'hello!')
-  t.is(log.fields.foo, 'bar')
-  t.is(log.fields.error, 'boom')
-  t.is(log.fields.error_stack.split('\n').length > 2, true)
+  expect(log.msg).toBe('hello!')
+  expect(log.fields.foo).toBe('bar')
+  expect(log.fields.error).toBe('boom')
+  expect(log.fields.error_stack.split('\n').length > 2).toBe(true)
 
   console.log = originalLog
 })
 
-test('Local Dev', (t) => {
+test('Local Dev', () => {
   const originalLog = console.log
   const logs = []
   console.log = (...message) => logs.push(message)
   systemLogger.log('hello!')
-  t.is(logs.length, 1)
+  expect(logs.length).toBe(1)
 
-  process.env.NETLIFY_DEV= "true"
+  process.env.NETLIFY_DEV = 'true'
   systemLogger.log('hello!')
-  t.is(logs.length, 1)
+  expect(logs.length).toBe(1)
 
-  process.env.NETLIFY_ENABLE_SYSTEM_LOGGING= "true"
+  process.env.NETLIFY_ENABLE_SYSTEM_LOGGING = 'true'
   systemLogger.log('hello!')
-  t.is(logs.length, 2)
+  expect(logs.length).toBe(2)
 
   delete process.env.NETLIFY_DEV
   delete process.env.NETLIFY_ENABLE_SYSTEM_LOGGING

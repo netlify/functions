@@ -1,4 +1,4 @@
-const invokeLambda = (handler, { method = 'GET', ...options } = {}) => {
+export const invokeLambda = (handler, { method = 'GET', ...options } = {}) => {
   const event = {
     ...options,
     httpMethod: method,
@@ -17,4 +17,3 @@ const invokeLambda = (handler, { method = 'GET', ...options } = {}) => {
   })
 }
 
-module.exports = { invokeLambda }
