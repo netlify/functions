@@ -1,30 +1,31 @@
-const process = require('process')
+import process from 'node:process'
 
-const test = require('ava')
-const semver = require('semver')
+import semver from 'semver'
+import { beforeEach, afterEach, expect, test } from 'vitest'
 
-const { purgeCache } = require('../../dist/lib/purge_cache')
-const { invokeLambda } = require('../helpers/main')
-const MockFetch = require('../helpers/mock_fetch')
+import { invokeLambda } from '../../test/helpers/main.mjs'
+import { MockFetch } from '../../test/helpers/mock_fetch.mjs'
+
+import { purgeCache } from './purge_cache.js'
 
 const globalFetch = globalThis.fetch
 const hasFetchAPI = semver.gte(process.version, '18.0.0')
 
-test.beforeEach(() => {
+beforeEach(() => {
   delete process.env.NETLIFY_PURGE_API_TOKEN
   delete process.env.SITE_ID
   delete process.env.NETLIFY_LOCAL
 })
 
-test.afterEach(() => {
+afterEach(() => {
   globalThis.fetch = globalFetch
 })
 
-test.serial('Calls the purge API endpoint and returns `undefined` if the operation was successful', async (t) => {
+test('Calls the purge API endpoint and returns `undefined` if the operation was successful', async () => {
   if (!hasFetchAPI) {
     console.warn('Skipping test requires the fetch API')
 
-    return t.pass()
+    return
   }
 
   const mockSiteID = '123456789'
@@ -34,16 +35,17 @@ test.serial('Calls the purge API endpoint and returns `undefined` if the operati
   process.env.SITE_ID = mockSiteID
 
   const mockAPI = new MockFetch().post({
-    body: (payload) => {
+    body: (payload: string) => {
       const data = JSON.parse(payload)
 
-      t.is(data.site_id, mockSiteID)
+      expect(data.site_id).toBe(mockSiteID)
     },
     headers: { Authorization: `Bearer ${mockToken}` },
     method: 'post',
     response: new Response(null, { status: 202 }),
     url: `https://api.netlify.com/api/v1/purge`,
   })
+  // eslint-disable-next-line unicorn/consistent-function-scoping
   const myFunction = async () => {
     await purgeCache()
   }
@@ -52,15 +54,13 @@ test.serial('Calls the purge API endpoint and returns `undefined` if the operati
 
   const response = await invokeLambda(myFunction)
 
-  t.is(response, undefined)
-  t.true(mockAPI.fulfilled)
+  expect(response).toBeUndefined()
+  expect(mockAPI.fulfilled).toBeTruthy()
 })
 
-test.serial('Throws if the API response does not have a successful status code', async (t) => {
+test('Throws if the API response does not have a successful status code', async () => {
   if (!hasFetchAPI) {
     console.warn('Skipping test requires the fetch API')
-
-    return t.pass()
   }
 
   const mockSiteID = '123456789'
@@ -70,42 +70,49 @@ test.serial('Throws if the API response does not have a successful status code',
   process.env.SITE_ID = mockSiteID
 
   const mockAPI = new MockFetch().post({
-    body: (payload) => {
+    body: (payload: string) => {
       const data = JSON.parse(payload)
 
-      t.is(data.site_id, mockSiteID)
+      expect(data.site_id).toBe(mockSiteID)
     },
     headers: { Authorization: `Bearer ${mockToken}` },
     method: 'post',
     response: new Response(null, { status: 500 }),
     url: `https://api.netlify.com/api/v1/purge`,
   })
+  // eslint-disable-next-line unicorn/consistent-function-scoping
   const myFunction = async () => {
     await purgeCache()
   }
 
   globalThis.fetch = mockAPI.fetcher
 
-  await t.throwsAsync(
-    async () => await invokeLambda(myFunction),
-    'Cache purge API call returned an unexpected status code: 500',
-  )
+  try {
+    await invokeLambda(myFunction)
+
+    throw new Error('Invocation should have failed')
+  } catch (error) {
+    expect((error as NodeJS.ErrnoException).message).toBe(
+      'Cache purge API call returned an unexpected status code: 500',
+    )
+  }
 })
 
-test.serial('Ignores purgeCache if in local dev with no token or site', async (t) => {
+test('Ignores purgeCache if in local dev with no token or site', async () => {
   if (!hasFetchAPI) {
     console.warn('Skipping test requires the fetch API')
 
-    return t.pass()
+    return
   }
 
   process.env.NETLIFY_LOCAL = '1'
 
   const mockAPI = new MockFetch().post({
     body: () => {
-      t.fail()
-    }
+      throw new Error('Unexpected request')
+    },
   })
+  // eslint-disable-next-line unicorn/consistent-function-scoping
   const myFunction = async () => {
     await purgeCache()
   }
@@ -114,5 +121,5 @@ test.serial('Ignores purgeCache if in local dev with no token or site', async (t
 
   const response = await invokeLambda(myFunction)
 
-  t.is(response, undefined)
+  expect(response).toBeUndefined()
 })
