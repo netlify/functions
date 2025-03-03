@@ -91,6 +91,13 @@ export const purgeCache = async (options: PurgeCacheOptions = {}) => {
   })
 
   if (!response.ok) {
-    throw new Error(`Cache purge API call returned an unexpected status code: ${response.status}`)
+    let text
+    try {
+      text = await response.text()
+    } catch {}
+    if (text) {
+      throw new Error(`Cache purge API call was unsuccessful.\nStatus: ${response.status}\nBody: ${text}`)
+    }
+    throw new Error(`Cache purge API call was unsuccessful.\nStatus: ${response.status}`)
   }
 }
