@@ -38,6 +38,14 @@ export const purgeCache = async (options: PurgeCacheOptions = {}) => {
     )
   }
 
+  const { siteID } = options as PurgeCacheOptionsWithSiteID
+  const { siteSlug } = options as PurgeCacheOptionsWithSiteSlug
+  const { domain } = options as PurgeCacheOptionsWithDomain
+
+  if ((siteID && siteSlug) || (siteID && domain) || (siteSlug && domain)) {
+    throw new Error('Can only pass one of either "siteID", "siteSlug", or "domain"')
+  }
+
   const payload: PurgeAPIPayload = {
     cache_tags: options.tags,
     deploy_alias: options.deployAlias,
@@ -50,22 +58,20 @@ export const purgeCache = async (options: PurgeCacheOptions = {}) => {
     return
   }
 
-  if ('siteSlug' in options) {
-    payload.site_slug = options.siteSlug
-  } else if ('domain' in options) {
-    payload.domain = options.domain
+  if (siteSlug) {
+    payload.site_slug = siteSlug
+  } else if (domain) {
+    payload.domain = domain
   } else {
     // The `siteID` from `options` takes precedence over the one from the
     // environment.
-    const siteID = options.siteID || env.SITE_ID
+    payload.site_id = siteID || env.SITE_ID
 
-    if (!siteID) {
+    if (!payload.site_id) {
       throw new Error(
         'The Netlify site ID was not found in the execution environment. Please supply it manually using the `siteID` property.',
       )
     }
-
-    payload.site_id = siteID
   }
 
   if (!token) {
