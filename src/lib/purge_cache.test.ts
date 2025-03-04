@@ -58,9 +58,53 @@ test('Calls the purge API endpoint and returns `undefined` if the operation was 
   expect(mockAPI.fulfilled).toBeTruthy()
 })
 
-test('Throws if the API response does not have a successful status code', async () => {
+test('Throws an error if the API response does not have a successful status code, using the response body as part of the error message', async () => {
   if (!hasFetchAPI) {
     console.warn('Skipping test requires the fetch API')
+
+    return
+  }
+
+  const mockSiteID = '123456789'
+  const mockToken = '1q2w3e4r5t6y7u8i9o0p'
+
+  process.env.NETLIFY_PURGE_API_TOKEN = mockToken
+  process.env.SITE_ID = mockSiteID
+
+  const mockAPI = new MockFetch().post({
+    body: (payload: string) => {
+      const data = JSON.parse(payload)
+
+      expect(data.site_id).toBe(mockSiteID)
+    },
+    headers: { Authorization: `Bearer ${mockToken}` },
+    method: 'post',
+    response: new Response('site not found', { status: 404 }),
+    url: `https://api.netlify.com/api/v1/purge`,
+  })
+  // eslint-disable-next-line unicorn/consistent-function-scoping
+  const myFunction = async () => {
+    await purgeCache()
+  }
+
+  globalThis.fetch = mockAPI.fetcher
+
+  try {
+    await invokeLambda(myFunction)
+
+    expect.fail('Invocation should have failed')
+  } catch (error) {
+    expect((error as NodeJS.ErrnoException).message).toBe(
+      'Cache purge API call was unsuccessful.\nStatus: 404\nBody: site not found',
+    )
+  }
+})
+
+test('Throws if the API response does not have a successful status code, does not include the response body if it is not text', async () => {
+  if (!hasFetchAPI) {
+    console.warn('Skipping test requires the fetch API')
+
+    return
   }
 
   const mockSiteID = '123456789'
@@ -92,9 +136,7 @@ test('Throws if the API response does not have a successful status code', async 
 
     throw new Error('Invocation should have failed')
   } catch (error) {
-    expect((error as NodeJS.ErrnoException).message).toBe(
-      'Cache purge API call returned an unexpected status code: 500',
-    )
+    expect((error as NodeJS.ErrnoException).message).toBe('Cache purge API call was unsuccessful.\nStatus: 500')
   }
 })
 

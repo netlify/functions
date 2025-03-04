@@ -6,6 +6,7 @@ module.exports = {
   extends: '@netlify/eslint-config-node',
   rules: {
     'max-statements': 'off',
+    'max-lines': 'off',
   },
   overrides: [
     ...overrides,
