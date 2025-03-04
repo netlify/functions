@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.2](https://github.com/netlify/functions/compare/v3.0.1...v3.0.2) (2025-03-04)
+
+
+### Bug Fixes
+
+* if the purge api call fails, include the api response body in the thrown error's message ([#571](https://github.com/netlify/functions/issues/571)) ([e01516d](https://github.com/netlify/functions/commit/e01516df909fc0e9ba9c553655cb7df8b5b27e51))
+
 ## [3.0.1](https://github.com/netlify/functions/compare/v3.0.0...v3.0.1) (2025-03-04)
 
 
