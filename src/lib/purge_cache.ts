@@ -48,8 +48,14 @@ export const purgeCache = async (options: PurgeCacheOptions = {}) => {
 
   const payload: PurgeAPIPayload = {
     cache_tags: options.tags,
-    deploy_alias: options.deployAlias,
   }
+
+  if ('deployAlias' in options) {
+    payload.deploy_alias = options.deployAlias
+  } else if (!env.NETLIFY_LOCAL) {
+    payload.deploy_alias = env.NETLIFY_BRANCH
+  }
+
   const token = env.NETLIFY_PURGE_API_TOKEN || options.token
 
   if (env.NETLIFY_LOCAL && !token) {
