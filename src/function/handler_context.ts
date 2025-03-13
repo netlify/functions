@@ -12,7 +12,7 @@ export interface HandlerContext {
   logGroupName: string
   logStreamName: string
   /**
-   * A Promise that allows the Lambda function to respond immediately while still waiting
+   * A Promise that allows the function to respond immediately while still waiting
    * for the operation to complete asynchronously.
    */
   waitUntil: Promise<any>
