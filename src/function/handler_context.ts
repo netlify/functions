@@ -11,6 +11,11 @@ export interface HandlerContext {
   awsRequestId: string
   logGroupName: string
   logStreamName: string
+  /**
+   * A Promise that allows the Lambda function to respond immediately while still waiting
+   * for the operation to complete asynchronously.
+   */
+  waitUntil: Promise<any>
   identity?: { [key: string]: any }
   clientContext?: { [key: string]: any }
 
