@@ -76,7 +76,7 @@
     "@netlify/serverless-functions-api": "1.35.0"
   },
   "devDependencies": {
-    "@arethetypeswrong/cli": "^0.16.0",
+    "@arethetypeswrong/cli": "^0.17.0",
     "@commitlint/cli": "^19.0.0",
     "@commitlint/config-conventional": "^19.0.0",
     "@netlify/eslint-config-node": "^7.0.1",
