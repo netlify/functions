@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.3](https://github.com/netlify/functions/compare/v3.0.2...v3.0.3) (2025-03-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @netlify/serverless-functions-api to v1.35.1 ([#581](https://github.com/netlify/functions/issues/581)) ([c36110b](https://github.com/netlify/functions/commit/c36110b96177c57a8847fdf2da19fa77eff218a8))
+* **deps:** update dependency @netlify/serverless-functions-api to v1.35.2 ([#583](https://github.com/netlify/functions/issues/583)) ([0100131](https://github.com/netlify/functions/commit/01001317aa5409e559ca56c249e1f78d27c98b2e))
+
 ## [3.0.2](https://github.com/netlify/functions/compare/v3.0.1...v3.0.2) (2025-03-17)
 
 
