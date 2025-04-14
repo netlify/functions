@@ -1,0 +1,106 @@
+<!-- Tambahkan sebelum </body> -->
+<div id="payment-modal" class="modal hidden">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>💳 Bayar untuk Lanjut Chat</h2>
+        <p>Biaya: Rp5.000</p>
+        <div class="ewallet-buttons">
+            <button onclick="payWith('shopeepay')">ShopeePay</button>
+            <button onclick="payWith('gopay')">Gopay</button>
+            <button onclick="payWith('ovo')">OVO</button>
+        </div>
+        <div id="payment-instruction" class="hidden">
+            <p id="payment-detail">Silakan selesaikan pembayaran di app e-wallet Anda.</p>
+            <button onclick="checkPayment()">Saya Sudah Bayar</button>
+        </div>
+    </div>
+</div>
+
+// Simulasi Pembayaran E-Wallet
+function showPaymentModal() {
+    document.getElementById("payment-modal").classList.remove("hidden");
+}
+
+function closeModal() {
+    document.getElementById("payment-modal").classList.add("hidden");
+}
+
+function payWith(ewallet) {
+    const instruction = document.getElementById("payment-instruction");
+    const detail = document.getElementById("payment-detail");
+    
+    // Simulasi instruksi pembayaran
+    if (ewallet === "shopeepay") {
+        detail.innerHTML = "1. Buka aplikasi ShopeePay<br>2. Scan QR code berikut: <b>1234-5678</b>";
+    } else if (ewallet === "gopay") {
+        detail.innerHTML = "1. Buka aplikasi Gojek<br>2. Bayar ke kode <b>987-654-321</b>";
+    } else if (ewallet === "ovo") {
+        detail.innerHTML = "1. Buka aplikasi OVO<br>2. Transfer ke <b>0812-3456-7890</b>";
+    }
+    
+    instruction.classList.remove("hidden");
+}
+
+function checkPayment() {
+    // Simulasi pembayaran berhasil
+    alert("Pembayaran berhasil! Lanjutkan curhat.");
+    closeModal();
+    document.getElementById("user-input").disabled = false;
+}
+
+// Tampilkan modal setelah 3 pesan (contoh)
+let messageCount = 0;
+function sendMessage() {
+    // ... (kode sebelumnya)
+    messageCount++;
+    if (messageCount >= 3) {
+        showPaymentModal();
+        document.getElementById("user-input").disabled = true;
+    }
+}
+
+
+/* Modal Pembayaran */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+}
+
+.modal .close {
+    float: right;
+    cursor: pointer;
+    font-size: 24px;
+}
+
+.ewallet-buttons button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    background: #4CAF50;
+    color: white;
+}
+
+.ewallet-buttons button:nth-child(1) { background: #FF2D55; } /* ShopeePay */
+.ewallet-buttons button:nth-child(2) { background: #00AA13; } /* Gopay */
+.ewallet-buttons button:nth-child(3) { background: #4E2E8D; } /* OVO */
+
+.hidden {
+    display: none;
+}
