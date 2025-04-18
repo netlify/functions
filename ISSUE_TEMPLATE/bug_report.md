@@ -1,3 +1,9 @@
+---
+name: Bug report of feature request
+about: You want to report a bug or request a feature
+title: "Please refer to our documentation and support forums"
+---
+
 > [!IMPORTANT]  
 > This repository does not hold the source code for the `@netlify/functions` package, and it is not actively monitored by the Netlify team.
 >
